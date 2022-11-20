@@ -15,3 +15,6 @@
 .cxx
 local.properties
 .$UML.drawio.bkp
+.idea
+/app/google-services.json
+/.$UML.drawio.dtmp

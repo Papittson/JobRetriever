@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:paddingTop="50dp"
+    android:paddingBottom="5dp"
     >
 
-    <com.google.android.material.appbar.AppBarLayout
+    <ImageButton
+        android:id="@+id/LogoWelcome"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/logo_text"/>
+
+    <FrameLayout
+        android:id="@+id/welcomePage"
+        android:layout_marginTop="100dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constrainedHeight="true"
-        app:layout_constrainedWidth="false"
-        app:layout_constraintHeight_default="spread"
-        android:layout_marginBottom="50dp">
+        android:layout_height="600dp"
+        />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="JOBRETRIEVER"
-            app:titleCentered="true"
-            app:titleTextColor="@color/black"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
-    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
 
-</android.widget.LinearLayout>
+        <Button
+            android:id="@+id/SignInBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Sign in" />
+
+        <Button
+            android:id="@+id/SignUpBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Sign up" />
+    </LinearLayout>
+
+</RelativeLayout>

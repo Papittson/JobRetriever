@@ -1,6 +1,5 @@
 package com.example.jobretriever;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,16 +7,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_sign_up#newInstance} factory method to
+ * Use the {@link candidate_home#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_sign_up extends Fragment {
+public class candidate_home extends Fragment {
 
     View view;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,7 +26,7 @@ public class fragment_sign_up extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_sign_up() {
+    public candidate_home() {
         // Required empty public constructor
     }
 
@@ -37,11 +36,11 @@ public class fragment_sign_up extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_sign_up.
+     * @return A new instance of fragment candidate_home.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_sign_up newInstance(String param1, String param2) {
-        fragment_sign_up fragment = new fragment_sign_up();
+    public static candidate_home newInstance(String param1, String param2) {
+        candidate_home fragment = new candidate_home();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,16 +60,8 @@ public class fragment_sign_up extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        Button confirm = (Button) view.findViewById(R.id.confirmSignUp);
         // Inflate the layout for this fragment
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goToCandidateHome = new Intent(getActivity(), MainActivityCandidate.class);
-                startActivity(goToCandidateHome);
-            }
-        });
+        view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
         return view;
     }
 }

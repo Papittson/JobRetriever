@@ -56,7 +56,7 @@
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_marginT="10dp">
+                android:layout_margin="10dp">
             <Button
                 android:id="@+id/status_appiled"
                 android:layout_height="match_parent"

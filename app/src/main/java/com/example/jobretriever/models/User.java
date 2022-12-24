@@ -1,5 +1,9 @@
 package com.example.jobretriever.models;
 
+import com.google.type.Date;
+
+import java.util.Collection;
+
 public class User {
     String id;
     String firstname;
@@ -72,5 +76,20 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+
+    // METHODS
+    Collection<Offer> searchOfferById(String id){
+        return null;
+    }
+    Collection<Offer> searchOfferByTitle(String title){
+        return null;
+    }
+    Collection<Offer> searchOfferByDate(Date date){
+        return null;
+    }
+    Collection<Offer> searchOfferByField(String field){
+        return null;
     }
 }

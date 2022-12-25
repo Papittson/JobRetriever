@@ -17,13 +17,14 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="150dp"
         >
+
         <TextView
+            style="@style/headerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome to JobRetreiever description here"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            style="@style/headerText"/>
+            android:textColor="@color/black" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

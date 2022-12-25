@@ -14,6 +14,7 @@ public class User {
     String phone;
     String type;
 
+
     public String getId() {
         return id;
     }
@@ -59,7 +60,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = "";
     }
 
     public String getPhone() {
@@ -78,6 +79,19 @@ public class User {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", mail='" + mail + '\'' +
+                ", name='" + name + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 
     // METHODS
     Collection<Offer> searchOfferById(String id){

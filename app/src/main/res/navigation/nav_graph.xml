@@ -11,8 +11,15 @@
         android:label="MainActivityCandidate"
         tools:layout="@layout/activity_main_candidate"/>
     <fragment
-        android:id="@+id/candidate_home"
-        android:name="com.example.jobretriever.candidate_home"
-        android:label="candidate_home"
-        tools:layout="@layout/fragment_candidate_home"/>
+        android:id="@+id/signInFragment"
+        android:name="com.example.jobretriever.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_candidateHomeFragment"
+            app:destination="@id/candidateHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/candidateHomeFragment"
+        android:name="com.example.jobretriever.CandidateHomeFragment"
+        android:label="CandidateHomeFragment" />
 </navigation>

@@ -22,7 +22,7 @@
             style="@style/headerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to JobRetreiever description here"
+            android:text="@string/welcome_message"
             android:textAlignment="center"
             android:textColor="@color/black" />
 
@@ -34,7 +34,7 @@
             app:boxCornerRadiusBottomStart="15dp"
             app:boxCornerRadiusTopEnd="15dp"
             app:boxCornerRadiusTopStart="15dp"
-            android:hint="Find a job">
+            android:hint="Search for an offer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

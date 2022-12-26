@@ -12,7 +12,8 @@ public class User {
     String nationality;
     String password;
     String phone;
-    String type;
+    UserType type;
+
 
 
     public String getId() {
@@ -71,11 +72,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getType() {
+    public UserType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(UserType type) {
         this.type = type;
     }
 

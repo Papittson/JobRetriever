@@ -26,17 +26,34 @@ public class CandidateHomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
-        TextView hello = view.findViewById(R.id.helloCandidate);
-        String firstname = UserViewModel.getUser().getValue().getFirstname();
-        String name = UserViewModel.getUser().getValue().getName();
-        hello.setText("Hello"+ firstname +" "+name);
+        switch (UserViewModel.getUser().getValue().getType()){
+            case APPLICANT:
+                view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
+                TextView hello = view.findViewById(R.id.helloCandidate);
+                String firstname = UserViewModel.getUser().getValue().getFirstname();
+                String name = UserViewModel.getUser().getValue().getName();
+                String text = String.format(getResources().getString(R.string.hello_candidate_fragment), firstname, name);
+                hello.setText(text);
+                break;
+            case EMPLOYER:
+                view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
+                break;
+            case AGENCY:
+                view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
+                break;
+            case MODERATOR:
+                view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
+                break;
+        }
         return view;
     }
 }

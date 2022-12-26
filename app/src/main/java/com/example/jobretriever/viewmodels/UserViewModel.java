@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserViewModel extends ViewModel {
-    private static MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private static final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private static MutableLiveData<List<User>> users;
     private static final MutableLiveData<Boolean> loggedIn = new MutableLiveData<>();
     private static MutableLiveData<User> user;
@@ -25,7 +25,7 @@ public class UserViewModel extends ViewModel {
         if (users == null) {
             users = new MutableLiveData<>();
         }
-        UserRepository.getUsers().addOnCompleteListener(task -> {
+        UserRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<User> usersList = new ArrayList<>();
                 task.getResult().forEach(doc -> {
@@ -48,7 +48,7 @@ public class UserViewModel extends ViewModel {
         if (user == null) {
             user = new MutableLiveData<>();
         }
-        UserRepository.getUserByCredentials(mail, password).addOnCompleteListener(task -> {
+        UserRepository.getInstance().getUserByCredentials(mail, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<User> usersList = new ArrayList<>();
                 task.getResult().forEach(doc -> {
@@ -73,10 +73,10 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Boolean> signUp(User user) {
-        UserRepository.getUserByMail(user.getMail()).addOnCompleteListener(task -> {
+        UserRepository.getInstance().getUserByMail(user.getMail()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().isEmpty()) {
-                    UserRepository.setNewUser(user).addOnCompleteListener(task2 -> {
+                    UserRepository.getInstance().add(user).addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
                             loggedIn.postValue(true);
                         } else {
@@ -97,8 +97,6 @@ public class UserViewModel extends ViewModel {
     public static MutableLiveData<String> getErrorMessage() {
         return errorMessage;
     }
-
-
 
     public static MutableLiveData<Boolean> getLoggedIn() {
         return loggedIn;

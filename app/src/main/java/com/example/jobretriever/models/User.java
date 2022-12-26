@@ -1,11 +1,12 @@
 package com.example.jobretriever.models;
 
+import androidx.annotation.NonNull;
+
 import com.google.type.Date;
 
 import java.util.Collection;
 
-public class User {
-    String id;
+public class User extends Entity {
     String firstname;
     String mail;
     String name;
@@ -13,16 +14,6 @@ public class User {
     String password;
     String phone;
     UserType type;
-
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -80,6 +71,7 @@ public class User {
         this.type = type;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

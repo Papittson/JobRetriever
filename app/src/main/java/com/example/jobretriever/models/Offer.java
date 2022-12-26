@@ -2,22 +2,13 @@ package com.example.jobretriever.models;
 
 import com.google.type.Date;
 
-public class Offer {
-    String id;
+public class Offer extends Entity {
     String jobTitle;
     String duration;
     Date date;
     String sield;
     String description;
     double wage;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getJobTitle() {
         return jobTitle;

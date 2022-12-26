@@ -44,7 +44,7 @@ public class UserViewModel extends ViewModel {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public MutableLiveData<Boolean> signIn(String mail, String password) {
+    public void signIn(String mail, String password) {
         if (user == null) {
             user = new MutableLiveData<>();
         }
@@ -69,16 +69,21 @@ public class UserViewModel extends ViewModel {
                 Objects.requireNonNull(task.getException()).printStackTrace();
             }
         });
-        return loggedIn;
     }
 
-    public MutableLiveData<Boolean> signUp(User user) {
+    public MutableLiveData<Boolean> signUp(User user ) {
+        if (UserViewModel.user == null) {
+           UserViewModel.user = new MutableLiveData<>();
+        }
+        assert user != null;
         UserRepository.getUserByMail(user.getMail()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().isEmpty()) {
                     UserRepository.setNewUser(user).addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
                             loggedIn.postValue(true);
+                            UserViewModel.user.postValue(user);
+                            /*TODO mettre l'identifiant générer automatiquement par firebase dans user*/
                         } else {
                             loggedIn.postValue(false);
                             errorMessage.postValue("Error during sign up please try again");

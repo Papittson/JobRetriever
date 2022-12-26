@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.jobretriever.viewmodels.UserViewModel;
 
@@ -14,6 +15,7 @@ import com.example.jobretriever.viewmodels.UserViewModel;
 public class CandidateHomeFragment extends Fragment {
 
     View view;
+    UserViewModel userViewModel;
 
 
     public CandidateHomeFragment() {
@@ -25,6 +27,7 @@ public class CandidateHomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
 
     }
@@ -35,12 +38,12 @@ public class CandidateHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        switch (UserViewModel.getUser().getValue().getType()){
+        switch (userViewModel.getUser().getValue().getType()){
             case APPLICANT:
                 view = inflater.inflate(R.layout.fragment_candidate_home, container, false);
                 TextView hello = view.findViewById(R.id.helloCandidate);
-                String firstname = UserViewModel.getUser().getValue().getFirstname();
-                String name = UserViewModel.getUser().getValue().getName();
+                String firstname = userViewModel.getUser().getValue().getFirstname();
+                String name = userViewModel.getUser().getValue().getName();
                 String text = String.format(getResources().getString(R.string.hello_candidate_fragment), firstname, name);
                 hello.setText(text);
                 break;

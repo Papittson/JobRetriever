@@ -51,7 +51,7 @@ public class SignInFragment extends Fragment {
 
         final Observer<Boolean> loggedInObserver = loggedIn -> {
             if(loggedIn){
-                UserViewModel.getLoggedIn().removeObservers(getViewLifecycleOwner());
+                userViewModel.getLoggedIn().removeObservers(getViewLifecycleOwner());
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,CandidateHomeFragment.class,null).commit();
             }else{
                 Context context = getContext();
@@ -61,7 +61,7 @@ public class SignInFragment extends Fragment {
                 toast.show();
             }
         };
-        UserViewModel.getLoggedIn().observe(getViewLifecycleOwner(),loggedInObserver);
+        userViewModel.getLoggedIn().observe(getViewLifecycleOwner(),loggedInObserver);
         confirm.setOnClickListener(view -> {
             ARG_EMAIL = mail.getText().toString();
             ARG_PWD = pwd.getText().toString();

@@ -1,12 +1,24 @@
 package com.example.jobretriever;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import com.example.jobretriever.models.UserType;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,12 +27,11 @@ import androidx.fragment.app.Fragment;
  */
 public class SignUpFragment extends Fragment {
 
-    View view;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    View view;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -47,15 +58,15 @@ public class SignUpFragment extends Fragment {
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +79,35 @@ public class SignUpFragment extends Fragment {
 
             }
         });
+
+        List<String> userTypes = Arrays.stream(UserType.values()).map(obj -> obj.toString()).collect(Collectors.toList());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
+        TextInputLayout dropdown = view.findViewById(R.id.dropdown_user_type_menu);
+        AutoCompleteTextView dropdownItem = (AutoCompleteTextView) dropdown.getEditText();
+        dropdownItem.setAdapter(adapter);
+
+        dropdownItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return view;
     }
 }

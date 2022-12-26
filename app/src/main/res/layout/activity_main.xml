@@ -5,47 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="horizontal"
-    android:paddingTop="50dp"
-    android:paddingBottom="5dp"
     >
 
-    <ImageButton
-        android:id="@+id/LogoWelcome"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/logo_text"/>
 
     <FrameLayout
-        android:id="@+id/welcomePage"
-        android:layout_marginTop="100dp"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        />
+        android:layout_height="match_parent">
+    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="68dp"
-        android:layout_marginTop="550dp"
-        android:layout_marginBottom="5dp"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/SignInBtn"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="Sign in" />
-
-        <Button
-            android:id="@+id/SignUpBtn"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Sign up" />
-    </LinearLayout>
+   <com.google.android.material.bottomnavigation.BottomNavigationView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/navBar"
+       app:menu="@menu/bottom_navigation_menu"
+       android:layout_alignParentBottom="true"
+       />
 
 </RelativeLayout>

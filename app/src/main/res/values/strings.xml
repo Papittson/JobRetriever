@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">JobRetriever</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hello_candidate_fragment">Hello %1$s %2$s</string>
     <string name="job_title" />
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="confrim">Confirm</string>
+    <string name="user_type">User Type</string>
+    <string name="welcome_message">Welcome to JobRetreiever</string>
+    <string name="applicant">Applicant</string>
+    <string name="employer">Employer</string>
+    <string name="agency">Agency</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="mail">Mail</string>
+
 </resources>

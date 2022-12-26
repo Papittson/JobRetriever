@@ -3,6 +3,7 @@ package com.example.jobretriever.models;
 public class Application {
     String id;
     ApplicationState state;
+    User applicant;
     String attachmentURL;
 
     public String getId() {
@@ -27,5 +28,13 @@ public class Application {
 
     public void setAttachmentURL(String attachmentURL) {
         this.attachmentURL = attachmentURL;
+    }
+
+    public User getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(User applicant) {
+        this.applicant = applicant;
     }
 }

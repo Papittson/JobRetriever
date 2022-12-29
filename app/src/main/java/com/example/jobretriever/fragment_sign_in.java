@@ -69,6 +69,7 @@ public class fragment_sign_in extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent goToCandidateHome = new Intent(getActivity(), MainActivityCandidate.class);
+                goToCandidateHome.putExtra("loadFragment", 0);
                 startActivity(goToCandidateHome);
             }
         });

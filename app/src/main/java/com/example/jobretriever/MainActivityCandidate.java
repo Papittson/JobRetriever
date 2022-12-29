@@ -9,9 +9,10 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivityCandidate extends AppCompatActivity {
-
+    FirebaseFirestore db;
 
 
     @Override
@@ -20,7 +21,16 @@ public class MainActivityCandidate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_candidate);
 
-        replaceFragment(new candidate_home());
+        int loadFragment = getIntent().getExtras().getInt("loadFragment");
+
+        switch(loadFragment) {
+            case 0:
+                replaceFragment(new candidate_home());
+                break;
+            case 1:
+                replaceFragment(new candidate_search_results());
+                break;
+        }
 
         BottomNavigationView navbar = findViewById(R.id.navbar);
 

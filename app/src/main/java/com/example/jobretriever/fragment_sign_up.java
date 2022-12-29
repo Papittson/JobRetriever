@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,14 +65,20 @@ public class fragment_sign_up extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         Button confirm = (Button) view.findViewById(R.id.confirmSignUp);
-        // Inflate the layout for this fragment
         confirm.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Intent goToCandidateHome = new Intent(getActivity(), MainActivityCandidate.class);
-                startActivity(goToCandidateHome);
+                replaceFragment(new fragment_choose_plan());
             }
         });
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fM = getParentFragmentManager();
+        FragmentTransaction fT = fM.beginTransaction();
+        fT.replace(R.id.welcomePage, fragment);
+        fT.commit();
     }
 }

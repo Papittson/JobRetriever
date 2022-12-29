@@ -1,6 +1,5 @@
 package com.example.jobretriever;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,16 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_welcome#newInstance} factory method to
+ * Use the {@link candidate_offer_details#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_welcome extends Fragment {
-
-    View view;
+public class candidate_offer_details extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +24,7 @@ public class fragment_welcome extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_welcome() {
+    public candidate_offer_details() {
         // Required empty public constructor
     }
 
@@ -38,11 +34,11 @@ public class fragment_welcome extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_welcome.
+     * @return A new instance of fragment candidate_offer_details.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_welcome newInstance(String param1, String param2) {
-        fragment_welcome fragment = new fragment_welcome();
+    public static candidate_offer_details newInstance(String param1, String param2) {
+        candidate_offer_details fragment = new candidate_offer_details();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,20 +55,12 @@ public class fragment_welcome extends Fragment {
         }
     }
 
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_welcome, container, false);
-        Button confirm = (Button) view.findViewById(R.id.confirmSearch);
         // Inflate the layout for this fragment
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goToCandidateHome = new Intent(getActivity(), MainActivityCandidate.class);
-                goToCandidateHome.putExtra("loadFragment", 1);
-                startActivity(goToCandidateHome);
-            }
-        });
+        view = inflater.inflate(R.layout.fragment_candidate_offer_details, container, false);
         return view;
     }
 }

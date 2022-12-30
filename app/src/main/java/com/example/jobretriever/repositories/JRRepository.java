@@ -9,7 +9,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class JRRepository {
-    static JRRepository instance;
     FirebaseFirestore db;
     FirebaseStorage storage;
     CollectionReference collection;
@@ -19,16 +18,6 @@ public class JRRepository {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         collection = db.collection(collectionName);
-    }
-
-    public static JRRepository getInstance() {
-        return getInstance("");
-    }
-
-    static JRRepository getInstance(String collectionName) {
-        if(instance == null)
-            instance = new JRRepository(collectionName);
-        return instance;
     }
 
     public Task<QuerySnapshot> getAll() {

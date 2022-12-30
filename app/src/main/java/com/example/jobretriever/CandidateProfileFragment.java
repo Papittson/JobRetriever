@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
 
-public class CandidateHomeFragment extends Fragment {
+public class CandidateProfileFragment extends Fragment {
 
     View view;
 
 
-    public CandidateHomeFragment() {
+    public CandidateProfileFragment() {
         // Required empty public constructor
     }
 

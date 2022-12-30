@@ -1,21 +1,47 @@
 package com.example.jobretriever.models;
 
-import com.google.type.Date;
+
+import java.util.Date;
 
 public class Offer extends Entity {
-    String jobTitle;
+    String title;
     String duration;
     Date date;
-    String sield;
+    String field;
     String description;
     double wage;
+    String employerID;
+    User employer;
 
-    public String getJobTitle() {
-        return jobTitle;
+
+    public String getField() {
+        return field;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setField(String field) {
+        this.field = field;
+    }
+    public User getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(User employer) {
+        this.employer = employer;
+    }
+    public String getEmployerID() {
+        return employerID;
+    }
+
+    public void setEmployerID(String employerID) {
+        this.employerID = employerID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDuration() {
@@ -34,14 +60,6 @@ public class Offer extends Entity {
         this.date = date;
     }
 
-    public String getSield() {
-        return sield;
-    }
-
-    public void setSield(String sield) {
-        this.sield = sield;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -56,5 +74,19 @@ public class Offer extends Entity {
 
     public void setWage(double wage) {
         this.wage = wage;
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "jobTitle='" + title + '\'' +
+                ", duration='" + duration + '\'' +
+                ", date=" + date +
+                ", field='" + field + '\'' +
+                ", description='" + description + '\'' +
+                ", wage=" + wage +
+                ", employerID='" + employerID + '\'' +
+                ", employer=" + employer +
+                '}';
     }
 }

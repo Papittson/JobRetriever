@@ -16,12 +16,10 @@ import java.util.Objects;
 public class UserViewModel extends ViewModel {
     private static final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private static MutableLiveData<List<User>> users;
-    private static final MutableLiveData<Boolean> loggedIn = new MutableLiveData<>();
     private static MutableLiveData<User> user;
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public MutableLiveData<List<User>> getUsers() {
+    public static MutableLiveData<List<User>> getUsers() {
         if (users == null) {
             users = new MutableLiveData<>();
         }
@@ -44,7 +42,7 @@ public class UserViewModel extends ViewModel {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public MutableLiveData<Boolean> signIn(String mail, String password) {
+    public MutableLiveData<User> signIn(String mail, String password) {
         if (user == null) {
             user = new MutableLiveData<>();
         }
@@ -58,10 +56,10 @@ public class UserViewModel extends ViewModel {
                 });
                 if (usersList.size() != 0) {
                     user.postValue(usersList.get(0));
-                    loggedIn.postValue(true);
+
                 } else {
                     errorMessage.postValue("Error wrong mail or password");
-                    loggedIn.postValue(false);
+
                 }
 
             } else {
@@ -69,18 +67,21 @@ public class UserViewModel extends ViewModel {
                 Objects.requireNonNull(task.getException()).printStackTrace();
             }
         });
-        return loggedIn;
+        return user;
     }
 
-    public MutableLiveData<Boolean> signUp(User user) {
-        UserRepository.getInstance().getUserByMail(user.getMail()).addOnCompleteListener(task -> {
+    public MutableLiveData<User> signUp(User newUser) {
+        UserRepository.getInstance().getUserByMail(newUser.getMail()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().isEmpty()) {
-                    UserRepository.getInstance().add(user).addOnCompleteListener(task2 -> {
+                    UserRepository.getInstance().add(newUser).addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
-                            loggedIn.postValue(true);
+                            newUser.setId(task2.getResult().getId());
+                            user.postValue(newUser);
                         } else {
-                            loggedIn.postValue(false);
+                            if(task2.getException() != null) {
+                                task2.getException().printStackTrace();
+                            }
                             errorMessage.postValue("Error during sign up please try again");
                         }
                     });
@@ -88,23 +89,27 @@ public class UserViewModel extends ViewModel {
                     errorMessage.postValue("Error this mail is already used");
                 }
             } else {
+                if(task.getException() != null) {
+                    task.getException().printStackTrace();
+                }
                 errorMessage.postValue("Error checking if mail exists");
             }
         });
-        return loggedIn;
+        return user;
     }
 
     public static MutableLiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
-    public static MutableLiveData<Boolean> getLoggedIn() {
-        return loggedIn;
+    public static boolean isLoggedIn() {
+        return user.getValue() != null;
     }
 
     public static MutableLiveData<User> getUser() {
         return user;
     }
+
 
 
 }

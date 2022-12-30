@@ -14,6 +14,16 @@ public class User extends Entity {
     String password;
     String phone;
     UserType type;
+    String businessName;
+
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -87,16 +97,19 @@ public class User extends Entity {
     }
 
     // METHODS
-    Collection<Offer> searchOfferById(String id){
+    Collection<Offer> searchOfferById(String id) {
         return null;
     }
-    Collection<Offer> searchOfferByTitle(String title){
+
+    Collection<Offer> searchOfferByTitle(String title) {
         return null;
     }
-    Collection<Offer> searchOfferByDate(Date date){
+
+    Collection<Offer> searchOfferByDate(Date date) {
         return null;
     }
-    Collection<Offer> searchOfferByField(String field){
+
+    Collection<Offer> searchOfferByField(String field) {
         return null;
     }
 }

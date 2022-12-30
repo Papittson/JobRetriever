@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/candidateHomeFragment"
-        android:name="com.example.jobretriever.CandidateHomeFragment"
+        android:name="com.example.jobretriever.CandidateProfileFragment"
         android:label="CandidateHomeFragment" />
     <fragment
         android:id="@+id/welcomeFragment"

@@ -15,16 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
 
 public class SignInFragment extends Fragment {
 
+    private static String ARG_EMAIL = "email";
+    private static String ARG_PWD = "password";
     View view;
     private UserViewModel userViewModel;
-
-    private static  String ARG_EMAIL = "email";
-    private static  String ARG_PWD = "password";
 
     public SignInFragment() {
         // Required empty public constructor
@@ -49,11 +49,13 @@ public class SignInFragment extends Fragment {
         EditText pwd = view.findViewById(R.id.signInPwd);
         Button signUp = view.findViewById(R.id.signUpButton);
 
-        final Observer<Boolean> loggedInObserver = loggedIn -> {
-            if(loggedIn){
-                UserViewModel.getLoggedIn().removeObservers(getViewLifecycleOwner());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,CandidateHomeFragment.class,null).commit();
-            }else{
+        final Observer<User> getUserObserver = user -> {
+            if (user != null) {
+                UserViewModel.getUser().removeObservers(getViewLifecycleOwner());
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CandidateProfileFragment.class, null).commit();
+                }
+            } else {
                 Context context = getContext();
                 CharSequence text = UserViewModel.getErrorMessage().getValue();
                 int duration = Toast.LENGTH_LONG;
@@ -61,14 +63,16 @@ public class SignInFragment extends Fragment {
                 toast.show();
             }
         };
-        UserViewModel.getLoggedIn().observe(getViewLifecycleOwner(),loggedInObserver);
+        UserViewModel.getUser().observe(getViewLifecycleOwner(), getUserObserver);
         confirm.setOnClickListener(view -> {
             ARG_EMAIL = mail.getText().toString();
             ARG_PWD = pwd.getText().toString();
-            userViewModel.signIn(ARG_EMAIL,ARG_PWD);
+            userViewModel.signIn(ARG_EMAIL, ARG_PWD);
         });
-        signUp.setOnClickListener(view->{
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,SignUpFragment.class,null).commit();
+        signUp.setOnClickListener(view -> {
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SignUpFragment.class, null).commit();
+            }
         });
         return view;
     }

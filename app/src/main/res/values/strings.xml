@@ -7,30 +7,19 @@
     <string name="action_sign_up">Sign Up</string>
     <string name="confrim">Confirm</string>
     <string name="user_type">User Type</string>
-    <string name="welcome_message">Welcome to JobRetreiever</string>
+    <string name="welcome_message">Welcome !</string>
     <string name="applicant">Applicant</string>
     <string name="employer">Employer</string>
     <string name="agency">Agency</string>
     <string name="phone_number">Phone number</string>
     <string name="password">Password</string>
     <string name="mail">Mail</string>
-    <string name="firstname">Firstname</string>
-    <string name="lastname">Lastname</string>
-    <string name="birthdate">Birthdate</string>
-    <string name="nationality">Nationality</string>
-    <string name="applications">Aplications</string>
-    <string name="siret">SIRET n°</string>
-    <string name="businessName">Business Name</string>
-    <string name="address">Address</string>
-    <string name="manager">Manager</string>
-    <string name="offers">Offers</string>
-
-
-
-
-
-
-
-
+    <string name="search_offer_hint">Search for an offer</string>
+    <string name="action_search">Search</string>
+    <string name="recent_offers">Recent offers</string>
+    <string name="description">Description</string>
+    <string name="view_offer">View more</string>
+    <string name="job_thumbnail">job_thumbnail</string>
+    <string name="companyDuration">Company | Duration</string>
 
 </resources>

@@ -1,11 +1,12 @@
 package com.example.jobretriever.models;
 
+import androidx.annotation.NonNull;
+
+import com.google.type.Date;
 
 import java.util.Collection;
-import java.util.Date;
 
-public class User {
-    String id;
+public class User extends Entity {
     String firstname;
     String mail;
     String name;
@@ -13,34 +14,15 @@ public class User {
     String password;
     String phone;
     UserType type;
-    String birthdate;
+    String businessName;
 
-    public User(String id, String mail, String password,String firstname, String name, String nationality, String phone, UserType type, String birthdate) {
-        this.id = id;
-        this.firstname = firstname;
-        this.mail = mail;
-        this.name = name;
-        this.nationality = nationality;
-        this.password = password;
-        this.phone = phone;
-        this.type = type;
-        this.birthdate = birthdate;
+
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getFirstname() {
@@ -99,6 +81,7 @@ public class User {
         this.type = type;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +
@@ -114,16 +97,19 @@ public class User {
     }
 
     // METHODS
-    Collection<Offer> searchOfferById(String id){
+    Collection<Offer> searchOfferById(String id) {
         return null;
     }
-    Collection<Offer> searchOfferByTitle(String title){
+
+    Collection<Offer> searchOfferByTitle(String title) {
         return null;
     }
-    Collection<Offer> searchOfferByDate(Date date){
+
+    Collection<Offer> searchOfferByDate(Date date) {
         return null;
     }
-    Collection<Offer> searchOfferByField(String field){
+
+    Collection<Offer> searchOfferByField(String field) {
         return null;
     }
 }

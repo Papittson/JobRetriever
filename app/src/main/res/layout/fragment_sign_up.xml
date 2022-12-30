@@ -1,78 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    >
 
-    <TextView
-        style="@style/headerText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_sign_up"
-        android:textAlignment="center"
-        android:textColor="@color/black" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="150dp"
-        android:orientation="vertical">
-
-
-
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="150dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_sign_up"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            style="@style/headerText"/>
 
         <!--Email-->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpMail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_marginBottom="10dp"
-            android:hint="@string/mail">
+            android:hint="@string/mail"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <!--Password-->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="@string/password"
-            app:endIconMode="password_toggle">
-
+            app:endIconMode="password_toggle"
+            android:layout_marginBottom="10dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
         <!--Phone number-->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpPhoneNumber"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:id="@+id/phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/phone_number">
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:hint="@string/phone_number"
+            android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
         <!--User Type-->
         <com.google.android.material.textfield.TextInputLayout
@@ -80,99 +72,42 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/user_type">
+            android:hint="@string/user_type"
+            android:layout_marginBottom="10dp">
 
             <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--If User Type : APPLICANT-->
-
-        <!--Firstname-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpFirstname"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/firstname"
-            android:visibility="gone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--Lastname-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpLastname"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/lastname"
-            android:visibility="gone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--Birthdate-->
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpBirthdate_picker"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/birthdate"
-            android:visibility="gone"
-
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <!--Nationality-->
+        <!--If User Type : APPLICANT-->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signUpDropdown_nationality"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_marginBottom="10dp"
-            android:hint="@string/nationality"
-            android:visibility="gone">
+            android:hint="@string/mail"
+            >
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/confirmSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="30dp"
-            android:text="@string/confrim" />
 
-    </LinearLayout>
-    </ScrollView>
+     <Button
+         android:id="@+id/confirmSignUp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/confrim"
+         android:layout_marginTop="20dp"
+         android:layout_marginLeft="50dp"
+         android:layout_marginRight="50dp"
+         android:layout_marginBottom="30dp"
+         />
+
+ </LinearLayout>
 </android.widget.LinearLayout>

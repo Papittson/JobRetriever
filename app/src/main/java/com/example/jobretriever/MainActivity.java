@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }else{
                     goToFragment(SignInFragment.class);
                 }
+                return true;
             default:
                 return false;
         }

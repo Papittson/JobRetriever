@@ -15,8 +15,8 @@ import java.util.Objects;
 
 public class UserViewModel extends ViewModel {
     private static final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private static MutableLiveData<List<User>> users;
-    private static MutableLiveData<User> user;
+    private static MutableLiveData<List<User>> users = new MutableLiveData<>();
+    private static MutableLiveData<User> user =new MutableLiveData<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static MutableLiveData<List<User>> getUsers() {

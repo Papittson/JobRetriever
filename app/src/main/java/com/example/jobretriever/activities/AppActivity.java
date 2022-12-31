@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.fragments.CandidateProfileFragment;
+import com.example.jobretriever.fragments.HomeFragment;
 import com.example.jobretriever.fragments.SignInFragment;
-import com.example.jobretriever.fragments.WelcomeFragment;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -48,7 +48,7 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
         if(item.getItemId() == R.id.action_sign_in) {
             goToFragment(SignInFragment.class);
         } else {
-            goToFragment(WelcomeFragment.class);
+            goToFragment(HomeFragment.class);
         }
         return true;
     }
@@ -58,7 +58,7 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navbarHome:
-                goToFragment(WelcomeFragment.class);
+                goToFragment(HomeFragment.class);
                 return true;
             case R.id.navbarAlerts:
                 goToFragment(SignInFragment.class);

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.fragments.OfferFragment;
 import com.example.jobretriever.models.Offer;
 
 import java.util.List;
@@ -74,9 +75,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
             int position = this.getAdapterPosition();
             Bundle args = new Bundle();
             args.putInt("offerIndex", position);
-            // TODO Faire écran pour l'offre
-            System.out.println("Offre à la position " + position + " : " + offers.get(position));
-            // activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, OfferFragment.class, args).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, OfferFragment.class, args).commit();
         }
     }
 }

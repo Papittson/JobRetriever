@@ -24,10 +24,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 
 
-public class WelcomeFragment extends Fragment {
+public class HomeFragment extends Fragment {
     View view;
 
-    public WelcomeFragment() {
+    public HomeFragment() {
     }
 
     @Override
@@ -43,7 +43,7 @@ public class WelcomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_welcome, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
         Button confirm = (Button) view.findViewById(R.id.confirmSearch);
         confirm.setOnClickListener(_view -> {
             TextInputLayout searchBar = view.findViewById(R.id.search_bar);

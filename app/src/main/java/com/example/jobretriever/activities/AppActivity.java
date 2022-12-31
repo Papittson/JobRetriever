@@ -1,4 +1,4 @@
-package com.example.jobretriever;
+package com.example.jobretriever.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -10,15 +10,19 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.jobretriever.R;
+import com.example.jobretriever.fragments.CandidateProfileFragment;
+import com.example.jobretriever.fragments.SignInFragment;
+import com.example.jobretriever.fragments.WelcomeFragment;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class AppActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_app);
 
         ActionBar actionBar = getSupportActionBar();
 

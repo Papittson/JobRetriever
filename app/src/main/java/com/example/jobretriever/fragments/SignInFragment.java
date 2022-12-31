@@ -1,4 +1,4 @@
-package com.example.jobretriever;
+package com.example.jobretriever.fragments;
 
 import android.content.Context;
 import android.os.Build;
@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.jobretriever.R;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.UserViewModel;
 

@@ -1,4 +1,4 @@
-package com.example.jobretriever;
+package com.example.jobretriever.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.jobretriever.R;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
 

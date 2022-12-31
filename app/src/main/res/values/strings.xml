@@ -21,5 +21,7 @@
     <string name="view_offer">View more</string>
     <string name="job_thumbnail">job_thumbnail</string>
     <string name="companyDuration">Company | Duration</string>
+    <string name="logo_description">App logo</string>
+    <string name="company_duration">%1$s | %2$s</string>
 
 </resources>

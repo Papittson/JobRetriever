@@ -1,115 +1,112 @@
 package com.example.jobretriever.viewmodels;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.repositories.UserRepository;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class UserViewModel extends ViewModel {
-    private static final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private static MutableLiveData<List<User>> users = new MutableLiveData<>();
-    private static MutableLiveData<User> user =new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<List<User>> users = new MutableLiveData<>();
+    private final MutableLiveData<User> user = new MutableLiveData<>();
+    private static UserViewModel instance;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static MutableLiveData<List<User>> getUsers() {
-        if (users == null) {
-            users = new MutableLiveData<>();
+    private UserViewModel() {}
+
+    public static UserViewModel getInstance() {
+        if(instance == null) {
+            instance = new UserViewModel();
         }
+        return instance;
+    }
+
+    public void getAll() {
         UserRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                List<User> usersList = new ArrayList<>();
-                task.getResult().forEach(doc -> {
+                List<User> users = new ArrayList<>();
+                for(QueryDocumentSnapshot doc : task.getResult()) {
                     User obj = doc.toObject(User.class);
                     obj.setId(doc.getId());
-                    usersList.add(obj);
-                });
-                users.postValue(usersList);
+                    users.add(obj);
+                }
+                this.users.postValue(users);
             } else {
                 errorMessage.postValue("Error loading users");
-                Objects.requireNonNull(task.getException()).printStackTrace();
+                if(task.getException() != null) {
+                    task.getException().printStackTrace();
+                }
             }
         });
+    }
+
+    public MutableLiveData<List<User>> getUsers() {
         return users;
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public MutableLiveData<User> signIn(String mail, String password) {
-        if (user == null) {
-            user = new MutableLiveData<>();
-        }
-        UserRepository.getInstance().getUserByCredentials(mail, password).addOnCompleteListener(task -> {
+    public void signIn(String email, String password) {
+        UserRepository.getInstance().getUserByCredentials(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                List<User> usersList = new ArrayList<>();
-                task.getResult().forEach(doc -> {
+                boolean isUserPosted = false;
+                for(QueryDocumentSnapshot doc : task.getResult()) {
                     User obj = doc.toObject(User.class);
                     obj.setId(doc.getId());
-                    usersList.add(obj);
-                });
-                if (usersList.size() != 0) {
-                    user.postValue(usersList.get(0));
-
-                } else {
-                    errorMessage.postValue("Error wrong mail or password");
-
+                    user.postValue(obj);
+                    isUserPosted = true;
+                    break;
                 }
-
+                if (!isUserPosted) {
+                    errorMessage.postValue("Error wrong mail or password");
+                }
             } else {
                 errorMessage.postValue("Error loading users");
-                Objects.requireNonNull(task.getException()).printStackTrace();
+                if(task.getException() != null) {
+                    task.getException().printStackTrace();
+                }
             }
         });
-        return user;
     }
 
-    public MutableLiveData<User> signUp(User newUser) {
-        UserRepository.getInstance().getUserByMail(newUser.getMail()).addOnCompleteListener(task -> {
+    public void signUp(User user) {
+        UserRepository.getInstance().getUserByMail(user.getMail()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().isEmpty()) {
-                    UserRepository.getInstance().add(newUser).addOnCompleteListener(task2 -> {
+                    UserRepository.getInstance().add(user).addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
-                            newUser.setId(task2.getResult().getId());
-                            user.postValue(newUser);
+                            user.setId(task2.getResult().getId());
+                            this.user.postValue(user);
                         } else {
+                            errorMessage.postValue("Error during sign up please try again");
                             if(task2.getException() != null) {
                                 task2.getException().printStackTrace();
                             }
-                            errorMessage.postValue("Error during sign up please try again");
                         }
                     });
                 } else {
                     errorMessage.postValue("Error this mail is already used");
                 }
             } else {
+                errorMessage.postValue("Error checking if mail exists");
                 if(task.getException() != null) {
                     task.getException().printStackTrace();
                 }
-                errorMessage.postValue("Error checking if mail exists");
             }
         });
-        return user;
     }
 
-    public static MutableLiveData<String> getErrorMessage() {
+    public MutableLiveData<String> getError() {
         return errorMessage;
     }
 
-    public static boolean isLoggedIn() {
+    public boolean isLoggedIn() {
         return user.getValue() != null;
     }
 
-    public static MutableLiveData<User> getUser() {
+    public MutableLiveData<User> getUser() {
         return user;
     }
-
-
-
 }

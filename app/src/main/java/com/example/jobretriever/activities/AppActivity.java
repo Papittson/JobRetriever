@@ -65,7 +65,7 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
                 return true;
             case R.id.navbarSearch:
             case R.id.navbarProfile:
-                if(UserViewModel.isLoggedIn()){
+                if(UserViewModel.getInstance().isLoggedIn()){
                     goToFragment(CandidateProfileFragment.class);
                 }else{
                     goToFragment(SignInFragment.class);

@@ -1,6 +1,5 @@
 package com.example.jobretriever.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +77,7 @@ public class HomeFragment extends Fragment {
         );
         OfferViewModel.getInstance().getError().observe(
                 getViewLifecycleOwner(),
-                errorMessage -> Toast.makeText((Context) getViewLifecycleOwner(), errorMessage, Toast.LENGTH_LONG).show()
+                errorMessage -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show()
         );
     }
 

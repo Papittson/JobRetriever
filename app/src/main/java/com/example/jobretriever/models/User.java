@@ -17,14 +17,18 @@ public class User extends Entity {
     String phone;
     UserType type;
     String businessName;
-    List<Offer> favorites = new ArrayList<>();
+    List<String> favoritesId = new ArrayList<>();
 
-    public List<Offer> getFavorites() {
-        return favorites;
+    public List<String> getFavorites() {
+        return favoritesId;
     }
 
-    public void setFavorites(List<Offer> favorites) {
-        this.favorites = favorites;
+    public void setFavorites(List<String> favoritesId) {
+        this.favoritesId = favoritesId;
+    }
+
+    public boolean hasFavorite(String offerId) {
+        return favoritesId.contains(offerId);
     }
 
     public String getBusinessName() {

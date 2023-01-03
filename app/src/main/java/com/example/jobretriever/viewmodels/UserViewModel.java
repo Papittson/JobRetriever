@@ -17,10 +17,11 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<User> user = new MutableLiveData<>();
     private static UserViewModel instance;
 
-    private UserViewModel() {}
+    private UserViewModel() {
+    }
 
     public static UserViewModel getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new UserViewModel();
         }
         return instance;
@@ -30,7 +31,7 @@ public class UserViewModel extends ViewModel {
         UserRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<User> users = new ArrayList<>();
-                for(QueryDocumentSnapshot doc : task.getResult()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
                     User obj = doc.toObject(User.class);
                     obj.setId(doc.getId());
                     users.add(obj);
@@ -38,7 +39,7 @@ public class UserViewModel extends ViewModel {
                 this.users.postValue(users);
             } else {
                 errorMessage.postValue(R.string.error_loading_users);
-                if(task.getException() != null) {
+                if (task.getException() != null) {
                     task.getException().printStackTrace();
                 }
             }
@@ -49,11 +50,55 @@ public class UserViewModel extends ViewModel {
         return users;
     }
 
+    public boolean hasFavorite(String offerId) {
+        return user.getValue() != null && user.getValue().hasFavorite(offerId);
+    }
+
+    public void removeFavorite(String offerId) {
+        User user = this.user.getValue();
+        if (user == null) {
+            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+            return;
+        }
+        List<String> offers = new ArrayList<>(user.getFavorites());
+        offers.remove(offerId);
+        UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        user.setFavorites(offers);
+                        errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+                        if (task.getException() != null) {
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    public void addFavorite(String offerId) {
+        User user = this.user.getValue();
+        if (user == null) {
+            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+            return;
+        }
+        List<String> offers = new ArrayList<>(user.getFavorites());
+        offers.add(offerId);
+        UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        user.setFavorites(offers);
+                        errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+                        if (task.getException() != null) {
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+    }
+
     public void signIn(String email, String password) {
         UserRepository.getInstance().getUserByCredentials(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 boolean isUserPosted = false;
-                for(QueryDocumentSnapshot doc : task.getResult()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
                     User obj = doc.toObject(User.class);
                     obj.setId(doc.getId());
                     user.postValue(obj);
@@ -65,7 +110,7 @@ public class UserViewModel extends ViewModel {
                 }
             } else {
                 errorMessage.postValue(R.string.error_loading_users);
-                if(task.getException() != null) {
+                if (task.getException() != null) {
                     task.getException().printStackTrace();
                 }
             }
@@ -82,7 +127,7 @@ public class UserViewModel extends ViewModel {
                             this.user.postValue(user);
                         } else {
                             errorMessage.postValue(R.string.error_during_sign_up);
-                            if(task2.getException() != null) {
+                            if (task2.getException() != null) {
                                 task2.getException().printStackTrace();
                             }
                         }
@@ -92,7 +137,7 @@ public class UserViewModel extends ViewModel {
                 }
             } else {
                 errorMessage.postValue(R.string.error_checking_mail);
-                if(task.getException() != null) {
+                if (task.getException() != null) {
                     task.getException().printStackTrace();
                 }
             }

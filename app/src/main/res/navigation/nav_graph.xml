@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/candidate_home">
+
+    <fragment
+        android:id="@+id/candidate_home"
+        android:name="com.example.jobretriever.candidate_home"
+        android:label="candidate_home"
+        tools:layout="@layout/fragment_candidate_home">
+        <action
+            android:id="@+id/action_candidate_home_to_candidate_search_results"
+            app:destination="@id/candidate_search_results" />
+    </fragment>
+    <fragment
+        android:id="@+id/candidate_search_results"
+        android:name="com.example.jobretriever.candidate_search_results"
+        android:label="candidate_search_results"
+        tools:layout="@layout/fragment_search_results">
+        <action
+            android:id="@+id/action_candidate_search_results_to_candidate_home"
+            app:destination="@id/candidate_home" />
+    </fragment>
+</navigation>

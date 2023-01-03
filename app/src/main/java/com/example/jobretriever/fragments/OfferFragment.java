@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class OfferFragment extends Fragment {
     View view;
+    Offer offer;
 
     public OfferFragment() {
     }
@@ -48,54 +50,16 @@ public class OfferFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Bundle args = this.getArguments();
-        List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
+        if(offerExists()) {
+            fillLayoutData();
 
-        if(args != null && offers != null && args.getInt("offerIndex", -1) != -1) {
-            int index = args.getInt("offerIndex");
-            Offer offer = offers.get(index);
-
-            TextView jobTitleTV = view.findViewById(R.id.offer_job_title);
-            TextView businessNameTV = view.findViewById(R.id.offer_busines_name);
-            TextView durationTV = view.findViewById(R.id.offer_duration);
-            TextView descriptionTV = view.findViewById(R.id.offer_description);
-            TextView cityCountry = view.findViewById(R.id.offer_location);
-            TextView wage = view.findViewById(R.id.offer_wage);
             ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
+            Button applyButton = view.findViewById(R.id.offer_apply);
 
-            jobTitleTV.setText(offer.getTitle());
-            businessNameTV.setText(offer.getEmployer().getBusinessName());
-            durationTV.setText(offer.getDuration());
-            descriptionTV.setText(offer.getDescription());
-            cityCountry.setText(String.format(getString(R.string.offer_location), offer.getLocation().getName(), offer.getLocation().getCountry()));
-            wage.setText(String.format(getString(R.string.offer_wage), offer.getWage()));
-
-            if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
-            } else {
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-            }
-
-            favoriteButton.setOnClickListener(v -> {
-                if (UserViewModel.getInstance().isLoggedIn()) {
-                    if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
-                        UserViewModel.getInstance().removeFavorite(offer.getId());
-                        favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                    } else {
-                        UserViewModel.getInstance().addFavorite(offer.getId());
-                        favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
-                    }
-                } else {
-                    if(getActivity() != null) {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SignInFragment.class, null).commit();
-                    }
-                    Toast.makeText(getContext(), "TODO Remplacer par msg d'erreur", Toast.LENGTH_LONG).show();
-                }
-            });
+            applyButton.setOnClickListener(v -> applyToOffer());
+            favoriteButton.setOnClickListener(v -> toggleFavorite());
         } else {
-            if(getActivity() != null) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, HomeFragment.class, null).commit();
-            }
+            goToFragment(HomeFragment.class);
             Toast.makeText(getContext(), "TODO Remplacer par msg d'erreur", Toast.LENGTH_LONG).show();
         }
     }
@@ -103,5 +67,64 @@ public class OfferFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    public boolean offerExists() {
+        Bundle args = this.getArguments();
+        List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
+        if(args != null && offers != null && args.getInt("offerIndex", -1) != -1) {
+            int index = args.getInt("offerIndex");
+            offer = offers.get(index);
+            return true;
+        }
+        return false;
+    }
+
+    public void fillLayoutData() {
+        TextView jobTitleTV = view.findViewById(R.id.offer_job_title);
+        TextView businessNameTV = view.findViewById(R.id.offer_busines_name);
+        TextView durationTV = view.findViewById(R.id.offer_duration);
+        TextView descriptionTV = view.findViewById(R.id.offer_description);
+        TextView cityCountry = view.findViewById(R.id.offer_location);
+        TextView wage = view.findViewById(R.id.offer_wage);
+        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
+        int favoriteImage = UserViewModel.getInstance().hasFavorite(offer.getId()) ?
+                R.drawable.ic_baseline_favorite_24 :
+                R.drawable.ic_baseline_favorite_border_24;
+
+        jobTitleTV.setText(offer.getTitle());
+        businessNameTV.setText(offer.getEmployer().getBusinessName());
+        durationTV.setText(offer.getDuration());
+        descriptionTV.setText(offer.getDescription());
+        cityCountry.setText(String.format(getString(R.string.offer_location), offer.getLocation().getName(), offer.getLocation().getCountry()));
+        wage.setText(String.format(getString(R.string.offer_wage), offer.getWage()));
+        favoriteButton.setImageResource(favoriteImage);
+    }
+
+    public void applyToOffer() {
+        // TODO Aller vers fragment pour postuler
+        goToFragment(HomeFragment.class);
+    }
+
+    public void toggleFavorite() {
+        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
+        if (UserViewModel.getInstance().isLoggedIn()) {
+            if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
+                UserViewModel.getInstance().removeFavorite(offer.getId());
+                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            } else {
+                UserViewModel.getInstance().addFavorite(offer.getId());
+                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+            }
+        } else {
+            goToFragment(SignInFragment.class);
+            Toast.makeText(getContext(), "TODO Remplacer par msg d'erreur", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void goToFragment(Class<? extends Fragment> fragmentClass) {
+        if(getActivity() != null) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentClass, null).commit();
+        }
     }
 }

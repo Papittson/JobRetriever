@@ -3,6 +3,7 @@ package com.example.jobretriever.viewmodels;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.jobretriever.R;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.repositories.UserRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserViewModel extends ViewModel {
-    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<Integer> errorMessage = new MutableLiveData<>();
     private final MutableLiveData<List<User>> users = new MutableLiveData<>();
     private final MutableLiveData<User> user = new MutableLiveData<>();
     private static UserViewModel instance;
@@ -36,7 +37,7 @@ public class UserViewModel extends ViewModel {
                 }
                 this.users.postValue(users);
             } else {
-                errorMessage.postValue("Error loading users");
+                errorMessage.postValue(R.string.error_loading_users);
                 if(task.getException() != null) {
                     task.getException().printStackTrace();
                 }
@@ -60,10 +61,10 @@ public class UserViewModel extends ViewModel {
                     break;
                 }
                 if (!isUserPosted) {
-                    errorMessage.postValue("Error wrong mail or password");
+                    errorMessage.postValue(R.string.error_wrong_credentials);
                 }
             } else {
-                errorMessage.postValue("Error loading users");
+                errorMessage.postValue(R.string.error_loading_users);
                 if(task.getException() != null) {
                     task.getException().printStackTrace();
                 }
@@ -80,17 +81,17 @@ public class UserViewModel extends ViewModel {
                             user.setId(task2.getResult().getId());
                             this.user.postValue(user);
                         } else {
-                            errorMessage.postValue("Error during sign up please try again");
+                            errorMessage.postValue(R.string.error_during_sign_up);
                             if(task2.getException() != null) {
                                 task2.getException().printStackTrace();
                             }
                         }
                     });
                 } else {
-                    errorMessage.postValue("Error this mail is already used");
+                    errorMessage.postValue(R.string.error_mail_already_used);
                 }
             } else {
-                errorMessage.postValue("Error checking if mail exists");
+                errorMessage.postValue(R.string.error_checking_mail);
                 if(task.getException() != null) {
                     task.getException().printStackTrace();
                 }
@@ -98,7 +99,7 @@ public class UserViewModel extends ViewModel {
         });
     }
 
-    public MutableLiveData<String> getError() {
+    public MutableLiveData<Integer> getError() {
         return errorMessage;
     }
 

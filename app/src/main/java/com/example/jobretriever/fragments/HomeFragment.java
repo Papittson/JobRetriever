@@ -21,6 +21,7 @@ import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -66,18 +67,24 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
+        List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
+        if(offersLiveData == null || offersLiveData.size() == 0) {
+            OfferViewModel.getInstance().getAll(null);
+        }
+
         OfferViewModel.getInstance().getOffers().observe(
                 getViewLifecycleOwner(),
                 offerList -> {
                     offers.clear();
                     offers.addAll(offerList);
                     recyclerView.setAdapter(adapter);
-                    System.out.println("Les offres : " + offers);
+                    System.out.println(offers);
                 }
         );
+
         OfferViewModel.getInstance().getError().observe(
                 getViewLifecycleOwner(),
-                errorMessage -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show()
+                errorMessage -> Toast.makeText(getContext(),getString(errorMessage) , Toast.LENGTH_LONG).show()
         );
     }
 

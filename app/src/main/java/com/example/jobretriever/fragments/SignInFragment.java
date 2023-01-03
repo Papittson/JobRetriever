@@ -1,10 +1,14 @@
 package com.example.jobretriever.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,12 +18,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.viewmodels.UserViewModel;
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
 
 
 public class SignInFragment extends Fragment {
     View view;
 
-    public SignInFragment() {}
+    public SignInFragment() {
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -35,18 +43,39 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        Button confirm = view.findViewById(R.id.confirmSignIn);
-        EditText mail = view.findViewById(R.id.signInMail);
-        EditText pwd = view.findViewById(R.id.signInPwd);
-        Button signUp = view.findViewById(R.id.signUpButton);
+        Button confirmButton = view.findViewById(R.id.confirmSignIn);
+        EditText emailEditText = view.findViewById(R.id.signInMail);
+        EditText passwordEditText = view.findViewById(R.id.signInPwd);
+        Button signUpButton = view.findViewById(R.id.signUpButton);
+        CheckBox rememberCheckBox = view.findViewById(R.id.rememberMeCheckBox);
 
-        confirm.setOnClickListener(view -> {
-            String email = mail.getText().toString();
-            String password = pwd.getText().toString();
-            UserViewModel.getInstance().signIn(email, password);
+        if(getContext() != null) {
+            SharedPreferences sh = getContext().getSharedPreferences("JobRetriever", MODE_PRIVATE);
+            String email = sh.getString("email", "");
+            String password = sh.getString("password", "");
+            emailEditText.setText(email);
+            passwordEditText.setText(password);
+        }
+
+        confirmButton.setOnClickListener(view -> {
+            boolean rememberCheckBoxChecked = rememberCheckBox.isChecked();
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            String encryptedPassword = Hashing.sha256()
+                    .hashString(password, StandardCharsets.UTF_8)
+                    .toString();
+            System.out.println(encryptedPassword);
+            UserViewModel.getInstance().signIn(email, encryptedPassword);
+            if (rememberCheckBoxChecked && getContext() != null) {
+                SharedPreferences sh = getContext().getSharedPreferences("JobRetriever", MODE_PRIVATE);
+                SharedPreferences.Editor shEditor = sh.edit();
+                shEditor.putString("email", email);
+                shEditor.putString("password", password);
+                shEditor.apply();
+            }
         });
 
-        signUp.setOnClickListener(view -> {
+        signUpButton.setOnClickListener(view -> {
             if (getActivity() != null) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SignUpFragment.class, null).commit();
             }
@@ -58,7 +87,6 @@ public class SignInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user -> {
@@ -67,10 +95,9 @@ public class SignInFragment extends Fragment {
                     }
                 }
         );
-
         UserViewModel.getInstance().getError().observe(
                 getViewLifecycleOwner(),
-                errorMessage -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show()
+                errorMessage -> Toast.makeText(getContext(), getString(errorMessage), Toast.LENGTH_LONG).show()
         );
     }
 

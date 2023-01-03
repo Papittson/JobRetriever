@@ -2,10 +2,19 @@ package com.example.jobretriever.models;
 
 import com.google.firebase.firestore.GeoPoint;
 
-public class Cities {
+public class Location {
     String id;
     String name;
+    String country;
     GeoPoint geopoint;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getId() {
         return id;

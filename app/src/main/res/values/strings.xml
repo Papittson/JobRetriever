@@ -2,7 +2,7 @@
     <string name="app_name">JobRetriever</string>
 
     <string name="hello_candidate_fragment">Hello %1$s %2$s</string>
-    <string name="offer_wage">%1$s €</string>
+    <string name="offer_wage">%1$f €</string>
     <string name="offer_location">%1$s, %2$s</string>
     <string name="job_title" >Job title</string>
     <string name="action_sign_in">Sign In</string>

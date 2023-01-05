@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activities.MainActivity"
     android:orientation="vertical"
     >
 
@@ -52,7 +52,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
         </com.google.android.material.textfield.TextInputLayout>
-
+        <CheckBox
+            android:id="@+id/rememberMeCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/remember_me"
+            android:buttonTint="@color/candidate"/>
         <Button
             android:id="@+id/confirmSignIn"
             android:layout_width="match_parent"

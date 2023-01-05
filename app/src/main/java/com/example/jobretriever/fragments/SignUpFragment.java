@@ -1,4 +1,4 @@
-package com.example.jobretriever;
+package com.example.jobretriever.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.jobretriever.R;
 import com.example.jobretriever.models.UserType;
 import com.google.android.material.textfield.TextInputLayout;
 

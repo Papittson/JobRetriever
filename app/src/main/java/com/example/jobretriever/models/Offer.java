@@ -12,7 +12,24 @@ public class Offer extends Entity {
     double wage;
     String employerID;
     User employer;
+    String locationID;
+    Location location;
 
+    public String getLocationID() {
+        return locationID;
+    }
+
+    public void setLocationID(String locationID) {
+        this.locationID = locationID;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public String getField() {
         return field;
@@ -79,7 +96,7 @@ public class Offer extends Entity {
     @Override
     public String toString() {
         return "Offer{" +
-                "jobTitle='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", duration='" + duration + '\'' +
                 ", date=" + date +
                 ", field='" + field + '\'' +
@@ -87,6 +104,8 @@ public class Offer extends Entity {
                 ", wage=" + wage +
                 ", employerID='" + employerID + '\'' +
                 ", employer=" + employer +
+                ", locationID='" + locationID + '\'' +
+                ", location=" + location +
                 '}';
     }
 }

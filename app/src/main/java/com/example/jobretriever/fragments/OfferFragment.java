@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
-import com.example.jobretriever.models.User;
-import com.example.jobretriever.repositories.UserRepository;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
@@ -36,7 +34,7 @@ public class OfferFragment extends Fragment {
         if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
-                actionBar.setTitle(R.string.welcome_message);
+                actionBar.setTitle(R.string.details);
             }
         }
     }
@@ -60,7 +58,7 @@ public class OfferFragment extends Fragment {
             favoriteButton.setOnClickListener(v -> toggleFavorite());
         } else {
             goToFragment(HomeFragment.class);
-            Toast.makeText(getContext(), "TODO Remplacer par msg d'erreur", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.error_offer_not_found, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -102,8 +100,12 @@ public class OfferFragment extends Fragment {
     }
 
     public void applyToOffer() {
-        // TODO Aller vers fragment pour postuler
-        goToFragment(HomeFragment.class);
+        if (UserViewModel.getInstance().isLoggedIn()) {
+            goToFragment(ApplyFragment.class);
+        }else {
+            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void toggleFavorite() {
@@ -117,8 +119,7 @@ public class OfferFragment extends Fragment {
                 favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
             }
         } else {
-            goToFragment(SignInFragment.class);
-            Toast.makeText(getContext(), "TODO Remplacer par msg d'erreur", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
         }
     }
 

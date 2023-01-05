@@ -40,34 +40,34 @@
                 android:layout_height="wrap_content"
                 android:text="@string/duration"
                 android:textSize="17sp" />
-
-            <LinearLayout
-                android:id="@+id/offer_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/offer_favorite"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_baseline_favorite_border_24"
-                    android:contentDescription="TODO" />
-
-                <Button
-                    android:id="@+id/offer_apply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_apply" />
-            </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/offer_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
 
+        <ImageButton
+            android:id="@+id/offer_favorite"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:contentDescription="TODO"
+            />
+
+        <Button
+            android:layout_alignParentRight="true"
+            android:id="@+id/offer_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_apply"
+            />
+    </RelativeLayout>
 
     <TextView
         android:textStyle="bold"
@@ -105,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/offer_wage"
+        android:text="@string/wage"
         android:textSize="20sp"/>
 
     <TextView

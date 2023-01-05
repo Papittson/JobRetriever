@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".candidate_offer_details"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp">
 
@@ -28,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:text="Job title"
+                    android:text="@string/job_title"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     style="@style/headerTextNoMargin"
@@ -38,7 +37,7 @@
                     android:id="@+id/row_description1_appiled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Company"
+                    android:text="@string/company"
                     android:layout_marginLeft="10dp"
                     android:textSize="15dp"
                     android:textColor="@color/black" />
@@ -46,7 +45,7 @@
                     android:id="@+id/row_description2_appiled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Duration"
+                    android:text="@string/duration"
                     android:layout_marginBottom="08dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="15dp"
@@ -55,7 +54,7 @@
                     android:id="@+id/status_appiled"
                     android:layout_height="40dp"
                     android:layout_width="90dp"
-                    android:text="apply"
+                    android:text="@string/apply"
                     android:textSize="11dp"
                     android:textStyle="bold"
                     android:layout_marginLeft="30dp"
@@ -79,7 +78,7 @@
                 android:id="@+id/desc_detailed_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:text="@string/description"
                 android:textSize="20dp"
                 style="@style/headerTextNoMargin"
                 android:textColor="@color/black" />
@@ -107,7 +106,7 @@
                 android:id="@+id/desc_detailed_location1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="@string/location"
                 android:textSize="20dp"
                 style="@style/headerTextNoMargin"
                 android:textColor="@color/black" />
@@ -135,7 +134,7 @@
                 android:id="@+id/desc_detailed_duration1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Duration"
+                android:text="@string/duration"
                 android:textSize="20dp"
                 style="@style/headerTextNoMargin"
                 android:textColor="@color/black" />
@@ -163,7 +162,7 @@
                 android:id="@+id/desc_detailed_wage1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wage"
+                android:text="@string/wage"
                 android:textSize="20dp"
                 style="@style/headerTextNoMargin"
                 android:textColor="@color/black" />

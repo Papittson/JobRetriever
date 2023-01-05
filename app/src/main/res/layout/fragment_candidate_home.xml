@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:text="Hello"
+                android:text="@string/hello_candidate_fragment"
                 android:textColor="@color/black" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -39,7 +39,7 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusTopStart="15dp"
                 android:layout_marginBottom="5dp"
-                android:hint="Description">
+                android:hint="@string/description">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:hint="City"
+                android:hint="@string/city"
                 >
 
                 <AutoCompleteTextView
@@ -83,7 +83,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="Duration"
+                android:hint="@string/duration"
                 >
 
                 <AutoCompleteTextView
@@ -99,7 +99,7 @@
                 android:id="@+id/confirmSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SEARCH"
+                android:text="@string/action_search"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginBottom="30dp"
@@ -111,7 +111,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Applied Offers"
+                android:text="@string/applied_offers"
                 android:textColor="@color/black"
                 style="@style/headerText"
             />
@@ -123,7 +123,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Saved Offers"
+            android:text="@string/saved_offers"
             android:textColor="@color/black"
             style="@style/headerText"
             />

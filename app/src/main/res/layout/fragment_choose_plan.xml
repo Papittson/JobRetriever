@@ -10,7 +10,7 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose a subscription plan"
+        android:text="@string/choose_plan"
         android:textAlignment="center"
         style="@style/headerText"
         android:textColor="@color/black"/>

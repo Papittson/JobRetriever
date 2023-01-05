@@ -2,7 +2,7 @@
     <string name="app_name">JobRetriever</string>
 
     <string name="hello_candidate_fragment">Hello %1$s %2$s</string>
-    <string name="job_title" />
+    <string name="job_title" >Job Title</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_sign_up">Sign Up</string>
     <string name="confrim">Confirm</string>
@@ -13,7 +13,7 @@
     <string name="agency">Agency</string>
     <string name="phone_number">Phone number</string>
     <string name="password">Password</string>
-    <string name="mail">Mail</string>
+    <string name="mail">E-mail</string>
     <string name="search_offer_hint">Search for an offer</string>
     <string name="action_search">Search</string>
     <string name="recent_offers">Recent offers</string>
@@ -21,5 +21,30 @@
     <string name="view_offer">View more</string>
     <string name="job_thumbnail">job_thumbnail</string>
     <string name="companyDuration">Company | Duration</string>
+    <string name="price">Price</string>
+    <string name="plan">Plan</string>
+    <string name="selected_offer">Selected Offer</string>
+    <string name="city">City</string>
+    <string name="candidate_name">Name</string>
+    <string name="profile">Profile</string>
+    <string name="edit">edit</string>
+    <string name="cover_letter">Cover Letter :</string>
+    <string name="duration">Duration</string>
+    <string name="applied_offers">Applied offers</string>
+    <string name="saved_offers">Saved Offers</string>
+    <string name="company">Company</string>
+    <string name="apply">Apply</string>
+    <string name="location">Location</string>
+    <string name="wage">Wage</string>
+    <string name="contact">Contact</string>
+    <string name="experience">Experience</string>
+    <string name="education">Education</string>
+    <string name="nationality">Nationality</string>
+    <string name="choose_plan">Choose a subscription plan</string>
+    <string name="search_results_for">Search results for</string>
+    <string name="status">Status</string>
+    <string name="home">Home</string>
+    <string name="search_navbar">Search</string>
+    <string name="alerts">Alerts</string>
 
 </resources>

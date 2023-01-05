@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="130dp"
-            android:text="Plan"
+            android:text="@string/plan"
             style="@style/headerText"
             android:textColor="@color/black"
             android:textAlignment="center"/>
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="160dp"
-            android:text="Price €"
+            android:text="@string/price"
             android:textSize="15dp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
-            android:text="Confirm" />
+            android:text="@string/confrim" />
 
 
     </androidx.cardview.widget.CardView>

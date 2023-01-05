@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign in"
+            android:text="@string/action_sign_in"
             android:textAlignment="center"
             android:textColor="@color/black"
             style="@style/headerText"/>
@@ -27,14 +27,8 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_marginBottom="10dp"
-            android:hint="E-mail"
+            android:hint="@string/mail"
             >
-            <!--app:boxCornerRadiusBottomEnd="15dp"
-            app:boxCornerRadiusBottomStart="15dp"
-            app:boxCornerRadiusTopEnd="15dp"
-            app:boxCornerRadiusTopStart="15dp"-->
-
-
             <com.google.android.material.textfield.TextInputEditText
                 android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
@@ -46,15 +40,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:hint="Password"
+            android:hint="@string/password"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"
             app:endIconMode="password_toggle">
-           <!-- app:boxCornerRadiusBottomEnd="15dp"
-            app:boxCornerRadiusBottomStart="15dp"
-            app:boxCornerRadiusTopEnd="15dp"
-            app:boxCornerRadiusTopStart="15dp"
-            -->
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signInPwd"
                 android:inputType="textPassword"
@@ -67,7 +57,7 @@
             android:id="@+id/confirmSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CONFIRM"
+            android:text="@string/confrim"
             android:layout_gravity="center"
             android:layout_margin="50dp"
             />

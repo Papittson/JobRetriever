@@ -1,4 +1,4 @@
-package com.example.jobretriever;
+package com.example.jobretriever.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -10,15 +10,19 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.jobretriever.R;
+import com.example.jobretriever.fragments.CandidateProfileFragment;
+import com.example.jobretriever.fragments.HomeFragment;
+import com.example.jobretriever.fragments.SignInFragment;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class AppActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_app);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if(item.getItemId() == R.id.action_sign_in) {
             goToFragment(SignInFragment.class);
         } else {
-            goToFragment(WelcomeFragment.class);
+            goToFragment(HomeFragment.class);
         }
         return true;
     }
@@ -54,14 +58,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navbarHome:
-                goToFragment(WelcomeFragment.class);
+                goToFragment(HomeFragment.class);
                 return true;
             case R.id.navbarAlerts:
                 goToFragment(SignInFragment.class);
                 return true;
             case R.id.navbarSearch:
             case R.id.navbarProfile:
-                if(UserViewModel.isLoggedIn()){
+                if(UserViewModel.getInstance().isLoggedIn()){
                     goToFragment(CandidateProfileFragment.class);
                 }else{
                     goToFragment(SignInFragment.class);

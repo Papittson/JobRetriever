@@ -23,6 +23,4 @@ public class UserRepository extends JRRepository {
     public Task<QuerySnapshot> getUserByMail(String mail){
         return collection.whereEqualTo("mail",mail).get();
     }
-
-
 }

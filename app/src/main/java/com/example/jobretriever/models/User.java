@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.google.type.Date;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class User extends Entity {
     String firstname;
@@ -15,7 +17,19 @@ public class User extends Entity {
     String phone;
     UserType type;
     String businessName;
+    List<String> favoritesId = new ArrayList<>();
 
+    public List<String> getFavorites() {
+        return favoritesId;
+    }
+
+    public void setFavorites(List<String> favoritesId) {
+        this.favoritesId = favoritesId;
+    }
+
+    public boolean hasFavorite(String offerId) {
+        return favoritesId.contains(offerId);
+    }
 
     public String getBusinessName() {
         return businessName;

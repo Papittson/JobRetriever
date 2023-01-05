@@ -13,4 +13,5 @@
     <color name="awaiting">#FFC450</color>
     <color name="approved">#72DC90</color>
     <color name="denied">#FF5E5E</color>
+    <color name="dark_blue">#0C3846</color>
 </resources>

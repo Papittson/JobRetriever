@@ -20,7 +20,7 @@ public class UserRepository extends JRRepository {
         return collection.whereEqualTo("mail",mail).whereEqualTo("password",password).get();
     }
 
-    public Task<QuerySnapshot> getUserByMail(String mail){
+    public Task<QuerySnapshot> getUserByMail(String mail) {
         return collection.whereEqualTo("mail",mail).get();
     }
 }

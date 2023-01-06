@@ -78,7 +78,6 @@ public class HomeFragment extends Fragment {
                     offers.clear();
                     offers.addAll(offerList);
                     recyclerView.setAdapter(adapter);
-                    System.out.println(offers);
                 }
         );
 

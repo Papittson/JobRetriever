@@ -4,7 +4,7 @@
     <string name="hello_candidate_fragment">Bonjour %1$s %2$s</string>
     <string name="action_sign_in">Connexion</string>
     <string name="action_sign_up">Inscription</string>
-    <string name="confrim">Conformer</string>
+    <string name="confrim">Confirmer</string>
     <string name="welcome_message">Bienvenue !</string>
     <string name="applicant">Applicant</string>
     <string name="employer">Employeur</string>
@@ -18,9 +18,11 @@
     <string name="description">Description</string>
     <string name="view_offer">Voir plus</string>
     <string name="companyDuration">Entreprise | Duration</string>
+    <string name="remember_me">Se souvenir de moi</string>
     <string name="user_type">Type d\'utilisateur</string>
     <string name="job_thumbnail">job_thumbnail</string>
     <string name="price">Prix</string>
+    <string name="action_apply">Postuler</string>
     <string name="plan">Plan</string>
     <string name="selected_offer">Offre sélectionnée</string>
     <string name="city">Ville</string>

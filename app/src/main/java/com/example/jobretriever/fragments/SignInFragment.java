@@ -64,7 +64,6 @@ public class SignInFragment extends Fragment {
             String encryptedPassword = Hashing.sha256()
                     .hashString(password, StandardCharsets.UTF_8)
                     .toString();
-            System.out.println(encryptedPassword);
             UserViewModel.getInstance().signIn(email, encryptedPassword);
             if (rememberCheckBoxChecked && getContext() != null) {
                 SharedPreferences sh = getContext().getSharedPreferences("JobRetriever", MODE_PRIVATE);

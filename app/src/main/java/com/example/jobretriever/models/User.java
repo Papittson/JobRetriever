@@ -19,11 +19,11 @@ public class User extends Entity {
     String businessName;
     List<String> favoritesId = new ArrayList<>();
 
-    public List<String> getFavorites() {
+    public List<String> getFavoritesId() {
         return favoritesId;
     }
 
-    public void setFavorites(List<String> favoritesId) {
+    public void setFavoritesId(List<String> favoritesId) {
         this.favoritesId = favoritesId;
     }
 

@@ -43,12 +43,11 @@ public class OfferViewModel extends ViewModel {
                         UserRepository.getInstance().getById(obj.getEmployerID()).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 obj.setEmployer(task1.getResult().toObject(User.class));
+                                // TODO C'est quoi cette valeur d'ID en dur ?
                                 LocationRepository.getInstance().getById("8RL9flb7zvNTddfUcPi9").addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
-                                        System.out.println("MOMO " + task2.getResult().getString("country"));
-                                        Location tas = task2.getResult().toObject(Location.class);
-                                        obj.setLocation(task2.getResult().toObject(Location.class));
-                                        System.out.println("POUET" + tas);
+                                        Location location = task2.getResult().toObject(Location.class);
+                                        obj.setLocation(location);
                                         offers.postValue(list);
                                     } else {
                                         errorMessage.postValue(R.string.error_loading_location);

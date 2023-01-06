@@ -57,16 +57,17 @@ public class UserViewModel extends ViewModel {
     public void removeFavorite(String offerId) {
         User user = this.user.getValue();
         if (user == null) {
-            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+            errorMessage.postValue(R.string.error_loading_users);
             return;
         }
-        List<String> offers = new ArrayList<>(user.getFavorites());
+        List<String> offers = new ArrayList<>(user.getFavoritesId());
         offers.remove(offerId);
         UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
                 .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        user.setFavorites(offers);
-                        errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+                    if (task.isSuccessful()) {
+                        user.setFavoritesId(offers);
+                    } else {
+                        errorMessage.postValue(R.string.error_loading_users);
                         if (task.getException() != null) {
                             task.getException().printStackTrace();
                         }
@@ -77,16 +78,17 @@ public class UserViewModel extends ViewModel {
     public void addFavorite(String offerId) {
         User user = this.user.getValue();
         if (user == null) {
-            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+            errorMessage.postValue(R.string.error_loading_users);
             return;
         }
-        List<String> offers = new ArrayList<>(user.getFavorites());
+        List<String> offers = new ArrayList<>(user.getFavoritesId());
         offers.add(offerId);
         UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
                 .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        user.setFavorites(offers);
-                        errorMessage.postValue(R.string.error_loading_users); // TODO Changer message d'erreur
+                    if (task.isSuccessful()) {
+                        user.setFavoritesId(offers);
+                    } else {
+                        errorMessage.postValue(R.string.error_loading_users);
                         if (task.getException() != null) {
                             task.getException().printStackTrace();
                         }

@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -116,8 +116,9 @@
                 style="@style/headerText"
             />
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/applied_offers"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
             </androidx.recyclerview.widget.RecyclerView>
         <TextView
@@ -128,8 +129,9 @@
             style="@style/headerText"
             />
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/saved_offers"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>

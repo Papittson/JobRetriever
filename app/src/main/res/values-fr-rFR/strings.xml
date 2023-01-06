@@ -65,4 +65,10 @@
     <string name="offer_location">%1$s, %2$s</string>
     <string name="logo_description">App logo</string>
     <string name="company_duration">%1$s | %2$s</string>
+    <string name="upload">Télécharger</string>
+    <string name="create_offer">Créer une offre</string>
+    <string name="field">Domaine</string>
+    <string name="manager_name">Responsable</string>
+    <string name="siret">SIRET</string>
+    <string name="verified">Vérifié</string>
 </resources>

@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/remember_me"
+            android:textColor="@color/black"
             android:buttonTint="@color/candidate"/>
         <Button
             android:id="@+id/confirmSignIn"

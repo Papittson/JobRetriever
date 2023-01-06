@@ -164,7 +164,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="10dp"
-                android:text="@string/edit"
+                android:text="@string/upload"
                 android:clickable="true"/>
         </TableRow>
     </TableLayout>
@@ -208,7 +208,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="10dp"
-                android:text="@string/edit"
+                android:text="@string/upload"
                 android:clickable="true"/>
         </TableRow>
     </TableLayout>

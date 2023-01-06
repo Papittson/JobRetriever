@@ -89,9 +89,7 @@ public class Offer extends Entity {
         return wage;
     }
 
-    public void setWage(double wage) {
-        this.wage = wage;
-    }
+    public void setWage(double wage) { this.wage = wage; }
 
     @Override
     public String toString() {

@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button confirm = (Button) view.findViewById(R.id.confirmSearch);
+        Button confirm = view.findViewById(R.id.confirmSearch);
         confirm.setOnClickListener(_view -> {
             TextInputLayout searchBar = view.findViewById(R.id.search_bar);
             EditText editText = searchBar.getEditText();

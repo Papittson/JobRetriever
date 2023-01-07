@@ -73,7 +73,10 @@
     <string name="manager_name" >Manager</string>
     <string name="siret">SIRET</string>
     <string name="verified">Verified</string>
+    <string name="application_added">The application has been registered</string>
     <string name="add_to_favorites">Add to favorites</string>
     <string name="contact_employer">Contact employer</string>
+    <string name="pending">Pending</string>
+    <string name="empty_string" translatable="false" />
 
 </resources>

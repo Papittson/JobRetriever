@@ -2,8 +2,8 @@ package com.example.jobretriever.models;
 
 import com.google.firebase.firestore.GeoPoint;
 
-public class Location {
-    String id;
+@SuppressWarnings("unused")
+public class Location extends Entity {
     String name;
     String country;
     GeoPoint geopoint;
@@ -14,14 +14,6 @@ public class Location {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

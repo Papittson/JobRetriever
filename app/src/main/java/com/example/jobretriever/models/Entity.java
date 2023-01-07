@@ -1,5 +1,6 @@
 package com.example.jobretriever.models;
 
+@SuppressWarnings("unused")
 public class Entity {
     String id;
 

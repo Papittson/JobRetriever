@@ -7,6 +7,7 @@ import com.google.type.Date;
 import java.util.Collection;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class User extends Entity {
     String firstname;
     String mail;
@@ -19,6 +20,7 @@ public class User extends Entity {
     List<String> educations;
     List<String> experiences;
     List<String> favoritesId;
+    List<String> applicationsId;
 
     public List<String> getExperiences() {
         return this.experiences;
@@ -48,6 +50,14 @@ public class User extends Entity {
 
     public void setEducations(List<String> educations) {
         this.educations = educations;
+    }
+
+    public List<String> getApplicationsId() {
+        return this.applicationsId;
+    }
+
+    public void setApplicationsId(List<String> applicationsId) {
+        this.applicationsId = applicationsId;
     }
 
     public List<String> getFavoritesId() {

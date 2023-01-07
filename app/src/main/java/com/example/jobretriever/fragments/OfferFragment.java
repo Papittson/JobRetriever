@@ -47,6 +47,21 @@ public class OfferFragment extends JRFragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        OfferViewModel.getInstance().getOffer().observe(
+                getViewLifecycleOwner(),
+                _offer -> showToast(R.string.application_added)
+        );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        OfferViewModel.getInstance().getOffer().removeObservers(getViewLifecycleOwner());
+    }
+
     public boolean offerExists() {
         Bundle args = this.getArguments();
         List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
@@ -84,8 +99,8 @@ public class OfferFragment extends JRFragment {
 
     public void applyToOffer() {
         if (isUserLoggedIn()) {
-            goToFragment(ApplyFragment.class, null);
-        }else {
+            OfferViewModel.getInstance().addApplication(user.getId(), offer);
+        } else {
             showToast(R.string.error_must_be_signed_in);
         }
     }

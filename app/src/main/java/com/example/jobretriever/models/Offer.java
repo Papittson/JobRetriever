@@ -1,19 +1,50 @@
 package com.example.jobretriever.models;
 
 
-import java.util.Date;
+import androidx.annotation.NonNull;
 
+import com.example.jobretriever.R;
+
+import java.util.Date;
+import java.util.Map;
+
+@SuppressWarnings("unused")
 public class Offer extends Entity {
     String title;
     String duration;
     Date date;
     String field;
     String description;
-    double wage;
+    Double wage;
     String employerID;
     User employer;
     String locationID;
     Location location;
+    Map<String, ApplicationState> applications;
+
+    public int getApplicationStatus(String userId) {
+        ApplicationState status = this.applications.get(userId);
+        if(status != null) {
+            return status.stringResId;
+        }
+        return R.string.empty_string;
+    }
+
+    public boolean isAppliedByUser(String userId) {
+        return this.applications.containsKey(userId);
+    }
+
+    public void setWage(Double wage) {
+        this.wage = wage;
+    }
+
+    public Map<String, ApplicationState> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Map<String, ApplicationState> applications) {
+        this.applications = applications;
+    }
 
     public String getLocationID() {
         return locationID;
@@ -91,6 +122,7 @@ public class Offer extends Entity {
 
     public void setWage(double wage) { this.wage = wage; }
 
+    @NonNull
     @Override
     public String toString() {
         return "Offer{" +

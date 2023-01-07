@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.jobretriever.R;
 import com.example.jobretriever.fragments.OfferFragment;
 import com.example.jobretriever.models.Offer;
+import com.example.jobretriever.models.User;
+import com.example.jobretriever.viewmodels.UserViewModel;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     @Override
     public OffersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.search_offer_cardview, viewGroup, false);
+                .inflate(R.layout.offer_cardview, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -40,9 +42,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull OffersAdapter.ViewHolder holder, int position) {
         Offer offer = offers.get(position);
+        User user = UserViewModel.getInstance().getUser().getValue();
+        String userId = user != null ? user.getId() : "";
 
         holder.title.setText(offer.getTitle());
         holder.description.setText(offer.getDescription());
+        holder.applicationStatus.setText(offer.getApplicationStatus(userId));
         String companyDurationStr = context.getString(R.string.company_duration, offer.getEmployer().getBusinessName(), offer.getDuration());
         holder.companyDuration.setText(companyDurationStr);
     }
@@ -55,6 +60,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView title;
         private final TextView companyDuration;
+        private final TextView applicationStatus;
         private final TextView description;
 
         public ViewHolder(@NonNull View itemView) {
@@ -63,6 +69,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
 
             this.title = itemView.findViewById(R.id.row_title);
             this.companyDuration = itemView.findViewById(R.id.company_duration);
+            this.applicationStatus = itemView.findViewById(R.id.application_status);
             this.description = itemView.findViewById(R.id.row_description);
         }
 

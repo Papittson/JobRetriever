@@ -1,5 +1,7 @@
 package com.example.jobretriever.viewmodels;
 
+import static com.example.jobretriever.models.ApplicationState.PENDING;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -43,23 +45,22 @@ public class OfferViewModel extends ViewModel {
                         UserRepository.getInstance().getById(obj.getEmployerID()).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 obj.setEmployer(task1.getResult().toObject(User.class));
-                                // TODO C'est quoi cette valeur d'ID en dur ?
-                                LocationRepository.getInstance().getById("8RL9flb7zvNTddfUcPi9").addOnCompleteListener(task2 -> {
+                                LocationRepository.getInstance().getById(obj.getLocationID()).addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
                                         Location location = task2.getResult().toObject(Location.class);
                                         obj.setLocation(location);
                                         offers.postValue(list);
                                     } else {
                                         errorMessage.postValue(R.string.error_loading_location);
-                                        if (task.getException() != null) {
-                                            task.getException().printStackTrace();
+                                        if (task2.getException() != null) {
+                                            task2.getException().printStackTrace();
                                         }
                                     }
                                 });
                             } else {
                                 errorMessage.postValue(R.string.error_loading_users);
-                                if (task.getException() != null) {
-                                    task.getException().printStackTrace();
+                                if (task1.getException() != null) {
+                                    task1.getException().printStackTrace();
                                 }
                             }
                         });
@@ -85,6 +86,24 @@ public class OfferViewModel extends ViewModel {
                 offer.setId(task.getResult().getId());
                 this.offer.postValue(offer);
             } else {
+                errorMessage.postValue(R.string.error_loading_offers); // TODO Changer message
+                if (task.getException() != null) {
+                    task.getException().printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void addApplication(String userId, Offer offer) {
+        if(offer.getApplications().containsKey(userId)) {
+            return;
+        }
+        offer.getApplications().put(userId, PENDING);
+        OfferRepository.getInstance().update(offer.getId(), "applications", offer.getApplications()).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                this.offer.postValue(offer);
+            } else {
+                offer.getApplications().remove(userId);
                 errorMessage.postValue(R.string.error_loading_offers); // TODO Changer message
                 if (task.getException() != null) {
                     task.getException().printStackTrace();

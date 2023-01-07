@@ -56,9 +56,7 @@ public class JRFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(fragmentLayout != null) {
-            fragment = inflater.inflate(fragmentLayout, container, false);
-        }
+        fragment = inflater.inflate(fragmentLayout, container, false);
         return fragment;
     }
 
@@ -98,6 +96,12 @@ public class JRFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    public void updateRecyclerView(@IdRes int recyclerViewId, List<Offer> items) {
+        RecyclerView recyclerView = fragment.findViewById(recyclerViewId);
+        OffersAdapter adapter = new OffersAdapter(getContext(), getActivity(), items);
+        recyclerView.setAdapter(adapter);
+    }
+
     public boolean isUserAllowed() {
         return !isProtected || user != null;
     }
@@ -108,12 +112,6 @@ public class JRFragment extends Fragment {
 
     public String encrypt(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
-    }
-
-    public void updateRecyclerView(@IdRes int recyclerViewId, List<Offer> items) {
-        RecyclerView recyclerView = fragment.findViewById(recyclerViewId);
-        OffersAdapter adapter = new OffersAdapter(getContext(), getActivity(), items);
-        recyclerView.setAdapter(adapter);
     }
 
     public void goToFragment(Class<? extends Fragment> fragmentClass, Bundle args) {

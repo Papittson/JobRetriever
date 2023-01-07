@@ -1,5 +1,7 @@
 package com.example.jobretriever.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
+import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
@@ -29,11 +32,15 @@ public class OfferFragment extends JRFragment {
         if(offerExists()) {
             fillLayoutData();
 
-            ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
-            Button applyButton = view.findViewById(R.id.offer_apply);
+            ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+            ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
+            ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+            Button applyButton = fragment.findViewById(R.id.offer_apply);
 
-            applyButton.setOnClickListener(v -> applyToOffer());
             favoriteButton.setOnClickListener(v -> toggleFavorite());
+            phoneButton.setOnClickListener(v -> contactEmployerByPhone());
+            emailButton.setOnClickListener(v -> contactEmployerByEmail());
+            applyButton.setOnClickListener(v -> applyToOffer());
         } else {
             goToFragment(HomeFragment.class, null);
             showToast(R.string.error_offer_not_found);
@@ -80,6 +87,31 @@ public class OfferFragment extends JRFragment {
             goToFragment(ApplyFragment.class, null);
         }else {
             showToast(R.string.error_must_be_signed_in);
+        }
+    }
+
+    public void contactEmployerByPhone() {
+        User employer = this.offer.getEmployer();
+        String phoneNumber = employer.getPhone();
+        if(phoneNumber != null) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
+            startActivity(intent);
+        } else {
+            showToast(0); // TODO Mettre message "Numéro de téléphone non renseigné"
+        }
+    }
+
+    public void contactEmployerByEmail() {
+        User employer = this.offer.getEmployer();
+        String emailAddress = employer.getMail();
+        if(emailAddress != null) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+            intent.putExtra(Intent.EXTRA_SUBJECT, this.offer.getTitle());
+            startActivity(intent);
+        } else {
+            showToast(0); // TODO Mettre message "Adresse e-mail non renseignée"
         }
     }
 

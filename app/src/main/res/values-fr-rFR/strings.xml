@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JobRetriever</string>
-    <string name="hello_candidate_fragment">Bonjour %1$s %2$s</string>
+    <string name="profile_name">Bonjour %1$s</string>
     <string name="action_sign_in">Connexion</string>
     <string name="action_sign_up">Inscription</string>
     <string name="confrim">Confirmer</string>

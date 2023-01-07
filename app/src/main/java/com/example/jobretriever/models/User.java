@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.google.type.Date;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +16,39 @@ public class User extends Entity {
     String phone;
     UserType type;
     String businessName;
-    List<String> favoritesId = new ArrayList<>();
+    List<String> educations;
+    List<String> experiences;
+    List<String> favoritesId;
+
+    public List<String> getExperiences() {
+        return this.experiences;
+    }
+
+    public String getExperience() {
+        if(this.experiences == null || this.experiences.isEmpty()) {
+            return "No experiences"; // TODO Mettre ça dans un string resource
+        }
+        return String.join("\n", this.experiences);
+    }
+
+    public void setExperiences(List<String> experiences) {
+        this.experiences = experiences;
+    }
+
+    public List<String> getEducations() {
+        return this.educations;
+    }
+
+    public String getEducation() {
+        if(this.educations == null || this.educations.isEmpty()) {
+            return "No educations"; // TODO Mettre ça dans un string resource
+        }
+        return String.join("\n", this.educations);
+    }
+
+    public void setEducations(List<String> educations) {
+        this.educations = educations;
+    }
 
     public List<String> getFavoritesId() {
         return favoritesId;

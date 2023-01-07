@@ -35,8 +35,13 @@ public class CandidateProfileFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         if(isUserAllowed() && user != null) {
-            TextView hello = fragment.findViewById(R.id.helloCandidate);
-            hello.setText(String.format(getResources().getString(R.string.hello_candidate_fragment), user.getFirstname(), user.getName()));
+            TextView nameTextView = fragment.findViewById(R.id.helloCandidate);
+            TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
+            TextView educationTextView = fragment.findViewById(R.id.edu_detailed);
+            String name = user.getFirstname() + " " + user.getName();
+            nameTextView.setText(String.format(getString(R.string.profile_name), name));
+            experienceTextView.setText(user.getExperience());
+            educationTextView.setText(user.getEducation());
         }
     }
 
@@ -47,6 +52,7 @@ public class CandidateProfileFragment extends JRFragment {
             return;
         }
 
+        createRecyclerView(R.id.applied_offers);
         createRecyclerView(R.id.saved_offers);
 
         if(user != null) {
@@ -58,10 +64,14 @@ public class CandidateProfileFragment extends JRFragment {
             OfferViewModel.getInstance().getOffers().observe(
                     getViewLifecycleOwner(),
                     offers -> {
+                        List<Offer> appliedOffers = offers.stream()
+                                .filter(offer -> user.getFavoritesId().contains(offer.getId()))
+                                .collect(Collectors.toList());
                         List<Offer> favoriteOffers = offers.stream()
                                 .filter(offer -> user.getFavoritesId().contains(offer.getId()))
                                 .collect(Collectors.toList());
-                        updateRecyclerView(R.id.welcomeOfferRV, favoriteOffers);
+                        updateRecyclerView(R.id.applied_offers, appliedOffers);
+                        updateRecyclerView(R.id.saved_offers, favoriteOffers);
                     }
             );
         }
@@ -70,15 +80,15 @@ public class CandidateProfileFragment extends JRFragment {
     private int getFragmentLayout(UserType userType) {
         switch (userType) {
             case APPLICANT:
-                return R.layout.fragment_candidate_home;
+                return R.layout.fragment_candidate_profile;
             case EMPLOYER:
-                return R.layout.fragment_candidate_home;
+                return R.layout.fragment_candidate_profile;
             case AGENCY:
-                return R.layout.fragment_candidate_home;
+                return R.layout.fragment_candidate_profile;
             case MODERATOR:
-                return R.layout.fragment_candidate_home;
+                return R.layout.fragment_candidate_profile;
             default:
-                return R.layout.fragment_candidate_home;
+                return R.layout.fragment_candidate_profile;
         }
     }
 }

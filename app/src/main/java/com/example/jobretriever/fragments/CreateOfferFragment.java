@@ -1,24 +1,30 @@
 package com.example.jobretriever.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class CreateOfferFragment extends JRFragment {
     String offerId;
 
     public CreateOfferFragment() {
-        super(R.string.welcome_message, R.layout.fragment_create_offer, true); // TODO Changer message actionBar
+        super(R.string.offer_creation, R.layout.fragment_create_offer, true);
     }
 
     @Override
@@ -34,6 +40,27 @@ public class CreateOfferFragment extends JRFragment {
             EditText durationEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_duration)).getEditText();
             EditText descriptionEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_description)).getEditText();
             EditText wageEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_wage)).getEditText();
+            EditText dateEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_date)).getEditText();
+            MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder.datePicker().setTitleText("Birthdate").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+            dateEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
+                    signUpBirthdate.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onPositiveButtonClick(Long selection) {
+                            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                            calendar.setTimeInMillis(selection);
+                            System.out.println(calendar);
+                            Date birthdate = new Date(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
+                            int month = birthdate.getMonth()+1;
+                            dateEditText.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear());
+                        }
+                    });
+                }
+            });
+
             if(titleEditText != null && fieldEditText != null && durationEditText != null && descriptionEditText != null && wageEditText != null) {
                 String title = titleEditText.getText().toString();
                 String field = titleEditText.getText().toString();

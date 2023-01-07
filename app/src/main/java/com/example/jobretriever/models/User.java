@@ -20,6 +20,28 @@ public class User extends Entity {
     List<String> educations;
     List<String> experiences;
     List<String> favoritesId;
+    String birthdate;
+
+    public User(String id, String mail, String password,String firstname, String name, String nationality, String phone, UserType type, String birthdate) {
+        this.id = id;
+        this.firstname = firstname;
+        this.mail = mail;
+        this.name = name;
+        this.nationality = nationality;
+        this.password = password;
+        this.phone = phone;
+        this.type = type;
+        this.birthdate = birthdate;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
     List<String> applicationsId;
 
     public List<String> getExperiences() {

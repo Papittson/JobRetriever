@@ -65,7 +65,7 @@
     <string name="city_country">City, Country</string>
     <string name="details">Details</string>
 
-
+    <string name="firstname">Firstname</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut malesuada pharetra justo eu efficitur. Donec et leo arcu. Integer vitae tristique velit. Nunc mattis eget magna quis aliquam. Aenean aliquet vehicula ligula nec condimentum. Nullam eu erat et lectus semper sagittis. Donec sit amet turpis faucibus elit molestie auctor. Donec in scelerisque orci, eget egestas lorem. Proin malesuada interdum nisl, a vestibulum lectus congue eu. Donec ac lacus diam. Phasellus gravida ultrices enim rhoncus pharetra. Ut elementum nisl et nisl dictum consequat. Vestibulum laoreet, est eget volutpat fermentum, odio eros iaculis felis, in mattis lorem nibh in turpis. Proin ut gravida diam, id fringilla neque. Nullam elementum lorem quis fermentum aliquam. In vestibulum nibh in sapien tincidunt, sed finibus erat ullamcorper.</string>
     <string name="upload">Upload</string>
     <string name="create_offer">Create an Offer</string>
@@ -78,5 +78,9 @@
     <string name="contact_employer">Contact employer</string>
     <string name="pending">Pending</string>
     <string name="empty_string" translatable="false" />
-
+    <string name="error_creating_application">Error Creating Application</string>
+    <string name="offer_creation">Offer Creation</string>
+    <string name="lastname">Lastname</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="date">Date</string>
 </resources>

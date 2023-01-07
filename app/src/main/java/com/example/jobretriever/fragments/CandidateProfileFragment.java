@@ -34,7 +34,7 @@ public class CandidateProfileFragment extends JRFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        if(user != null) {
+        if(isUserAllowed() && user != null) {
             TextView hello = fragment.findViewById(R.id.helloCandidate);
             hello.setText(String.format(getResources().getString(R.string.hello_candidate_fragment), user.getFirstname(), user.getName()));
         }
@@ -43,6 +43,10 @@ public class CandidateProfileFragment extends JRFragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(!isUserAllowed()) {
+            return;
+        }
+
         createRecyclerView(R.id.saved_offers);
 
         if(user != null) {

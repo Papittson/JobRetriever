@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +43,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
 
         holder.title.setText(offer.getTitle());
         holder.description.setText(offer.getDescription());
-        // holder.jobThumbnail.setImageResource(R.drawable.thumbnail);
         String companyDurationStr = context.getString(R.string.company_duration, offer.getEmployer().getBusinessName(), offer.getDuration());
         holder.companyDuration.setText(companyDurationStr);
     }
@@ -55,7 +53,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final ImageView jobThumbnail;
         private final TextView title;
         private final TextView companyDuration;
         private final TextView description;
@@ -64,18 +61,20 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
             super(itemView);
             itemView.setOnClickListener(this);
 
-            jobThumbnail = itemView.findViewById(R.id.job_thumbnail);
-            title = itemView.findViewById(R.id.row_title);
+            this.title = itemView.findViewById(R.id.row_title);
             this.companyDuration = itemView.findViewById(R.id.company_duration);
             this.description = itemView.findViewById(R.id.row_description);
         }
 
         @Override
         public void onClick(View view) {
-            int position = this.getAdapterPosition();
+            Offer offer = offers.get(this.getAdapterPosition());
             Bundle args = new Bundle();
-            args.putInt("offerIndex", position);
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, OfferFragment.class, args).commit();
+            args.putString("offerId", offer.getId());
+            activity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, OfferFragment.class, args)
+                    .commit();
         }
     }
 }

@@ -43,10 +43,13 @@ public class OfferFragment extends JRFragment {
     public boolean offerExists() {
         Bundle args = this.getArguments();
         List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
-        if(args != null && offers != null && args.getInt("offerIndex", -1) != -1) {
-            int index = args.getInt("offerIndex");
-            offer = offers.get(index);
-            return true;
+        if(args != null && offers != null && args.getString("offerId") != null) {
+            String offerId = args.getString("offerId");
+            this.offer = offers.stream()
+                    .filter(offer -> offer.getId().equals(offerId))
+                    .findFirst()
+                    .orElse(null);
+            return this.offer != null;
         }
         return false;
     }

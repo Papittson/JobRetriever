@@ -77,11 +77,28 @@ public class OfferViewModel extends ViewModel {
                 }
             }
         });
+    }
 
+    public void addOffer(Offer offer) {
+        OfferRepository.getInstance().add(offer).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                offer.setId(task.getResult().getId());
+                this.offer.postValue(offer);
+            } else {
+                errorMessage.postValue(R.string.error_loading_offers); // TODO Changer message
+                if (task.getException() != null) {
+                    task.getException().printStackTrace();
+                }
+            }
+        });
     }
 
     public MutableLiveData<List<Offer>> getOffers() {
         return offers;
+    }
+
+    public MutableLiveData<Offer> getOffer() {
+        return offer;
     }
 
     public MutableLiveData<Integer> getError() {

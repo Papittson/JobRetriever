@@ -24,9 +24,9 @@ public class HomeFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button confirmSearchButton = view.findViewById(R.id.confirmSearch);
+        Button confirmSearchButton = fragment.findViewById(R.id.confirmSearch);
         confirmSearchButton.setOnClickListener(_view -> {
-            TextInputLayout searchBar = view.findViewById(R.id.search_bar);
+            TextInputLayout searchBar = fragment.findViewById(R.id.search_bar);
             EditText editText = searchBar.getEditText();
             if(editText != null) {
                 String searchQuery = editText.getText().toString();

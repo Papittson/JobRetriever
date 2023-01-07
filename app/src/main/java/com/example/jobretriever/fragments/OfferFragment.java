@@ -1,17 +1,12 @@
 package com.example.jobretriever.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
@@ -21,33 +16,16 @@ import com.example.jobretriever.viewmodels.UserViewModel;
 import java.util.List;
 
 
-public class OfferFragment extends Fragment {
-    View view;
+public class OfferFragment extends JRFragment {
     Offer offer;
 
     public OfferFragment() {
+        super(R.string.details, R.layout.fragment_offer, false);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.details);
-            }
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_offer, container, false);
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if(offerExists()) {
             fillLayoutData();
 
@@ -57,14 +35,9 @@ public class OfferFragment extends Fragment {
             applyButton.setOnClickListener(v -> applyToOffer());
             favoriteButton.setOnClickListener(v -> toggleFavorite());
         } else {
-            goToFragment(HomeFragment.class);
-            Toast.makeText(getContext(), R.string.error_offer_not_found, Toast.LENGTH_LONG).show();
+            goToFragment(HomeFragment.class, null);
+            showToast(R.string.error_offer_not_found);
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     public boolean offerExists() {
@@ -79,13 +52,13 @@ public class OfferFragment extends Fragment {
     }
 
     public void fillLayoutData() {
-        TextView jobTitleTV = view.findViewById(R.id.offer_job_title);
-        TextView businessNameTV = view.findViewById(R.id.offer_busines_name);
-        TextView durationTV = view.findViewById(R.id.offer_duration);
-        TextView descriptionTV = view.findViewById(R.id.offer_description);
-        TextView cityCountry = view.findViewById(R.id.offer_location);
-        TextView wage = view.findViewById(R.id.offer_wage);
-        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
+        TextView jobTitleTV = fragment.findViewById(R.id.offer_job_title);
+        TextView businessNameTV = fragment.findViewById(R.id.offer_busines_name);
+        TextView durationTV = fragment.findViewById(R.id.offer_duration);
+        TextView descriptionTV = fragment.findViewById(R.id.offer_description);
+        TextView cityCountry = fragment.findViewById(R.id.offer_location);
+        TextView wage = fragment.findViewById(R.id.offer_wage);
+        ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
         int favoriteImage = UserViewModel.getInstance().hasFavorite(offer.getId()) ?
                 R.drawable.ic_baseline_favorite_24 :
                 R.drawable.ic_baseline_favorite_border_24;
@@ -100,17 +73,16 @@ public class OfferFragment extends Fragment {
     }
 
     public void applyToOffer() {
-        if (UserViewModel.getInstance().isLoggedIn()) {
-            goToFragment(ApplyFragment.class);
+        if (isUserLoggedIn()) {
+            goToFragment(ApplyFragment.class, null);
         }else {
-            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
+            showToast(R.string.error_must_be_signed_in);
         }
-
     }
 
     public void toggleFavorite() {
-        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
-        if (UserViewModel.getInstance().isLoggedIn()) {
+        ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+        if (isUserLoggedIn()) {
             if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
                 UserViewModel.getInstance().removeFavorite(offer.getId());
                 favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
@@ -119,13 +91,7 @@ public class OfferFragment extends Fragment {
                 favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
             }
         } else {
-            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void goToFragment(Class<? extends Fragment> fragmentClass) {
-        if(getActivity() != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentClass, null).commit();
+            showToast(R.string.error_must_be_signed_in);
         }
     }
 }

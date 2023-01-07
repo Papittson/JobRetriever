@@ -4,50 +4,31 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.viewmodels.UserViewModel;
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.StandardCharsets;
 
 
-public class SignInFragment extends Fragment {
-    View view;
+public class SignInFragment extends JRFragment {
 
     public SignInFragment() {
+        super(R.string.action_sign_in, R.layout.fragment_sign_in, false);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.action_sign_in);
-            }
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        Button confirmButton = view.findViewById(R.id.confirmSignIn);
-        EditText emailEditText = view.findViewById(R.id.signInMail);
-        EditText passwordEditText = view.findViewById(R.id.signInPwd);
-        Button signUpButton = view.findViewById(R.id.signUpButton);
-        CheckBox rememberCheckBox = view.findViewById(R.id.rememberMeCheckBox);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button confirmButton = fragment.findViewById(R.id.confirmSignIn);
+        EditText emailEditText = fragment.findViewById(R.id.signInMail);
+        EditText passwordEditText = fragment.findViewById(R.id.signInPwd);
+        Button signUpButton = fragment.findViewById(R.id.signUpButton);
+        CheckBox rememberCheckBox = fragment.findViewById(R.id.rememberMeCheckBox);
 
         if(getContext() != null) {
             SharedPreferences sh = getContext().getSharedPreferences("JobRetriever", MODE_PRIVATE);
@@ -57,13 +38,11 @@ public class SignInFragment extends Fragment {
             passwordEditText.setText(password);
         }
 
-        confirmButton.setOnClickListener(view -> {
+        confirmButton.setOnClickListener(_view -> {
             boolean rememberCheckBoxChecked = rememberCheckBox.isChecked();
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
-            String encryptedPassword = Hashing.sha256()
-                    .hashString(password, StandardCharsets.UTF_8)
-                    .toString();
+            String encryptedPassword = encrypt(password);
             UserViewModel.getInstance().signIn(email, encryptedPassword);
             if (rememberCheckBoxChecked && getContext() != null) {
                 SharedPreferences sh = getContext().getSharedPreferences("JobRetriever", MODE_PRIVATE);
@@ -74,13 +53,7 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        signUpButton.setOnClickListener(view -> {
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SignUpFragment.class, null).commit();
-            }
-        });
-
-        return view;
+        signUpButton.setOnClickListener(_view -> goToFragment(SignUpFragment.class, null));
     }
 
     @Override
@@ -89,14 +62,9 @@ public class SignInFragment extends Fragment {
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user -> {
-                    if (user != null && getActivity() != null) {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CandidateProfileFragment.class, null).commit();
-                    }
+                    if (user != null)
+                        goToFragment(CandidateProfileFragment.class, null);
                 }
-        );
-        UserViewModel.getInstance().getError().observe(
-                getViewLifecycleOwner(),
-                errorMessage -> Toast.makeText(getContext(), getString(errorMessage), Toast.LENGTH_LONG).show()
         );
     }
 
@@ -104,6 +72,5 @@ public class SignInFragment extends Fragment {
     public void onStop() {
         super.onStop();
         UserViewModel.getInstance().getUser().removeObservers(getViewLifecycleOwner());
-        UserViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
     }
 }

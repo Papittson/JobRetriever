@@ -59,14 +59,10 @@ public class SignUpFragment extends JRFragment {
         if(dropdownUserTypesEditText != null) {
             dropdownUserTypesEditText.setAdapter(userTypesAdapter);
             dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
-                if(position == 0) {
+                if(position == 1 || position == 2) {
+                    showEmployerInputs();
+                } else {
                     showCandidateInputs();
-                } else if(position == 1) {
-                    showCandidateInputs(); // TODO Faire affichage pour les autres
-                } else if(position == 2) {
-                    showCandidateInputs(); // TODO Faire affichage pour les autres
-                } else if(position == 3) {
-                    showCandidateInputs(); // TODO Faire affichage pour les autres
                 }
             });
         }
@@ -80,14 +76,10 @@ public class SignUpFragment extends JRFragment {
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user1 -> {
-                    switch (user.getType()) {
-                        case APPLICANT:
-                            goToFragment(CandidateProfileFragment.class, null);
-                            break;
-                        case EMPLOYER:
-                        case AGENCY:
-                            goToFragment(EmployerProfileFragment.class, null);
-                            break;
+                    if(user.getType() == EMPLOYER || user.getType() == AGENCY) {
+                        goToFragment(EmployerProfileFragment.class, null);
+                    } else {
+                        goToFragment(CandidateProfileFragment.class, null);
                     }
                 }
         );
@@ -129,15 +121,15 @@ public class SignUpFragment extends JRFragment {
     }
 
     public void showEmployerInputs() {
-        TextInputLayout signUpBusinessName = fragment.findViewById(R.id.signUpFirstname);
-        TextInputLayout signUpAddress = fragment.findViewById(R.id.signUpLastname);
-        TextInputLayout signUpSiret = fragment.findViewById(R.id.signUpBirthdate_picker);
-        TextInputLayout signUpManager = fragment.findViewById(R.id.signUpBirthdate_picker);
+        TextInputLayout signUpBusinessName = fragment.findViewById(R.id.signUpBusinessName);
+        TextInputLayout signUpAddress = fragment.findViewById(R.id.signUpAddress);
+        TextInputLayout signUpSiret = fragment.findViewById(R.id.signUpSiret);
+        TextInputLayout signUpManager = fragment.findViewById(R.id.signUpManager);
 
-        signUpFirstname.setVisibility(View.VISIBLE);
-        signUpLastname.setVisibility(View.VISIBLE);
-        showDatePickerTIL.setVisibility(View.VISIBLE);
-        dropdownCountriesMenu.setVisibility(View.VISIBLE);
+        signUpBusinessName.setVisibility(View.VISIBLE);
+        signUpAddress.setVisibility(View.VISIBLE);
+        signUpSiret.setVisibility(View.VISIBLE);
+        signUpManager.setVisibility(View.VISIBLE);
     }
 
     public void signup() {

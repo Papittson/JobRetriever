@@ -63,10 +63,10 @@ public class CreateOfferFragment extends JRFragment {
 
             if(titleEditText != null && fieldEditText != null && durationEditText != null && descriptionEditText != null && wageEditText != null) {
                 String title = titleEditText.getText().toString();
-                String field = titleEditText.getText().toString();
-                String duration = titleEditText.getText().toString();
-                String description = titleEditText.getText().toString();
-                double wage = Double.parseDouble(titleEditText.getText().toString());
+                String field = fieldEditText.getText().toString();
+                String duration = durationEditText.getText().toString();
+                String description = descriptionEditText.getText().toString();
+                double wage = Double.parseDouble(wageEditText.getText().toString());
                 Offer offer = new Offer();
                 offer.setTitle(title);
                 offer.setField(field);

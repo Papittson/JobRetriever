@@ -46,7 +46,7 @@
     <string name="home">꧋ꦧꦼꦫꦤ꧀ꦝ</string>
     <string name="search_navbar">꧋ꦕꦫꦶ</string>
     <string name="alerts">꧋ꦤꦺꦴꦠꦶꦥ꦳꧀</string>
-    <string name="offer_wage">%1$f €</string>
+    <string name="offer_wage">%1$.2f €</string>
     <string name="offer_location">%1$s, %2$s</string>
     <string name="logo_description">App logo</string>
     <string name="company_duration">%1$s | %2$s</string>

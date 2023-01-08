@@ -1,29 +1,19 @@
 package com.example.jobretriever.fragments;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.models.UserType;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -36,138 +26,173 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends JRFragment {
 
-
-    View view;
-    UserType userType;
-    String mail;
-    String password;
-    String phoneNumber;
-    String firstname;
-    String lastname;
-    String birthdate;
-    String nationality;
-    UserViewModel userViewModel;
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
+    public SignUpFragment() {
+        super(R.string.action_sign_up, R.layout.fragment_sign_up, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        Button confirm = (Button) view.findViewById(R.id.confirmSignUp);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        // Inflate the layout for this fragment
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        Button confirmButton = fragment.findViewById(R.id.confirmSignUp);
+        TextInputLayout showDatePickerTIL = fragment.findViewById(R.id.signUpBirthdate_picker);
+        EditText showDatePicker = showDatePickerTIL.getEditText();
+        TextInputLayout dropdownUserTypesMenu = fragment.findViewById(R.id.dropdown_user_type_menu);
+        AutoCompleteTextView dropdownUserTypesEditText = (AutoCompleteTextView) dropdownUserTypesMenu.getEditText();
+        TextInputLayout dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
+        AutoCompleteTextView dropdownCountriesEditText = (AutoCompleteTextView) dropdownCountriesMenu.getEditText();
 
-        List<String> userTypes = Arrays.stream(UserType.values()).map(obj -> obj.toString()).collect(Collectors.toList());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
-        TextInputLayout dropdown = view.findViewById(R.id.dropdown_user_type_menu);
-        AutoCompleteTextView dropdownItem = (AutoCompleteTextView) dropdown.getEditText();
-        dropdownItem.setAdapter(adapter);
+        List<String> userTypes = Arrays.stream(UserType.values())
+                .map(userType -> getString(userType.stringResId))
+                .collect(Collectors.toList());
 
-        dropdownItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        TextInputLayout signUpUserType = getView().findViewById(R.id.dropdown_user_type_menu);
-                        TextInputLayout signUpFirstname = getView().findViewById(R.id.signUpFirstname);
-                        signUpFirstname.setVisibility(View.VISIBLE);
-                        TextInputLayout signUpLastname = getView().findViewById(R.id.signUpLastname);
-                        signUpLastname.setVisibility(View.VISIBLE);
-                        MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder.datePicker().setTitleText("Birthdate").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
-                        TextInputLayout showDatePickerTIL = getView().findViewById(R.id.signUpBirthdate_picker);
-                        EditText showDatePicker = showDatePickerTIL.getEditText();
-                        showDatePickerTIL.setVisibility(View.VISIBLE);
-                        showDatePicker.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
-                                signUpBirthdate.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                                    @RequiresApi(api = Build.VERSION_CODES.O)
-                                    @Override
-                                    public void onPositiveButtonClick(Long selection) {
-                                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                                        calendar.setTimeInMillis(selection);
-                                        System.out.println(calendar);
-                                        Date birthdate = new Date(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
-                                        int month = birthdate.getMonth()+1;
-                                        showDatePicker.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear());
-                                    }
-                                });
-                            }
-                        });
+        ArrayAdapter<String> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
+        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
-                        TextInputLayout dropdownCountry = getView().findViewById(R.id.signUpDropdown_nationality);
-                        AutoCompleteTextView dropdownItem = (AutoCompleteTextView) dropdownCountry.getEditText();
-                        dropdownItem.setAdapter(adapter);
-                        dropdownCountry.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
+        if(showDatePicker != null) {
+            showDatePicker.setOnClickListener(v -> pickDate(showDatePicker));
+        }
+
+        if(dropdownCountriesEditText != null) {
+            dropdownCountriesEditText.setAdapter(countriesAdapter);
+        }
+
+        if(dropdownUserTypesEditText != null) {
+            dropdownUserTypesEditText.setAdapter(userTypesAdapter);
+            dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
+                if(position == 0) {
+                    showCandidateInputs();
+                } else if(position == 1) {
+                    showCandidateInputs(); // TODO Faire affichage pour les autres
+                } else if(position == 2) {
+                    showCandidateInputs(); // TODO Faire affichage pour les autres
+                } else if(position == 3) {
+                    showCandidateInputs(); // TODO Faire affichage pour les autres
                 }
-            }
-        });
-        final Observer<Boolean> loggedInObserver = loggedIn -> {
-            if(loggedIn){
-                userViewModel.getLoggedIn().removeObservers(getViewLifecycleOwner());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,CandidateProfileFragment.class,null).commit();
-            }else{
-                Context context = getContext();
-                CharSequence text = UserViewModel.getErrorMessage().getValue();
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
-        };
-        userViewModel.getLoggedIn().observe(getViewLifecycleOwner(),loggedInObserver);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextInputLayout signUpMail = view.findViewById(R.id.signUpMail);
-                mail=signUpMail.getEditText().getText().toString();
-                TextInputLayout signUpPassword = view.findViewById(R.id.signUpPassword);
-                password=signUpPassword.getEditText().getText().toString();
-                TextInputLayout signUpPhoneNumber = view.findViewById(R.id.signUpPhoneNumber);
-                phoneNumber=signUpPhoneNumber.getEditText().getText().toString();
-                TextInputLayout signUpFirstname = view.findViewById(R.id.signUpFirstname);
-                firstname =signUpFirstname.getEditText().getText().toString();
-                TextInputLayout signUpLastname = view.findViewById(R.id.signUpLastname);
-                lastname =signUpLastname.getEditText().getText().toString();
-                TextInputLayout signUpNationality = view.findViewById(R.id.signUpDropdown_nationality);
-                nationality =signUpNationality.getEditText().getText().toString();
-                TextInputLayout signUpBirthdate= view.findViewById(R.id.signUpBirthdate_picker);
-                birthdate=signUpBirthdate.getEditText().getText().toString();
-                TextInputLayout signUpType = view.findViewById(R.id.dropdown_user_type_menu);
-                userType = UserType.valueOf(signUpType.getEditText().getText().toString());
-                User newUser = new User(null,mail,password,firstname,lastname,nationality,phoneNumber,userType,birthdate);
-                userViewModel.signUp(newUser);
-            }
-        });
+            });
+        }
 
-        return view;
+        confirmButton.setOnClickListener(_view -> signup());
     }
 
-    //utils
+    @Override
+    public void onStart() {
+        super.onStart();
+        UserViewModel.getInstance().getUser().observe(
+                getViewLifecycleOwner(),
+                user1 -> {
+                    switch (user.getType()) {
+                        case APPLICANT:
+                            goToFragment(CandidateProfileFragment.class, null);
+                            break;
+                        case EMPLOYER:
+                        case AGENCY:
+                            // TODO Faire les goToFragment(EmployerProfileFragment)
+                            break;
+                        case MODERATOR:
+                            // TODO Faire les goToFragment(ModeratorProfileFragment)
+                            break;
+                    }
+                }
+        );
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        UserViewModel.getInstance().getUser().removeObservers(getViewLifecycleOwner());
+    }
+
+    public void pickDate(EditText showDatePicker) {
+        MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
+                .datePicker()
+                .setTitleText("Birthdate") // TODO Mettre un string resource
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
+        signUpBirthdate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(selection);
+            Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+            int month = birthdate.getMonth() + 1;
+            showDatePicker.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear()); // TODO Mettre string res placeholder
+        });
+    }
+
+    public void showCandidateInputs() {
+        TextInputLayout signUpFirstname = fragment.findViewById(R.id.signUpFirstname);
+        TextInputLayout dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
+        TextInputLayout signUpLastname = fragment.findViewById(R.id.signUpLastname);
+        TextInputLayout showDatePickerTIL = fragment.findViewById(R.id.signUpBirthdate_picker);
+
+        signUpFirstname.setVisibility(View.VISIBLE);
+        signUpLastname.setVisibility(View.VISIBLE);
+        showDatePickerTIL.setVisibility(View.VISIBLE);
+        dropdownCountriesMenu.setVisibility(View.VISIBLE);
+    }
+
+    public void signup() {
+        TextInputLayout emailInput = fragment.findViewById(R.id.signUpMail);
+        TextInputLayout passwordInput = fragment.findViewById(R.id.signUpPassword);
+        TextInputLayout phoneNumberInput = fragment.findViewById(R.id.signUpPhoneNumber);
+        TextInputLayout firstNameInput = fragment.findViewById(R.id.signUpFirstname);
+        TextInputLayout lastNameInput = fragment.findViewById(R.id.signUpLastname);
+        TextInputLayout nationalityInput = fragment.findViewById(R.id.signUpDropdown_nationality);
+        TextInputLayout birthdateInput= fragment.findViewById(R.id.signUpBirthdate_picker);
+        TextInputLayout userTypeInput = fragment.findViewById(R.id.dropdown_user_type_menu);
+
+        EditText emailEditText = emailInput.getEditText();
+        EditText passwordEditText = passwordInput.getEditText();
+        EditText phoneNumberEditText = phoneNumberInput.getEditText();
+        EditText firstNameEditText = firstNameInput.getEditText();
+        EditText lastNameEditText = lastNameInput.getEditText();
+        EditText nationalityEditText = nationalityInput.getEditText();
+        EditText birthdateEditText = birthdateInput.getEditText();
+        EditText userTypeEditText = userTypeInput.getEditText();
+
+        if(
+           emailEditText == null ||
+           passwordEditText == null ||
+           phoneNumberEditText == null ||
+           firstNameEditText == null ||
+           lastNameEditText == null ||
+           nationalityEditText == null ||
+           birthdateEditText == null ||
+           userTypeEditText == null
+        ) {
+            showToast(0); // TODO Message style "Une erreur est survenue, veuillez réessayer"
+            return;
+        }
+
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String firstname = firstNameEditText.getText().toString();
+        String lastname = lastNameEditText.getText().toString();
+        String nationality = nationalityEditText.getText().toString();
+        String birthdate = birthdateEditText.getText().toString();
+        UserType userType = UserType.valueOf(userTypeEditText.getText().toString());
+
+        if(
+           email.isBlank() ||
+           password.isBlank() ||
+           phoneNumber.isBlank() ||
+           firstname.isBlank() ||
+           lastname.isBlank() ||
+           nationality.isBlank() ||
+           birthdate.isBlank()
+        ) {
+            showToast(0); // TODO Message d'erreur champs obligatoires
+            return;
+        }
+
+        User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, userType, birthdate);
+        UserViewModel.getInstance().signUp(newUser);
+    }
 
     public List<String> getCountries() {
         Locale[] locales = Locale.getAvailableLocales();
-        ArrayList<String> countries = new ArrayList<String>();
+        ArrayList<String> countries = new ArrayList<>();
         for (Locale locale : locales) {
             String country = locale.getDisplayCountry();
             if (country.trim().length() > 0 && !countries.contains(country)) {
@@ -177,5 +202,5 @@ public class SignUpFragment extends Fragment {
         Collections.sort(countries);
         return countries;
     }
-}
+
 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
     android:orientation="vertical"
-    app:navGraph="@navigation/nav_graph"
     >
 
     <ScrollView

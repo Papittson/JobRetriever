@@ -2,10 +2,13 @@ package com.example.jobretriever.models;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.Timestamp;
 import com.google.type.Date;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("unused")
 public class User extends Entity {
@@ -22,8 +25,9 @@ public class User extends Entity {
     List<String> favoritesId;
     String birthdate;
 
-    public User(String id, String mail, String password,String firstname, String name, String nationality, String phone, UserType type, String birthdate) {
-        this.id = id;
+    public User() {}
+
+    public User(String mail, String password,String firstname, String name, String nationality, String phone, UserType type, String birthdate) {
         this.firstname = firstname;
         this.mail = mail;
         this.name = name;
@@ -38,8 +42,9 @@ public class User extends Entity {
         return birthdate;
     }
 
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthdate(Timestamp birthdate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+        this.birthdate = formatter.format(birthdate.toDate());
     }
 
     List<String> applicationsId;

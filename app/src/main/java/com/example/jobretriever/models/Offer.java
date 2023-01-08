@@ -37,6 +37,9 @@ public class Offer extends Entity {
     public void setWage(Double wage) {
         this.wage = wage;
     }
+    public Double getWage() {
+        return this.wage;
+    }
 
     public Map<String, ApplicationState> getApplications() {
         return applications;
@@ -115,12 +118,6 @@ public class Offer extends Entity {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public double getWage() {
-        return wage;
-    }
-
-    public void setWage(double wage) { this.wage = wage; }
 
     @NonNull
     @Override

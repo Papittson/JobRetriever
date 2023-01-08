@@ -7,126 +7,113 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
+    <TextView
+        style="@style/headerText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="150dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:text="@string/create_offer"
+        android:textAlignment="center"
+        android:textColor="@color/black" />
 
-        <TextView
-            style="@style/headerText"
+    <!--title-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/job_title">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_offer"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <!--title-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_title"
+    <!--field-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_field"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/field">
+
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:hint="@string/job_title">
-            <com.google.android.material.textfield.TextInputEditText
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:inputType="none"
+            tools:ignore="LabelFor" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <!--duration-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_duration"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/duration">
 
-        <!--field-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_field"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/field">
+            android:inputType="none"
+            tools:ignore="LabelFor" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <!--desc-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/description"
+        app:counterEnabled="true"
+        app:counterMaxLength="200">
 
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <!--duration-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_duration"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="120sp"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <!--Phone number-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_wage"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/wage">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/duration">
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <!--desc-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_description"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+
+    <!-- Date  -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/offer_date"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/date">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="200"
-            android:hint="@string/description">
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="120sp"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <!--Phone number-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_wage"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/phone_number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- Date  -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/offer_date"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/date"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/submit_offer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="30dp"
-            android:text="@string/confrim" />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/submit_offer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confrim" />
 </android.widget.LinearLayout>

@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,7 +54,7 @@ public class JRFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragment = inflater.inflate(fragmentLayout, container, false);
         return fragment;
     }

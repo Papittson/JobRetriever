@@ -27,7 +27,7 @@ public class CandidateProfileFragment extends JRFragment {
             TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
             TextView educationTextView = fragment.findViewById(R.id.edu_detailed);
             String name = user.getFirstname() + " " + user.getName();
-            nameTextView.setText(String.format(getString(R.string.profile_name), name));
+            nameTextView.setText(name);
             experienceTextView.setText(user.getExperience());
             educationTextView.setText(user.getEducation());
         }

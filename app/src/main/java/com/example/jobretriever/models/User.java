@@ -1,11 +1,16 @@
 package com.example.jobretriever.models;
 
+import static com.example.jobretriever.models.SignUpStatus.ACCEPTED;
+import static com.example.jobretriever.models.SignUpStatus.PENDING;
+import static com.example.jobretriever.models.UserType.APPLICANT;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.Timestamp;
 import com.google.type.Date;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -23,19 +28,44 @@ public class User extends Entity {
     List<String> educations;
     List<String> experiences;
     List<String> favoritesId;
+    List<String> applicationsId;
     String birthdate;
+    String address;
+    String siret;
+    String manager;
+    SignUpStatus signUpStatus;
 
-    public User() {}
+    public User() {
+        this.educations = new ArrayList<>();
+        this.experiences = new ArrayList<>();
+        this.favoritesId = new ArrayList<>();
+        this.applicationsId = new ArrayList<>();
+    }
 
-    public User(String mail, String password,String firstname, String name, String nationality, String phone, UserType type, String birthdate) {
+    public User(String mail, String password, String firstname, String name, String nationality, String phone, String birthdate) {
+        super();
         this.firstname = firstname;
         this.mail = mail;
         this.name = name;
         this.nationality = nationality;
         this.password = password;
         this.phone = phone;
-        this.type = type;
+        this.type = APPLICANT;
         this.birthdate = birthdate;
+        this.signUpStatus = ACCEPTED;
+    }
+
+    public User(String mail, String password, String businessName, String phone, String address, String siret, String manager, UserType type) {
+        super();
+        this.mail = mail;
+        this.password = password;
+        this.businessName = businessName;
+        this.phone = phone;
+        this.address = address;
+        this.siret = siret;
+        this.manager = manager;
+        this.type = type;
+        this.signUpStatus = PENDING;
     }
 
     public String getBirthdate() {
@@ -46,8 +76,6 @@ public class User extends Entity {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         this.birthdate = formatter.format(birthdate.toDate());
     }
-
-    List<String> applicationsId;
 
     public List<String> getExperiences() {
         return this.experiences;
@@ -85,6 +113,34 @@ public class User extends Entity {
 
     public void setApplicationsId(List<String> applicationsId) {
         this.applicationsId = applicationsId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSiret() {
+        return siret;
+    }
+    public void setSiret(String siret) {
+        this.siret = siret;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public SignUpStatus getSignUpStatus() {
+        return signUpStatus;
+    }
+    public void setSignUpStatus(SignUpStatus signUpStatus) {
+        this.signUpStatus = signUpStatus;
     }
 
     public List<String> getFavoritesId() {

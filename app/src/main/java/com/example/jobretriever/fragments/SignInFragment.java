@@ -1,6 +1,9 @@
 package com.example.jobretriever.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.jobretriever.models.UserType.AGENCY;
+import static com.example.jobretriever.models.UserType.APPLICANT;
+import static com.example.jobretriever.models.UserType.EMPLOYER;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -62,8 +65,15 @@ public class SignInFragment extends JRFragment {
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user -> {
-                    if (user != null)
-                        goToFragment(CandidateProfileFragment.class, null);
+                    if (user != null) {
+                        if(user.getType() == APPLICANT) {
+                            goToFragment(CandidateProfileFragment.class, null);
+                        } else if(user.getType() == EMPLOYER || user.getType() == AGENCY) {
+                            goToFragment(EmployerProfileFragment.class, null);
+                        } else {
+                            goToFragment(HomeFragment.class, null);
+                        }
+                    }
                 }
         );
     }

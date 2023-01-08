@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JobRetriever</string>
-    <string name="profile_name">꧋ꦲꦭꦺꦴ %1$s</string>
+    <string name="profile_name">Name</string>
     <string name="action_sign_in">꧋ꦩꦱꦸꦏ꧀</string>
     <string name="action_sign_up">꧋ꦣꦥ꦳꧀ꦠꦂ</string>
     <string name="confrim">꧋ꦎꦏ꧀</string>

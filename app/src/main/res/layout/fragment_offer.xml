@@ -46,6 +46,14 @@
                 android:text="@string/duration"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/offer_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -92,7 +100,7 @@
             android:text="@string/action_apply"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
@@ -116,24 +124,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:text="@string/lorem_ipsum" />
-
-            <TextView
-                android:textStyle="bold"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/location"
-                android:textColor="@color/black"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/offer_location"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="@string/city_country" />
 
             <TextView
                 android:textStyle="bold"

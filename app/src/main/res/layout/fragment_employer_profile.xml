@@ -1,150 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp">
+    android:orientation="vertical">
 
-    <TableLayout
+    <TextView
+        android:id="@+id/helloCandidate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/row_shape"
-        >
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="@string/profile_name"
+        android:textSize="23sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp" />
 
-        <TableRow
-            android:layout_marginTop="10dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="25dp"
-                android:layout_width="170dp">
-                <TextView
-                    android:id="@+id/profile_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/business_name"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    style="@style/headerTextNoMargin"
-                    android:textSize="30dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/experience"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/verified"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/verified"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="15dp"
-                    android:textColor="@color/black" />
-                <Button
-                    android:id="@+id/profile_contact_btn"
-                    android:layout_height="40dp"
-                    android:layout_width="90dp"
-                    android:text="@string/contact"
-                    android:textSize="11dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp"
-                    />
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/profile_thumbnail"
-                android:src="@drawable/ic_launcher_background"
-                android:layout_height="150dp"
-                android:layout_width="150dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"></ImageView>
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
-                android:id="@+id/manager_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/manager_name"
-                android:textSize="20dp"
-                style="@style/headerTextNoMargin"
-                android:textColor="@color/black" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:id="@+id/manager_detailed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/manager_name"
-                android:layout_marginBottom="18dp"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
-                android:id="@+id/siret_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/siret"
-                android:textSize="20dp"
-                style="@style/headerTextNoMargin"
-                android:textColor="@color/black" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:id="@+id/siret"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/siret"
-                android:layout_marginBottom="18dp"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp">
-            <TextView
-                android:id="@+id/address_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textSize="20dp"
-                style="@style/headerTextNoMargin"
-                android:textColor="@color/black" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:layout_marginBottom="18dp"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
-        </TableRow>
+    <TextView
+        android:id="@+id/exp_detailed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/experience"
+        android:textSize="15sp"
+        android:textColor="@color/black" />
 
-    </TableLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/education"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/edu_detailed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/education"
+        android:textSize="15sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/applied_offers"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/applied_offers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/saved_offers"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/saved_offers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

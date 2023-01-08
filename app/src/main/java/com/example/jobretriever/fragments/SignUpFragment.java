@@ -1,5 +1,8 @@
 package com.example.jobretriever.fragments;
 
+import static com.example.jobretriever.models.UserType.AGENCY;
+import static com.example.jobretriever.models.UserType.EMPLOYER;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,8 +35,7 @@ public class SignUpFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         Button confirmButton = fragment.findViewById(R.id.confirmSignUp);
-        TextInputLayout showDatePickerTIL = fragment.findViewById(R.id.signUpBirthdate_picker);
-        EditText showDatePicker = showDatePickerTIL.getEditText();
+        EditText datePicker = ((TextInputLayout) fragment.findViewById(R.id.signUpBirthdate_picker)).getEditText();
         TextInputLayout dropdownUserTypesMenu = fragment.findViewById(R.id.dropdown_user_type_menu);
         AutoCompleteTextView dropdownUserTypesEditText = (AutoCompleteTextView) dropdownUserTypesMenu.getEditText();
         TextInputLayout dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
@@ -46,8 +48,8 @@ public class SignUpFragment extends JRFragment {
         ArrayAdapter<String> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
 
-        if(showDatePicker != null) {
-            showDatePicker.setOnClickListener(v -> pickDate(showDatePicker));
+        if(datePicker != null) {
+            datePicker.setOnClickListener(v -> pickDate(datePicker));
         }
 
         if(dropdownCountriesEditText != null) {
@@ -84,10 +86,7 @@ public class SignUpFragment extends JRFragment {
                             break;
                         case EMPLOYER:
                         case AGENCY:
-                            // TODO Faire les goToFragment(EmployerProfileFragment)
-                            break;
-                        case MODERATOR:
-                            // TODO Faire les goToFragment(ModeratorProfileFragment)
+                            goToFragment(EmployerProfileFragment.class, null);
                             break;
                     }
                 }
@@ -100,6 +99,7 @@ public class SignUpFragment extends JRFragment {
         UserViewModel.getInstance().getUser().removeObservers(getViewLifecycleOwner());
     }
 
+    @SuppressWarnings("deprecation")
     public void pickDate(EditText showDatePicker) {
         MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
                 .datePicker()
@@ -128,6 +128,18 @@ public class SignUpFragment extends JRFragment {
         dropdownCountriesMenu.setVisibility(View.VISIBLE);
     }
 
+    public void showEmployerInputs() {
+        TextInputLayout signUpBusinessName = fragment.findViewById(R.id.signUpFirstname);
+        TextInputLayout signUpAddress = fragment.findViewById(R.id.signUpLastname);
+        TextInputLayout signUpSiret = fragment.findViewById(R.id.signUpBirthdate_picker);
+        TextInputLayout signUpManager = fragment.findViewById(R.id.signUpBirthdate_picker);
+
+        signUpFirstname.setVisibility(View.VISIBLE);
+        signUpLastname.setVisibility(View.VISIBLE);
+        showDatePickerTIL.setVisibility(View.VISIBLE);
+        dropdownCountriesMenu.setVisibility(View.VISIBLE);
+    }
+
     public void signup() {
         TextInputLayout emailInput = fragment.findViewById(R.id.signUpMail);
         TextInputLayout passwordInput = fragment.findViewById(R.id.signUpPassword);
@@ -137,6 +149,10 @@ public class SignUpFragment extends JRFragment {
         TextInputLayout nationalityInput = fragment.findViewById(R.id.signUpDropdown_nationality);
         TextInputLayout birthdateInput= fragment.findViewById(R.id.signUpBirthdate_picker);
         TextInputLayout userTypeInput = fragment.findViewById(R.id.dropdown_user_type_menu);
+        TextInputLayout businessNameInput = fragment.findViewById(R.id.signUpBusinessName);
+        TextInputLayout addressInput = fragment.findViewById(R.id.signUpAddress);
+        TextInputLayout siretInput = fragment.findViewById(R.id.signUpSiret);
+        TextInputLayout managerInput = fragment.findViewById(R.id.signUpManager);
 
         EditText emailEditText = emailInput.getEditText();
         EditText passwordEditText = passwordInput.getEditText();
@@ -146,6 +162,10 @@ public class SignUpFragment extends JRFragment {
         EditText nationalityEditText = nationalityInput.getEditText();
         EditText birthdateEditText = birthdateInput.getEditText();
         EditText userTypeEditText = userTypeInput.getEditText();
+        EditText businessNameEditText = businessNameInput.getEditText();
+        EditText addressEditText = addressInput.getEditText();
+        EditText siretEditText = siretInput.getEditText();
+        EditText managerEditText = managerInput.getEditText();
 
         if(
            emailEditText == null ||
@@ -155,7 +175,11 @@ public class SignUpFragment extends JRFragment {
            lastNameEditText == null ||
            nationalityEditText == null ||
            birthdateEditText == null ||
-           userTypeEditText == null
+           userTypeEditText == null ||
+           businessNameEditText == null ||
+           addressEditText == null ||
+           siretEditText == null ||
+           managerEditText == null
         ) {
             showToast(0); // TODO Message style "Une erreur est survenue, veuillez réessayer"
             return;
@@ -169,21 +193,41 @@ public class SignUpFragment extends JRFragment {
         String nationality = nationalityEditText.getText().toString();
         String birthdate = birthdateEditText.getText().toString();
         UserType userType = UserType.valueOf(userTypeEditText.getText().toString());
+        String businessName = businessNameEditText.getText().toString();
+        String address = addressEditText.getText().toString();
+        String siret = siretEditText.getText().toString();
+        String manager = managerEditText.getText().toString();
 
-        if(
-           email.isBlank() ||
-           password.isBlank() ||
-           phoneNumber.isBlank() ||
-           firstname.isBlank() ||
-           lastname.isBlank() ||
-           nationality.isBlank() ||
-           birthdate.isBlank()
-        ) {
-            showToast(0); // TODO Message d'erreur champs obligatoires
-            return;
+        if (userType == EMPLOYER || userType == AGENCY) {
+            if(
+               email.isBlank() ||
+               password.isBlank() ||
+               phoneNumber.isBlank() ||
+               businessName.isBlank() ||
+               address.isBlank() ||
+               siret.isBlank() ||
+               manager.isBlank()
+            ) {
+                showToast(0); // TODO Message d'erreur champs obligatoires
+                return;
+            }
+            User newUser = new User(email, password, businessName, phoneNumber, address, siret, manager, userType);
+            UserViewModel.getInstance().signUp(newUser);
+        } else {
+            if(
+               email.isBlank() ||
+               password.isBlank() ||
+               phoneNumber.isBlank() ||
+               firstname.isBlank() ||
+               lastname.isBlank() ||
+               nationality.isBlank() ||
+               birthdate.isBlank()
+            ) {
+                showToast(0); // TODO Message d'erreur champs obligatoires
+                return;
+            }
+            User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, birthdate);
+            UserViewModel.getInstance().signUp(newUser);
         }
-
-        User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, userType, birthdate);
-        UserViewModel.getInstance().signUp(newUser);
     }
 }

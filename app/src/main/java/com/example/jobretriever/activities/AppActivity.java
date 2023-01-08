@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,6 +18,7 @@ import com.example.jobretriever.fragments.SignInFragment;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+@SuppressWarnings("deprecation")
 public class AppActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -46,7 +48,13 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_sign_in) {
-            goToFragment(SignInFragment.class);
+            if(UserViewModel.getInstance().isLoggedIn()) {
+                goToFragment(HomeFragment.class);
+                UserViewModel.getInstance().getUser().postValue(null);
+                Toast.makeText(this, "Vous avez été déconnecté", Toast.LENGTH_SHORT).show(); // TODO Mettre message res
+            } else {
+                goToFragment(SignInFragment.class);
+            }
         } else {
             goToFragment(HomeFragment.class);
         }

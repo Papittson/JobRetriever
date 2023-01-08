@@ -1,19 +1,16 @@
 package com.example.jobretriever.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
@@ -33,33 +30,20 @@ public class CreateOfferFragment extends JRFragment {
         if(!isUserAllowed()) {
             return;
         }
+
         Button submitButton = fragment.findViewById(R.id.submit_offer);
+        EditText datePicker = ((TextInputLayout) fragment.findViewById(R.id.signUpBirthdate_picker)).getEditText();
+
+        if(datePicker != null) {
+            datePicker.setOnClickListener(v -> pickDate(datePicker));
+        }
+
         submitButton.setOnClickListener(_view -> {
             EditText titleEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_title)).getEditText();
             EditText fieldEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_field)).getEditText();
             EditText durationEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_duration)).getEditText();
             EditText descriptionEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_description)).getEditText();
             EditText wageEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_wage)).getEditText();
-            EditText dateEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_date)).getEditText();
-            MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder.datePicker().setTitleText("Birthdate").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
-            dateEditText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
-                    signUpBirthdate.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @Override
-                        public void onPositiveButtonClick(Long selection) {
-                            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                            calendar.setTimeInMillis(selection);
-                            System.out.println(calendar);
-                            Date birthdate = new Date(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
-                            int month = birthdate.getMonth()+1;
-                            dateEditText.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear());
-                        }
-                    });
-                }
-            });
 
             if(titleEditText != null && fieldEditText != null && durationEditText != null && descriptionEditText != null && wageEditText != null) {
                 String title = titleEditText.getText().toString();
@@ -67,15 +51,9 @@ public class CreateOfferFragment extends JRFragment {
                 String duration = durationEditText.getText().toString();
                 String description = descriptionEditText.getText().toString();
                 double wage = Double.parseDouble(wageEditText.getText().toString());
-                Offer offer = new Offer();
-                offer.setTitle(title);
-                offer.setField(field);
-                offer.setDuration(duration);
-                offer.setDescription(description);
-                offer.setWage(wage);
-                offer.setEmployerId(user.getId());
-                offer.setDate(Calendar.getInstance().getTime()); // TODO Ne s'agit-il pas de la date de début ?
-                offer.setLocationID(""); // TODO Il manque ce champ à faire
+                Date date = Calendar.getInstance().getTime(); // TODO Changer ça
+                String location = ""; // TODO Faire ça
+                Offer offer = new Offer(title, duration, date, field, description, wage, user.getId(), location);
                 OfferViewModel.getInstance().addOffer(offer);
             } else {
                 showToast(0); // TODO Mettre un message d'erreur "Remplissez tous les champs"
@@ -114,5 +92,22 @@ public class CreateOfferFragment extends JRFragment {
         super.onStop();
         OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
         OfferViewModel.getInstance().getOffer().removeObservers(getViewLifecycleOwner());
+    }
+
+    @SuppressWarnings("deprecation")
+    public void pickDate(EditText showDatePicker) {
+        MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
+                .datePicker()
+                .setTitleText("Birthdate") // TODO Mettre un string resource
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
+        signUpBirthdate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(selection);
+            Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+            int month = birthdate.getMonth() + 1;
+            showDatePicker.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear()); // TODO Mettre string res placeholder
+        });
     }
 }

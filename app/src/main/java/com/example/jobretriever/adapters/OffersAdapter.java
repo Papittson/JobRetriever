@@ -47,6 +47,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
 
         holder.title.setText(offer.getTitle());
         holder.description.setText(offer.getDescription());
+        holder.location.setText(offer.getLocation());
         holder.applicationStatus.setText(offer.getApplicationStatus(userId));
         String companyDurationStr = context.getString(R.string.company_duration, offer.getEmployer().getBusinessName(), offer.getDuration());
         holder.companyDuration.setText(companyDurationStr);
@@ -60,6 +61,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView title;
         private final TextView companyDuration;
+        private final TextView location;
         private final TextView applicationStatus;
         private final TextView description;
 
@@ -68,6 +70,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
             itemView.setOnClickListener(this);
 
             this.title = itemView.findViewById(R.id.row_title);
+            this.location = itemView.findViewById(R.id.offer_location);
             this.companyDuration = itemView.findViewById(R.id.company_duration);
             this.applicationStatus = itemView.findViewById(R.id.application_status);
             this.description = itemView.findViewById(R.id.row_description);

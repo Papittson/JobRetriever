@@ -1,6 +1,6 @@
 package com.example.jobretriever.viewmodels;
 
-import static com.example.jobretriever.models.ApplicationState.PENDING;
+import static com.example.jobretriever.models.ApplicationStatus.PENDING;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

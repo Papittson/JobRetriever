@@ -16,7 +16,7 @@ public class Offer extends Entity {
     String field;
     String description;
     Double wage;
-    Map<String, ApplicationState> applications;
+    Map<String, ApplicationStatus> applications;
     String employerId;
     String location;
     @Exclude
@@ -39,7 +39,7 @@ public class Offer extends Entity {
     }
 
     public int getApplicationStatus(String userId) {
-        ApplicationState status = this.applications.get(userId);
+        ApplicationStatus status = this.applications.get(userId);
         if(status != null) {
             return status.stringResId;
         }
@@ -57,10 +57,10 @@ public class Offer extends Entity {
         return this.wage;
     }
 
-    public Map<String, ApplicationState> getApplications() {
+    public Map<String, ApplicationStatus> getApplications() {
         return applications;
     }
-    public void setApplications(Map<String, ApplicationState> applications) {
+    public void setApplications(Map<String, ApplicationStatus> applications) {
         this.applications = applications;
     }
 

@@ -1,6 +1,9 @@
 package com.example.jobretriever.models;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
 @SuppressWarnings("unused")
+@IgnoreExtraProperties
 public class Employer extends User {
     String businessName;
     String address;

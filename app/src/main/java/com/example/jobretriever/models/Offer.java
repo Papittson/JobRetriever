@@ -3,12 +3,14 @@ package com.example.jobretriever.models;
 
 import com.example.jobretriever.R;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
+@IgnoreExtraProperties
 public class Offer extends Entity {
     String title;
     DurationType duration;
@@ -82,9 +84,11 @@ public class Offer extends Entity {
         this.field = field;
     }
 
+    @Exclude
     public Employer getEmployer() {
         return employer;
     }
+    @Exclude
     public void setEmployer(Employer employer) {
         this.employer = employer;
     }

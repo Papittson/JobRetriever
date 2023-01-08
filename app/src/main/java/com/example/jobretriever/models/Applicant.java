@@ -1,6 +1,7 @@
 package com.example.jobretriever.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@IgnoreExtraProperties
 public class Applicant extends User {
     String firstname;
     String lastname;

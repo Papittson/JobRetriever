@@ -14,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.example.jobretriever.R;
 import com.example.jobretriever.fragments.ApplicationsFragment;
 import com.example.jobretriever.fragments.CandidateProfileFragment;
+import com.example.jobretriever.fragments.EmployerProfileFragment;
 import com.example.jobretriever.fragments.HomeFragment;
 import com.example.jobretriever.fragments.SignInFragment;
+import com.example.jobretriever.models.Applicant;
+import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -77,8 +80,13 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
                 }
                 return true;
             case R.id.navbarProfile:
-                if(UserViewModel.getInstance().isLoggedIn()) {
-                    goToFragment(CandidateProfileFragment.class);
+                User user = UserViewModel.getInstance().getUser().getValue();
+                if(user != null) {
+                    if(user instanceof Applicant) {
+                        goToFragment(CandidateProfileFragment.class);
+                    } else {
+                        goToFragment(EmployerProfileFragment.class);
+                    }
                 } else {
                     goToFragment(SignInFragment.class);
                 }

@@ -84,7 +84,7 @@
     <string name="awaiting_attachement">En attente de pièces</string>
     <string name="awaiting_meeting">En attente d\'entretient</string>
     <string name="error_creating_application">Erreur lors de la création</string>
-    <string name="offer_creation">Erreur lors de la création</string>
+    <string name="offer_creation">Création de l\'offre</string>
     <string name="lastname">Nom</string>
     <string name="birthdate">Date de naissance</string>
     <string name="date">Date</string>

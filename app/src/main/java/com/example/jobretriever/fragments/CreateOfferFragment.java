@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.DurationType;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +36,7 @@ public class CreateOfferFragment extends JRFragment {
         }
 
         Button submitButton = fragment.findViewById(R.id.submit_offer);
-        EditText datePicker = ((TextInputLayout) fragment.findViewById(R.id.signUpBirthdate_picker)).getEditText();
+        EditText datePicker = fragment.findViewById(R.id.offer_date);
         AutoCompleteTextView cityEditText = fragment.findViewById(R.id.offer_city);
         AutoCompleteTextView durationEditText = fragment.findViewById(R.id.offer_duration);
 
@@ -59,23 +59,30 @@ public class CreateOfferFragment extends JRFragment {
         }
 
         submitButton.setOnClickListener(_view -> {
-            EditText titleEditText = fragment.findViewById(R.id.offer_title);
-            EditText fieldEditText = fragment.findViewById(R.id.offer_field);
-            EditText descriptionEditText = fragment.findViewById(R.id.offer_description);
-            EditText wageEditText = fragment.findViewById(R.id.offer_wage);
+            if(user != null && user instanceof Employer) {
+                Employer employer = (Employer) user;
+                EditText titleEditText = fragment.findViewById(R.id.offer_title);
+                EditText fieldEditText = fragment.findViewById(R.id.offer_field);
+                EditText descriptionEditText = fragment.findViewById(R.id.offer_description);
+                EditText wageEditText = fragment.findViewById(R.id.offer_wage);
 
-            if(titleEditText != null && fieldEditText != null && descriptionEditText != null && wageEditText != null && durationType != null) {
-                String title = titleEditText.getText().toString();
-                String field = fieldEditText.getText().toString();
-                DurationType duration = durationType;
-                String description = descriptionEditText.getText().toString();
-                double wage = Double.parseDouble(wageEditText.getText().toString());
-                Date date = Calendar.getInstance().getTime(); // TODO Changer ça
-                String location = cityEditText.getText().toString();
-                Offer offer = new Offer(title, duration, date, field, description, wage, user.getId(), location);
-                OfferViewModel.getInstance().addOffer(offer);
+                if(titleEditText != null && fieldEditText != null && descriptionEditText != null && wageEditText != null && durationType != null) {
+                    String title = titleEditText.getText().toString();
+                    String field = fieldEditText.getText().toString();
+                    DurationType duration = durationType;
+                    String description = descriptionEditText.getText().toString();
+                    double wage = Double.parseDouble(wageEditText.getText().toString());
+                    Date date = Calendar.getInstance().getTime(); // TODO Changer ça
+                    String location = cityEditText.getText().toString();
+                    Offer offer = new Offer(title, duration, date, field, description, wage, employer.getId(), location);
+                    offer.setEmployer(employer);
+                    OfferViewModel.getInstance().addOffer(offer);
+                } else {
+                    showToast(R.string.required_fields);
+                }
             } else {
-                showToast(R.string.required_fields);
+                goToFragment(HomeFragment.class, null);
+                showToast(R.string.error_has_occured);
             }
         });
     }
@@ -92,12 +99,6 @@ public class CreateOfferFragment extends JRFragment {
                 offer -> {
                     this.offerId = offer.getId();
                     OfferViewModel.getInstance().getAll();
-                }
-        );
-
-        OfferViewModel.getInstance().getOffers().observe(
-                getViewLifecycleOwner(),
-                offers -> {
                     Bundle args = new Bundle();
                     args.putString("offerId", offerId);
                     goToFragment(OfferFragment.class, args);

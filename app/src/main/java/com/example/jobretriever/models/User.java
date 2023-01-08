@@ -1,6 +1,9 @@
 package com.example.jobretriever.models;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
 @SuppressWarnings("unused")
+@IgnoreExtraProperties
 public class User extends Entity {
     String mail;
     String password;

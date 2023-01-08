@@ -85,6 +85,9 @@ public class OfferViewModel extends ViewModel {
             if(task.isSuccessful()) {
                 offer.setId(task.getResult().getId());
                 this.offer.postValue(offer);
+                List<Offer> offers = this.offers.getValue() == null ? new ArrayList<>() : this.offers.getValue();
+                offers.add(offer);
+                this.offers.postValue(offers);
             } else {
                 errorMessage.postValue(R.string.error_adding_offer);
                 if (task.getException() != null) {

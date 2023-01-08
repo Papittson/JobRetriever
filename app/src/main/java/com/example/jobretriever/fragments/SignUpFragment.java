@@ -16,13 +16,10 @@ import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -189,18 +186,4 @@ public class SignUpFragment extends JRFragment {
         User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, userType, birthdate);
         UserViewModel.getInstance().signUp(newUser);
     }
-
-    public List<String> getCountries() {
-        Locale[] locales = Locale.getAvailableLocales();
-        ArrayList<String> countries = new ArrayList<>();
-        for (Locale locale : locales) {
-            String country = locale.getDisplayCountry();
-            if (country.trim().length() > 0 && !countries.contains(country)) {
-                countries.add(country);
-            }
-        }
-        Collections.sort(countries);
-        return countries;
-    }
-
 }

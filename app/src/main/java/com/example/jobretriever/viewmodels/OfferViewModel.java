@@ -6,10 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.R;
-import com.example.jobretriever.models.Location;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
-import com.example.jobretriever.repositories.LocationRepository;
 import com.example.jobretriever.repositories.OfferRepository;
 import com.example.jobretriever.repositories.UserRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +32,7 @@ public class OfferViewModel extends ViewModel {
     }
 
     public void getAll(String searchQuery) {
+        System.out.println("TEST 0");
         OfferRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Offer> list = new ArrayList<>();
@@ -42,21 +41,11 @@ public class OfferViewModel extends ViewModel {
                     obj.setId(doc.getId());
                     if (searchQuery == null || obj.getTitle().toLowerCase().contains(searchQuery.toLowerCase())) {
                         list.add(obj);
-                        UserRepository.getInstance().getById(obj.getEmployerID()).addOnCompleteListener(task1 -> {
+                        UserRepository.getInstance().getById(obj.getEmployerId()).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 obj.setEmployer(task1.getResult().toObject(User.class));
-                                LocationRepository.getInstance().getById(obj.getLocationID()).addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        Location location = task2.getResult().toObject(Location.class);
-                                        obj.setLocation(location);
-                                        offers.postValue(list);
-                                    } else {
-                                        errorMessage.postValue(R.string.error_loading_location);
-                                        if (task2.getException() != null) {
-                                            task2.getException().printStackTrace();
-                                        }
-                                    }
-                                });
+                                offers.postValue(list);
+                                System.out.println("TEST 2");
                             } else {
                                 errorMessage.postValue(R.string.error_loading_users);
                                 if (task1.getException() != null) {
@@ -64,11 +53,10 @@ public class OfferViewModel extends ViewModel {
                                 }
                             }
                         });
-
-
                     }
                 }
                 if (list.isEmpty()) {
+                    System.out.println("TEST 3");
                     offers.postValue(list);
                 }
             } else {

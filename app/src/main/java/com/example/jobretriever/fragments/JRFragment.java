@@ -23,9 +23,16 @@ import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.common.hash.Hashing;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class JRFragment extends Fragment {
     View fragment;
@@ -33,12 +40,14 @@ public class JRFragment extends Fragment {
     Integer fragmentLayout;
     boolean isProtected;
     User user;
+    List<String> cities;
 
     public JRFragment(@StringRes Integer actionBarTitle, @LayoutRes Integer fragmentLayout, boolean isProtected) {
         this.actionBarTitle = actionBarTitle;
         this.fragmentLayout = fragmentLayout;
         this.isProtected = isProtected;
         this.user = UserViewModel.getInstance().getUser().getValue();
+        this.cities = retrieveCities();
     }
 
     @Override
@@ -111,6 +120,55 @@ public class JRFragment extends Fragment {
 
     public String encrypt(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+    }
+
+    public String loadJSONFromAssets() {
+        String json = null;
+        if(getActivity() != null) {
+            try {
+                InputStream is = getActivity().getAssets().open("cities.json");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                @SuppressWarnings("unused")
+                int i = is.read(buffer);
+                is.close();
+                json = new String(buffer, StandardCharsets.UTF_8);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return json;
+    }
+
+    private List<String> retrieveCities() {
+        List<String> cities = new ArrayList<>();
+        String json = loadJSONFromAssets();
+        try {
+            JSONArray array = new JSONArray(json);
+            for (int i = 0; i < array.length(); i++) {
+                cities.add(array.getString(i));
+            }
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return cities;
+    }
+
+    public List<String> getCities() {
+        return cities;
+    }
+
+    public List<String> getCountries() {
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> countries = new ArrayList<>();
+        for (Locale locale : locales) {
+            String country = locale.getDisplayCountry();
+            if (country.trim().length() > 0 && !countries.contains(country)) {
+                countries.add(country);
+            }
+        }
+        Collections.sort(countries);
+        return countries;
     }
 
     public void goToFragment(Class<? extends Fragment> fragmentClass, Bundle args) {

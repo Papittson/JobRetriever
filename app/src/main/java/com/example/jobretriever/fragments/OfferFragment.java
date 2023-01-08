@@ -92,7 +92,7 @@ public class OfferFragment extends JRFragment {
         businessNameTV.setText(offer.getEmployer().getBusinessName());
         durationTV.setText(offer.getDuration());
         descriptionTV.setText(offer.getDescription());
-        cityCountry.setText(String.format(getString(R.string.offer_location), offer.getLocation().getName(), offer.getLocation().getCountry()));
+        cityCountry.setText(offer.getLocation());
         wage.setText(String.format(getString(R.string.offer_wage), offer.getWage()));
         favoriteButton.setImageResource(favoriteImage);
     }

@@ -21,6 +21,7 @@ public class JRRepository {
     }
 
     public Task<QuerySnapshot> getAll() {
+        System.out.println("TEST 1");
         return collection.get();
     }
 

@@ -73,7 +73,7 @@ public class CreateOfferFragment extends JRFragment {
                 offer.setDuration(duration);
                 offer.setDescription(description);
                 offer.setWage(wage);
-                offer.setEmployerID(user.getId());
+                offer.setEmployerId(user.getId());
                 offer.setDate(Calendar.getInstance().getTime()); // TODO Ne s'agit-il pas de la date de début ?
                 offer.setLocationID(""); // TODO Il manque ce champ à faire
                 OfferViewModel.getInstance().addOffer(offer);
@@ -101,6 +101,7 @@ public class CreateOfferFragment extends JRFragment {
         OfferViewModel.getInstance().getOffers().observe(
                 getViewLifecycleOwner(),
                 offers -> {
+                    System.out.println("TEST 4");
                     Bundle args = new Bundle();
                     args.putString("offerId", offerId);
                     goToFragment(OfferFragment.class, args);

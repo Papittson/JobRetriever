@@ -40,15 +40,15 @@ public class CandidateProfileFragment extends JRFragment {
             nameTextView.setText(String.format(getString(R.string.profile_name_candidate), user.getFirstname(), user.getName()));
 
             informationsTextView.setText(String.format(getString(R.string.profile_infos_candidate), getString(user.getType().stringResId), user.getNationality(), user.getAge()));
-            if(user.getExperience()==null){
+            if(user.getExperiences()==null){
                 experienceTextView.setText(getText(R.string.no_experiences));
             }else{
-                experienceTextView.setText(user.getExperience());
+                experienceTextView.setText(user.getExperiences());//TODO affichage des lignes
             }
-            if(user.getEducation()==null){
-                educationTextView.setText(getText(R.string.no_educations));
+            if(user.getEducations()==null){
+                educationTextView.setText(getText(R.string.no_educations));//TODO affichage des lignes
             }else{
-                educationTextView.setText(user.getEducation());
+                educationTextView.setText(user.getEducations());
             }
 
             phoneButton.setOnClickListener(v -> contactUserByPhone());

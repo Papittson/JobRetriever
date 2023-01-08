@@ -17,7 +17,6 @@
 
     <!--Email-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpMail"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,13 +24,13 @@
         android:hint="@string/mail">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--Password-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,13 +39,13 @@
         app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--Phone number-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpPhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,13 +53,13 @@
         android:hint="@string/phone_number">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--User Type-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dropdown_user_type_menu"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,6 +67,7 @@
         android:hint="@string/user_type">
 
         <AutoCompleteTextView
+            android:id="@+id/dropdown_user_type_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
@@ -78,7 +78,6 @@
 
     <!--Firstname-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpFirstname"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,6 +86,7 @@
         android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpFirstname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName" />
@@ -94,7 +94,6 @@
 
     <!--Lastname-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpLastname"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,6 +102,7 @@
         android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpLastname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName" />
@@ -111,17 +111,15 @@
     <!--Birthdate-->
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpBirthdate_picker"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:hint="@string/birthdate"
-        android:visibility="gone"
-
-        >
+        android:visibility="gone" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpBirthdate_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -131,10 +129,8 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <!--Nationality-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpDropdown_nationality"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -143,6 +139,7 @@
         android:visibility="gone">
 
         <AutoCompleteTextView
+            android:id="@+id/signUpDropdown_nationality"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
@@ -151,7 +148,6 @@
 
     <!--Experiences-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpExperiences"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -160,15 +156,14 @@
         android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpExperiences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            />
+            android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--Educations-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpEducations"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -177,69 +172,69 @@
         android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpEducations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            />
+            android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--If User Type : APPLICANT-->
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpBusinessName"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginBottom="10dp"
-        android:hint="@string/business_name">
+        android:hint="@string/business_name"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpBusinessName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpAddress"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginBottom="10dp"
-        android:hint="@string/address">
+        android:hint="@string/address"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpSiret"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginBottom="10dp"
-        android:hint="@string/siret">
+        android:hint="@string/siret"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpSiret"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signUpManager"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginBottom="10dp"
-        android:hint="@string/manager_name">
+        android:hint="@string/manager_name"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpManager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />

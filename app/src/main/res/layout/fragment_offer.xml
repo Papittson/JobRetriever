@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="70dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,50 +10,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/offer_infos_and_buttons"
+        <TextView
+            android:id="@+id/offer_job_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="90dp"
+            android:text="@string/job_title"
+            android:textSize="20sp"
             android:textColor="@color/black"
-            android:orientation="vertical">
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/offer_job_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/job_title"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/offer_busines_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/business_name"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/offer_busines_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/business_name"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/offer_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/duration"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/offer_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/duration"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
+        <TextView
+            android:id="@+id/offer_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/offer_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
-        </LinearLayout>
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/offer_buttons"
         android:layout_width="match_parent"

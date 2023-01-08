@@ -69,9 +69,8 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
                 goToFragment(HomeFragment.class);
                 return true;
             case R.id.navbarAlerts:
-                goToFragment(SignInFragment.class);
+                goToFragment(SignInFragment.class); // TODO Faire fragment applied offers
                 return true;
-            case R.id.navbarSearch:
             case R.id.navbarProfile:
                 if(UserViewModel.getInstance().isLoggedIn()){
                     goToFragment(CandidateProfileFragment.class);

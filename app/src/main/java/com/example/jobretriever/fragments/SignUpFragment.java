@@ -17,16 +17,13 @@ import com.example.jobretriever.models.User;
 import com.example.jobretriever.models.UserType;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 public class SignUpFragment extends JRFragment {
+    UserType userType;
 
     public SignUpFragment() {
         super(R.string.action_sign_up, R.layout.fragment_sign_up, false);
@@ -35,37 +32,28 @@ public class SignUpFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         Button confirmButton = fragment.findViewById(R.id.confirmSignUp);
-        EditText datePicker = ((TextInputLayout) fragment.findViewById(R.id.signUpBirthdate_picker)).getEditText();
-        TextInputLayout dropdownUserTypesMenu = fragment.findViewById(R.id.dropdown_user_type_menu);
-        AutoCompleteTextView dropdownUserTypesEditText = (AutoCompleteTextView) dropdownUserTypesMenu.getEditText();
-        TextInputLayout dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
-        AutoCompleteTextView dropdownCountriesEditText = (AutoCompleteTextView) dropdownCountriesMenu.getEditText();
+        EditText datePicker = fragment.findViewById(R.id.signUpBirthdate_picker);
+        AutoCompleteTextView dropdownUserTypesEditText = fragment.findViewById(R.id.dropdown_user_type_menu);
+        AutoCompleteTextView dropdownCountriesEditText = fragment.findViewById(R.id.signUpDropdown_nationality);
 
-        List<String> userTypes = Arrays.stream(UserType.values())
-                .map(userType -> getString(userType.stringResId))
-                .collect(Collectors.toList());
-
-        ArrayAdapter<String> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
+        ArrayAdapter<UserType> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, UserType.values());
         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
 
-        if (datePicker != null) {
-            datePicker.setOnClickListener(v -> pickDate(datePicker));
-        }
+        datePicker.setOnClickListener(v -> pickDate(datePicker));
+        dropdownCountriesEditText.setAdapter(countriesAdapter);
 
-        if (dropdownCountriesEditText != null) {
-            dropdownCountriesEditText.setAdapter(countriesAdapter);
-        }
-
-        if (dropdownUserTypesEditText != null) {
-            dropdownUserTypesEditText.setAdapter(userTypesAdapter);
-            dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
-                if (position == 1 || position == 2) {
+        dropdownUserTypesEditText.setAdapter(userTypesAdapter);
+        dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof UserType) {
+                userType = (UserType) item;
+                if (userType == EMPLOYER || userType == AGENCY) {
                     showEmployerInputs();
                 } else {
                     showCandidateInputs();
                 }
-            });
-        }
+            }
+        });
 
         confirmButton.setOnClickListener(_view -> signup());
     }
@@ -76,7 +64,10 @@ public class SignUpFragment extends JRFragment {
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user1 -> {
-                    if (user.getType() == EMPLOYER || user.getType() == AGENCY) {
+                    if(user1 == null) {
+                        return;
+                    }
+                    if(user1.getType() == EMPLOYER || user1.getType() == AGENCY) {
                         goToFragment(EmployerProfileFragment.class, null);
                     } else {
                         goToFragment(CandidateProfileFragment.class, null);
@@ -109,10 +100,10 @@ public class SignUpFragment extends JRFragment {
     }
 
     public void showCandidateInputs() {
-        TextInputLayout signUpFirstname = fragment.findViewById(R.id.signUpFirstname);
-        TextInputLayout dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
-        TextInputLayout signUpLastname = fragment.findViewById(R.id.signUpLastname);
-        TextInputLayout showDatePickerTIL = fragment.findViewById(R.id.signUpBirthdate_picker);
+        EditText signUpFirstname = fragment.findViewById(R.id.signUpFirstname);
+        EditText dropdownCountriesMenu = fragment.findViewById(R.id.signUpDropdown_nationality);
+        EditText signUpLastname = fragment.findViewById(R.id.signUpLastname);
+        EditText showDatePickerTIL = fragment.findViewById(R.id.signUpBirthdate_picker);
 
         signUpFirstname.setVisibility(View.VISIBLE);
         signUpLastname.setVisibility(View.VISIBLE);
@@ -121,10 +112,10 @@ public class SignUpFragment extends JRFragment {
     }
 
     public void showEmployerInputs() {
-        TextInputLayout signUpBusinessName = fragment.findViewById(R.id.signUpBusinessName);
-        TextInputLayout signUpAddress = fragment.findViewById(R.id.signUpAddress);
-        TextInputLayout signUpSiret = fragment.findViewById(R.id.signUpSiret);
-        TextInputLayout signUpManager = fragment.findViewById(R.id.signUpManager);
+        EditText signUpBusinessName = fragment.findViewById(R.id.signUpBusinessName);
+        EditText signUpAddress = fragment.findViewById(R.id.signUpAddress);
+        EditText signUpSiret = fragment.findViewById(R.id.signUpSiret);
+        EditText signUpManager = fragment.findViewById(R.id.signUpManager);
 
         signUpBusinessName.setVisibility(View.VISIBLE);
         signUpAddress.setVisibility(View.VISIBLE);
@@ -133,35 +124,20 @@ public class SignUpFragment extends JRFragment {
     }
 
     public void signup() {
-        TextInputLayout emailInput = fragment.findViewById(R.id.signUpMail);
-        TextInputLayout passwordInput = fragment.findViewById(R.id.signUpPassword);
-        TextInputLayout phoneNumberInput = fragment.findViewById(R.id.signUpPhoneNumber);
-        TextInputLayout firstNameInput = fragment.findViewById(R.id.signUpFirstname);
-        TextInputLayout lastNameInput = fragment.findViewById(R.id.signUpLastname);
-        TextInputLayout nationalityInput = fragment.findViewById(R.id.signUpDropdown_nationality);
-        TextInputLayout birthdateInput = fragment.findViewById(R.id.signUpBirthdate_picker);
-        TextInputLayout userTypeInput = fragment.findViewById(R.id.dropdown_user_type_menu);
-        TextInputLayout businessNameInput = fragment.findViewById(R.id.signUpBusinessName);
-        TextInputLayout addressInput = fragment.findViewById(R.id.signUpAddress);
-        TextInputLayout siretInput = fragment.findViewById(R.id.signUpSiret);
-        TextInputLayout managerInput = fragment.findViewById(R.id.signUpManager);
-        TextInputLayout experiencesInput = fragment.findViewById(R.id.signUpExperiences);
-        TextInputLayout educationsInput = fragment.findViewById(R.id.signUpEducations);
-
-        EditText emailEditText = emailInput.getEditText();
-        EditText passwordEditText = passwordInput.getEditText();
-        EditText phoneNumberEditText = phoneNumberInput.getEditText();
-        EditText firstNameEditText = firstNameInput.getEditText();
-        EditText lastNameEditText = lastNameInput.getEditText();
-        EditText nationalityEditText = nationalityInput.getEditText();
-        EditText birthdateEditText = birthdateInput.getEditText();
-        EditText userTypeEditText = userTypeInput.getEditText();
-        EditText businessNameEditText = businessNameInput.getEditText();
-        EditText addressEditText = addressInput.getEditText();
-        EditText siretEditText = siretInput.getEditText();
-        EditText managerEditText = managerInput.getEditText();
-        EditText experiencesEditText = experiencesInput.getEditText();
-        EditText educationsEditText = educationsInput.getEditText();
+        EditText emailEditText = fragment.findViewById(R.id.signUpMail);
+        EditText passwordEditText = fragment.findViewById(R.id.signUpPassword);
+        EditText phoneNumberEditText = fragment.findViewById(R.id.signUpPhoneNumber);
+        EditText firstNameEditText = fragment.findViewById(R.id.signUpFirstname);
+        EditText lastNameEditText = fragment.findViewById(R.id.signUpLastname);
+        EditText nationalityEditText = fragment.findViewById(R.id.signUpDropdown_nationality);
+        EditText birthdateEditText = fragment.findViewById(R.id.signUpBirthdate_picker);
+        EditText userTypeEditText = fragment.findViewById(R.id.dropdown_user_type_menu);
+        EditText businessNameEditText = fragment.findViewById(R.id.signUpBusinessName);
+        EditText addressEditText = fragment.findViewById(R.id.signUpAddress);
+        EditText siretEditText = fragment.findViewById(R.id.signUpSiret);
+        EditText managerEditText = fragment.findViewById(R.id.signUpManager);
+        EditText experiencesEditText = fragment.findViewById(R.id.signUpExperiences);
+        EditText educationsEditText = fragment.findViewById(R.id.signUpEducations);
 
         if (
                 emailEditText == null ||
@@ -177,7 +153,8 @@ public class SignUpFragment extends JRFragment {
                         siretEditText == null ||
                         managerEditText == null ||
                         educationsEditText == null ||
-                        experiencesEditText == null
+                        experiencesEditText == null ||
+                        userType == null
         ) {
             showToast(R.string.error_has_occured);
             return;
@@ -192,8 +169,6 @@ public class SignUpFragment extends JRFragment {
         String birthdate = birthdateEditText.getText().toString();
         String experiences = experiencesEditText.getText().toString();
         String educations = educationsEditText.getText().toString();
-
-        UserType userType = UserType.valueOf(userTypeEditText.getText().toString());
         String businessName = businessNameEditText.getText().toString();
         String address = addressEditText.getText().toString();
         String siret = siretEditText.getText().toString();

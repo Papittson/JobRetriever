@@ -1,5 +1,7 @@
 package com.example.jobretriever.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
 
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -34,10 +40,14 @@ public class MainActivity extends AppCompatActivity {
         OfferViewModel.getInstance().getAll();
         UserViewModel.getInstance().getAll();
 
-        new Handler().postDelayed((Runnable) () -> {
+        new Handler().postDelayed(() -> {
             Intent i = new Intent(MainActivity.this, AppActivity.class);
             startActivity(i);
             finish();
         }, 2000);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

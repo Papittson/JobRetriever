@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.DurationType;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.repositories.OfferRepository;
@@ -35,7 +36,7 @@ public class OfferViewModel extends ViewModel {
         getAll(null, null, null);
     }
 
-    public void getAll(String searchQuery, String city, String duration) {
+    public void getAll(String searchQuery, String city, DurationType durationType) {
         OfferRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Offer> list = new ArrayList<>();
@@ -47,10 +48,10 @@ public class OfferViewModel extends ViewModel {
                     if(city != null && !obj.getLocation().equalsIgnoreCase(city)) {
                         addToList = false;
                     }
-                    /* TODO Changer ça
-                    if(duration != null && !obj.getDuration().equalsIgnoreCase(duration)) {
+
+                    if(durationType != null && obj.getDuration() != durationType) {
                         addToList = false;
-                    }*/
+                    }
 
                     if (addToList) {
                         list.add(obj);
@@ -58,7 +59,6 @@ public class OfferViewModel extends ViewModel {
                             if (task1.isSuccessful()) {
                                 obj.setEmployer(task1.getResult().toObject(User.class));
                                 offers.postValue(list);
-                                System.out.println("TEST 2");   
                             } else {
                                 errorMessage.postValue(R.string.error_loading_users);
                                 if (task1.getException() != null) {
@@ -69,7 +69,6 @@ public class OfferViewModel extends ViewModel {
                     }
                 }
                 if (list.isEmpty()) {
-                    System.out.println("TEST 3");
                     offers.postValue(list);
                 }
             } else {

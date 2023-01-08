@@ -17,7 +17,6 @@
 
     <!--title-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +24,7 @@
         android:hint="@string/job_title">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/offer_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />
@@ -32,22 +32,35 @@
 
     <!--field-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:hint="@string/field">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/offer_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:hint="@string/city" >
+        <AutoCompleteTextView
+            android:id="@+id/offer_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <!--duration-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_duration"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,6 +68,7 @@
         android:hint="@string/duration">
 
         <AutoCompleteTextView
+            android:id="@+id/offer_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
@@ -62,7 +76,6 @@
     </com.google.android.material.textfield.TextInputLayout>
     <!--desc-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_description"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,20 +85,22 @@
         app:counterMaxLength="200">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/offer_description"
             android:layout_width="match_parent"
             android:layout_height="120sp"
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--Phone number-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_wage"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        app:suffixText="€"
         android:hint="@string/wage">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/offer_wage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -94,7 +109,6 @@
 
     <!-- Date  -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/offer_date"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,6 +116,7 @@
         android:hint="@string/date">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/offer_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"

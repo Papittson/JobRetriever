@@ -128,9 +128,7 @@ public class JRFragment extends Fragment {
 
     public String loadJSONFromAssets() {
         String json = null;
-        System.out.println("TA 1");
         if(getActivity() != null) {
-            System.out.println("TA 2");
             try {
                 InputStream is = getActivity().getAssets().open("cities.json");
                 int size = is.available();
@@ -138,21 +136,17 @@ public class JRFragment extends Fragment {
                 @SuppressWarnings("unused")
                 int i = is.read(buffer);
                 is.close();
-                System.out.println("TA 3");
                 json = new String(buffer, StandardCharsets.UTF_8);
             } catch (IOException ex) {
-                System.out.println("TA 4");
                 ex.printStackTrace();
             }
         }
-        System.out.println("TA 5");
         return json;
     }
 
     private List<String> retrieveCities() {
         List<String> cities = new ArrayList<>();
         String json = loadJSONFromAssets();
-        System.out.println("TEST " + json);
         try {
             JSONArray array = new JSONArray(json);
             for (int i = 0; i < array.length(); i++) {

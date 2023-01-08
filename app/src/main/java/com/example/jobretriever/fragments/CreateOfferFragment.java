@@ -2,6 +2,8 @@ package com.example.jobretriever.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,6 +22,7 @@ import java.util.TimeZone;
 
 public class CreateOfferFragment extends JRFragment {
     String offerId;
+    DurationType durationType;
 
     public CreateOfferFragment() {
         super(R.string.offer_creation, R.layout.fragment_create_offer, true);
@@ -34,26 +37,41 @@ public class CreateOfferFragment extends JRFragment {
 
         Button submitButton = fragment.findViewById(R.id.submit_offer);
         EditText datePicker = ((TextInputLayout) fragment.findViewById(R.id.signUpBirthdate_picker)).getEditText();
+        AutoCompleteTextView cityEditText = fragment.findViewById(R.id.offer_city);
+        AutoCompleteTextView durationEditText = fragment.findViewById(R.id.offer_duration);
+
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCities());
+        cityEditText.setAdapter(citiesAdapter);
+        cityEditText.setThreshold(1);
+
+        ArrayAdapter<DurationType> durationsAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, DurationType.values());
+        durationEditText.setAdapter(durationsAdapter);
+
+        durationEditText.setOnItemClickListener((parent, arg1, position, arg3) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof DurationType) {
+                durationType = (DurationType) item;
+            }
+        });
 
         if(datePicker != null) {
             datePicker.setOnClickListener(v -> pickDate(datePicker));
         }
 
         submitButton.setOnClickListener(_view -> {
-            EditText titleEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_title)).getEditText();
-            EditText fieldEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_field)).getEditText();
-            EditText durationEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_duration)).getEditText();
-            EditText descriptionEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_description)).getEditText();
-            EditText wageEditText = ((TextInputLayout) fragment.findViewById(R.id.offer_wage)).getEditText();
+            EditText titleEditText = fragment.findViewById(R.id.offer_title);
+            EditText fieldEditText = fragment.findViewById(R.id.offer_field);
+            EditText descriptionEditText = fragment.findViewById(R.id.offer_description);
+            EditText wageEditText = fragment.findViewById(R.id.offer_wage);
 
-            if(titleEditText != null && fieldEditText != null && durationEditText != null && descriptionEditText != null && wageEditText != null) {
+            if(titleEditText != null && fieldEditText != null && descriptionEditText != null && wageEditText != null && durationType != null) {
                 String title = titleEditText.getText().toString();
                 String field = fieldEditText.getText().toString();
-                DurationType duration = DurationType.CDD; // TODO Faire ça
+                DurationType duration = durationType;
                 String description = descriptionEditText.getText().toString();
                 double wage = Double.parseDouble(wageEditText.getText().toString());
                 Date date = Calendar.getInstance().getTime(); // TODO Changer ça
-                String location = ""; // TODO Faire ça
+                String location = cityEditText.getText().toString();
                 Offer offer = new Offer(title, duration, date, field, description, wage, user.getId(), location);
                 OfferViewModel.getInstance().addOffer(offer);
             } else {
@@ -80,7 +98,6 @@ public class CreateOfferFragment extends JRFragment {
         OfferViewModel.getInstance().getOffers().observe(
                 getViewLifecycleOwner(),
                 offers -> {
-                    System.out.println("TEST 4");
                     Bundle args = new Bundle();
                     args.putString("offerId", offerId);
                     goToFragment(OfferFragment.class, args);

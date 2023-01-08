@@ -105,4 +105,6 @@
     <string name="CDI">Permanent contract</string>
     <string name="internship">Internship</string>
     <string name="sandwish_course">Block release training</string>
+    <string name="applications">Applications</string>
+    <string name="required">Required</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.fragments.ApplicationsFragment;
 import com.example.jobretriever.fragments.CandidateProfileFragment;
 import com.example.jobretriever.fragments.HomeFragment;
 import com.example.jobretriever.fragments.SignInFragment;
@@ -68,13 +69,17 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
             case R.id.navbarHome:
                 goToFragment(HomeFragment.class);
                 return true;
-            case R.id.navbarAlerts:
-                goToFragment(SignInFragment.class); // TODO Faire fragment applied offers
+            case R.id.navbarApplications:
+                if(UserViewModel.getInstance().isLoggedIn()) {
+                    goToFragment(ApplicationsFragment.class);
+                } else {
+                    goToFragment(SignInFragment.class);
+                }
                 return true;
             case R.id.navbarProfile:
-                if(UserViewModel.getInstance().isLoggedIn()){
+                if(UserViewModel.getInstance().isLoggedIn()) {
                     goToFragment(CandidateProfileFragment.class);
-                }else{
+                } else {
                     goToFragment(SignInFragment.class);
                 }
                 return true;

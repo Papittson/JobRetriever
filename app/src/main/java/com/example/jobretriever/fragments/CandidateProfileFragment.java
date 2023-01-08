@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
@@ -29,7 +30,8 @@ public class CandidateProfileFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         checkProfileArgs();
-        if (isUserAllowed() && user != null) {
+        if (isUserAllowed() && user != null && user instanceof Applicant) {
+            Applicant applicant = (Applicant) user;
             TextView nameTextView = fragment.findViewById(R.id.profile_name);
             TextView informationsTextView = fragment.findViewById(R.id.informations);
             TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
@@ -37,18 +39,18 @@ public class CandidateProfileFragment extends JRFragment {
             ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
 
-            nameTextView.setText(String.format(getString(R.string.profile_name_candidate), user.getFirstname(), user.getName()));
+            nameTextView.setText(String.format(getString(R.string.profile_name_candidate), applicant.getFirstname(), applicant.getLastname()));
 
-            informationsTextView.setText(String.format(getString(R.string.profile_infos_candidate), getString(user.getType().stringResId), user.getNationality(), user.getAge()));
-            if(user.getExperiences()==null){
+            informationsTextView.setText(String.format(getString(R.string.profile_infos_candidate), getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
+            if(applicant.getExperiences() == null || applicant.getExperiences().isBlank()){
                 experienceTextView.setText(getText(R.string.no_experiences));
             }else{
-                experienceTextView.setText(user.getExperiences());//TODO affichage des lignes
+                experienceTextView.setText(applicant.getExperiences());
             }
-            if(user.getEducations()==null){
-                educationTextView.setText(getText(R.string.no_educations));//TODO affichage des lignes
+            if(applicant.getEducations() == null || applicant.getEducations().isBlank()){
+                educationTextView.setText(getText(R.string.no_educations));
             }else{
-                educationTextView.setText(user.getEducations());
+                educationTextView.setText(applicant.getEducations());
             }
 
             phoneButton.setOnClickListener(v -> contactUserByPhone());
@@ -63,18 +65,14 @@ public class CandidateProfileFragment extends JRFragment {
             return;
         }
 
-        createRecyclerView(R.id.applied_offers);
         createRecyclerView(R.id.saved_offers);
 
-        if (user != null && user.getId().equals(userId)) {
-            TextView appliedOffersTitle = fragment.findViewById(R.id.applied_offers_title);
+        if (user != null && user.getId().equals(userId) && user instanceof Applicant) {
+            Applicant applicant = (Applicant) user;
             TextView savedOffersTitle = fragment.findViewById(R.id.saved_offers_title);
-            RecyclerView appliedOffersRV = fragment.findViewById(R.id.applied_offers);
             RecyclerView savedOffersRV = fragment.findViewById(R.id.saved_offers);
 
-            appliedOffersTitle.setVisibility(View.VISIBLE);
             savedOffersTitle.setVisibility(View.VISIBLE);
-            appliedOffersRV.setVisibility(View.VISIBLE);
             savedOffersRV.setVisibility(View.VISIBLE);
 
             List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
@@ -85,15 +83,10 @@ public class CandidateProfileFragment extends JRFragment {
             OfferViewModel.getInstance().getOffers().observe(
                     getViewLifecycleOwner(),
                     offers -> {
-                        List<Offer> appliedOffers = offers.stream()
-                                .filter(offer -> offer.isAppliedByUser(user.getId()))
-                                .collect(Collectors.toList());
-
                         List<Offer> favoriteOffers = offers.stream()
-                                .filter(offer -> user.getFavoritesId().contains(offer.getId()))
+                                .filter(offer -> applicant.getFavoritesId().contains(offer.getId()))
                                 .collect(Collectors.toList());
 
-                        updateRecyclerView(R.id.applied_offers, appliedOffers);
                         updateRecyclerView(R.id.saved_offers, favoriteOffers);
                     }
             );
@@ -120,7 +113,7 @@ public class CandidateProfileFragment extends JRFragment {
 
     public void contactUserByPhone() {
         String phoneNumber = user.getPhone();
-        if (phoneNumber != null) {
+        if (phoneNumber != null && !phoneNumber.isBlank()) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {

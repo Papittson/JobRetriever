@@ -77,6 +77,12 @@ public class HomeFragment extends JRFragment {
         if(searchEditText != null && cityEditText != null) {
             String searchQuery = searchEditText.getText().toString();
             String city = cityEditText.getText().toString();
+            if(searchQuery.isBlank()) {
+                searchQuery = null;
+            }
+            if(city.isBlank()) {
+                city = null;
+            }
             OfferViewModel.getInstance().getAll(searchQuery, city, durationType);
         }
     }

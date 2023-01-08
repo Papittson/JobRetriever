@@ -8,8 +8,8 @@ import com.example.jobretriever.activities.MainActivity;
 
 public enum UserType {
     APPLICANT(R.string.applicant),
-    EMPLOYER(R.string.applicant),
-    AGENCY(R.string.applicant);
+    EMPLOYER(R.string.employer),
+    AGENCY(R.string.agency);
 
     public final int stringResId;
 

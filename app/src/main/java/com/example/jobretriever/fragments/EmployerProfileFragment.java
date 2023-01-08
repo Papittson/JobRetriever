@@ -1,15 +1,19 @@
 package com.example.jobretriever.fragments;
 
+import static com.example.jobretriever.models.SignUpStatus.ACCEPTED;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
@@ -28,7 +32,8 @@ public class EmployerProfileFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         checkProfileArgs();
-        if(isUserAllowed() && user != null) {
+        if(isUserAllowed() && user != null && user instanceof Employer) {
+            Employer employer = (Employer) user;
             TextView nameTextView = fragment.findViewById(R.id.profile_name);
             TextView informationsTextView = fragment.findViewById(R.id.informations);
             TextView addressTextView = fragment.findViewById(R.id.address);
@@ -36,16 +41,22 @@ public class EmployerProfileFragment extends JRFragment {
             TextView managerTextView = fragment.findViewById(R.id.manager);
             ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+            Button createOfferButton = fragment.findViewById(R.id.create_offer);
 
-            nameTextView.setText(user.getBusinessName());
+            nameTextView.setText(employer.getBusinessName());
 
-            informationsTextView.setText(String.format(getString(R.string.profile_infos_employer),getString(user.getType().stringResId),getString(user.getSignUpStatus().stringResId)));
-            addressTextView.setText(user.getAddress());
-            siretTextView.setText(user.getSiret());
-            managerTextView.setText(user.getManager());
+            informationsTextView.setText(String.format(getString(R.string.profile_infos_employer),getString(user.getUserType().stringResId),getString(employer.getSignUpStatus().stringResId)));
+            addressTextView.setText(employer.getAddress());
+            siretTextView.setText(employer.getSiret());
+            managerTextView.setText(employer.getManager());
+
+            if(user.getId().equals(userId) && ((Employer) user).getSignUpStatus() == ACCEPTED) {
+                createOfferButton.setVisibility(View.VISIBLE);
+            }
 
             phoneButton.setOnClickListener(v -> contactUserByPhone());
             emailButton.setOnClickListener(v -> contactUserByEmail());
+            createOfferButton.setOnClickListener(v -> goToFragment(CreateOfferFragment.class, null));
         }
     }
 
@@ -97,7 +108,7 @@ public class EmployerProfileFragment extends JRFragment {
 
     public void contactUserByPhone() {
         String phoneNumber = user.getPhone();
-        if(phoneNumber != null) {
+        if(phoneNumber != null && !phoneNumber.isBlank()) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {

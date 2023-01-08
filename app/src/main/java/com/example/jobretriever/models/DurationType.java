@@ -7,7 +7,6 @@ import com.example.jobretriever.R;
 import com.example.jobretriever.activities.MainActivity;
 
 public enum DurationType {
-    // TODO Mettre des strings qui ont du sens
     CDD(R.string.CDD),
     CDI(R.string.CDI),
     STAGE(R.string.internship),

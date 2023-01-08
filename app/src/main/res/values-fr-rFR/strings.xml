@@ -2,14 +2,14 @@
 <resources>
     <string name="profile_infos_employer">%1$s | %2$s</string>
     <string name="birthdate_format">%1$d/%2$d/%3$d</string>
-    <string name="profile_infos_candidate">%1$s | %2$s , %3$d ans</string>
+    <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
     <string name="app_name">JobRetriever</string>
     <string name="profile_name_candidate">%1$s %2$s</string>
     <string name="action_sign_in">Connexion</string>
     <string name="action_sign_up">Inscription</string>
     <string name="confrim">Confirmer</string>
     <string name="welcome_message">Bienvenue !</string>
-    <string name="applicant">Applicant</string>
+    <string name="applicant">Candidat</string>
     <string name="employer">Employeur</string>
     <string name="agency">Agence</string>
     <string name="phone_number">N° de téléphone</string>

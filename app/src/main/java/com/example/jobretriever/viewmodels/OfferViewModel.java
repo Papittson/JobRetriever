@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.DurationType;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
-import com.example.jobretriever.models.User;
 import com.example.jobretriever.repositories.OfferRepository;
 import com.example.jobretriever.repositories.UserRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -57,7 +57,7 @@ public class OfferViewModel extends ViewModel {
                         list.add(obj);
                         UserRepository.getInstance().getById(obj.getEmployerId()).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                obj.setEmployer(task1.getResult().toObject(User.class));
+                                obj.setEmployer(task1.getResult().toObject(Employer.class));
                                 offers.postValue(list);
                             } else {
                                 errorMessage.postValue(R.string.error_loading_users);

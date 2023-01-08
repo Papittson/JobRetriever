@@ -20,7 +20,7 @@ public class Offer extends Entity {
     String employerId;
     String location;
     @Exclude
-    User employer;
+    Employer employer;
 
     public Offer() {
         this.applications = new HashMap<>();
@@ -82,10 +82,10 @@ public class Offer extends Entity {
         this.field = field;
     }
 
-    public User getEmployer() {
+    public Employer getEmployer() {
         return employer;
     }
-    public void setEmployer(User employer) {
+    public void setEmployer(Employer employer) {
         this.employer = employer;
     }
 

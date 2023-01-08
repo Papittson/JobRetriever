@@ -79,16 +79,15 @@ public class JRFragment extends Fragment {
             goToFragment(SignInFragment.class, null);
             showToast(R.string.error_must_be_signed_in);
         }
-        OfferViewModel.getInstance().getError().observe(
-                getViewLifecycleOwner(),
-                this::showToast
-        );
+        OfferViewModel.getInstance().getError().observe(getViewLifecycleOwner(), this::showToast);
+        UserViewModel.getInstance().getError().observe(getViewLifecycleOwner(), this::showToast);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         OfferViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
+        UserViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
     }
 
     public void showToast(@StringRes int stringResId) {

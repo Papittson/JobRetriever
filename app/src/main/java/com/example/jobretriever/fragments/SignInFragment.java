@@ -66,9 +66,9 @@ public class SignInFragment extends JRFragment {
                 getViewLifecycleOwner(),
                 user -> {
                     if (user != null) {
-                        if(user.getType() == APPLICANT) {
+                        if(user.getUserType() == APPLICANT) {
                             goToFragment(CandidateProfileFragment.class, null);
-                        } else if(user.getType() == EMPLOYER || user.getType() == AGENCY) {
+                        } else if(user.getUserType() == EMPLOYER || user.getUserType() == AGENCY) {
                             goToFragment(EmployerProfileFragment.class, null);
                         } else {
                             goToFragment(HomeFragment.class, null);

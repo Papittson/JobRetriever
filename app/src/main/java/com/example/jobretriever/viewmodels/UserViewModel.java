@@ -1,10 +1,15 @@
 package com.example.jobretriever.viewmodels;
 
+import static com.example.jobretriever.models.UserType.APPLICANT;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.User;
+import com.example.jobretriever.models.UserType;
 import com.example.jobretriever.repositories.UserRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -32,7 +37,12 @@ public class UserViewModel extends ViewModel {
             if (task.isSuccessful()) {
                 List<User> users = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    User obj = doc.toObject(User.class);
+                    User obj;
+                    if(doc.get("userType", UserType.class) == APPLICANT) {
+                        obj = doc.toObject(Applicant.class);
+                    } else {
+                        obj = doc.toObject(Employer.class);
+                    }
                     obj.setId(doc.getId());
                     users.add(obj);
                 }
@@ -51,21 +61,24 @@ public class UserViewModel extends ViewModel {
     }
 
     public boolean hasFavorite(String offerId) {
-        return user.getValue() != null && user.getValue().hasFavorite(offerId);
+        if(user.getValue() == null || !(user.getValue() instanceof Applicant)) {
+            return false;
+        }
+        return ((Applicant) user.getValue()).hasFavorite(offerId);
     }
 
     public void removeFavorite(String offerId) {
         User user = this.user.getValue();
-        if (user == null) {
-            errorMessage.postValue(R.string.error_loading_users);
+        if (!(user instanceof Applicant)) {
+            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
             return;
         }
-        List<String> offers = new ArrayList<>(user.getFavoritesId());
+        List<String> offers = new ArrayList<>(((Applicant) user).getFavoritesId());
         offers.remove(offerId);
         UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        user.setFavoritesId(offers);
+                        ((Applicant) user).setFavoritesId(offers);
                     } else {
                         errorMessage.postValue(R.string.error_loading_users);
                         if (task.getException() != null) {
@@ -77,16 +90,16 @@ public class UserViewModel extends ViewModel {
 
     public void addFavorite(String offerId) {
         User user = this.user.getValue();
-        if (user == null) {
-            errorMessage.postValue(R.string.error_loading_users);
+        if (!(user instanceof Applicant)) {
+            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
             return;
         }
-        List<String> offers = new ArrayList<>(user.getFavoritesId());
+        List<String> offers = new ArrayList<>(((Applicant) user).getFavoritesId());
         offers.add(offerId);
         UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        user.setFavoritesId(offers);
+                        ((Applicant) user).setFavoritesId(offers);
                     } else {
                         errorMessage.postValue(R.string.error_loading_users);
                         if (task.getException() != null) {
@@ -101,7 +114,12 @@ public class UserViewModel extends ViewModel {
             if (task.isSuccessful()) {
                 boolean isUserPosted = false;
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    User obj = doc.toObject(User.class);
+                    User obj;
+                    if(doc.get("userType", UserType.class) == APPLICANT) {
+                        obj = doc.toObject(Applicant.class);
+                    } else {
+                        obj = doc.toObject(Employer.class);
+                    }
                     obj.setId(doc.getId());
                     user.postValue(obj);
                     isUserPosted = true;

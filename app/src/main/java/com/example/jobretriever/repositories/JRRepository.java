@@ -13,7 +13,6 @@ public class JRRepository {
     FirebaseStorage storage;
     CollectionReference collection;
 
-    JRRepository() {}
     JRRepository(String collectionName) {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();

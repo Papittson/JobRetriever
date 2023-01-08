@@ -1,5 +1,8 @@
 package com.example.jobretriever.fragments;
 
+import static com.example.jobretriever.models.UserType.AGENCY;
+import static com.example.jobretriever.models.UserType.EMPLOYER;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +39,10 @@ public class OfferFragment extends JRFragment {
             ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
             Button applyButton = fragment.findViewById(R.id.offer_apply);
+
+            if(user != null && (user.getUserType() == EMPLOYER || user.getUserType() == AGENCY)) {
+                applyButton.setVisibility(View.GONE);
+            }
 
             favoriteButton.setOnClickListener(v -> toggleFavorite());
             phoneButton.setOnClickListener(v -> contactEmployerByPhone());
@@ -108,7 +115,7 @@ public class OfferFragment extends JRFragment {
     public void contactEmployerByPhone() {
         User employer = this.offer.getEmployer();
         String phoneNumber = employer.getPhone();
-        if(phoneNumber != null) {
+        if(phoneNumber != null && !phoneNumber.isBlank()) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {

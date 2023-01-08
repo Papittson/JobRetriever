@@ -40,6 +40,7 @@ public class JRFragment extends Fragment {
     Integer fragmentLayout;
     boolean isProtected;
     User user;
+    String userId;
     List<String> cities;
 
     public JRFragment(@StringRes Integer actionBarTitle, @LayoutRes Integer fragmentLayout, boolean isProtected) {
@@ -47,6 +48,9 @@ public class JRFragment extends Fragment {
         this.fragmentLayout = fragmentLayout;
         this.isProtected = isProtected;
         this.user = UserViewModel.getInstance().getUser().getValue();
+        if(user != null) {
+            this.userId = user.getId();
+        }
     }
 
     @Override

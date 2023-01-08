@@ -7,11 +7,11 @@ import static com.example.jobretriever.models.UserType.APPLICANT;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.Timestamp;
-import com.google.type.Date;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -234,20 +234,7 @@ public class User extends Entity {
                 '}';
     }
 
-    // METHODS
-    Collection<Offer> searchOfferById(String id) {
-        return null;
-    }
-
-    Collection<Offer> searchOfferByTitle(String title) {
-        return null;
-    }
-
-    Collection<Offer> searchOfferByDate(Date date) {
-        return null;
-    }
-
-    Collection<Offer> searchOfferByField(String field) {
-        return null;
+    public int getAge() {
+        return Period.between(LocalDate.now(), LocalDate.now()).getYears(); // TODO Refaire ça avec birthdate
     }
 }

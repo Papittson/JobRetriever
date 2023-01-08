@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.viewmodels.OfferViewModel;
+import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         OfferViewModel.getInstance().getAll(null);
+        UserViewModel.getInstance().getAll();
 
         new Handler().postDelayed((Runnable) () -> {
             Intent i = new Intent(MainActivity.this, AppActivity.class);

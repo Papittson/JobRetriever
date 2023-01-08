@@ -84,4 +84,6 @@
     <string name="birthdate">Birthdate</string>
     <string name="date">Date</string>
     <string name="address">Address</string>
+    <string name="informations">Informations</string>
+    <string name="download_cv">Download CV</string>
 </resources>

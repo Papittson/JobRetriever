@@ -25,8 +25,8 @@ public class User extends Entity {
     String phone;
     UserType type;
     String businessName;
-    List<String> educations;
-    List<String> experiences;
+    String educations;
+    String experiences;
     List<String> favoritesId;
     List<String> applicationsId;
     String birthdate;
@@ -36,13 +36,11 @@ public class User extends Entity {
     SignUpStatus signUpStatus;
 
     public User() {
-        this.educations = new ArrayList<>();
-        this.experiences = new ArrayList<>();
         this.favoritesId = new ArrayList<>();
         this.applicationsId = new ArrayList<>();
     }
 
-    public User(String mail, String password, String firstname, String name, String nationality, String phone, String birthdate) {
+    public User(String mail, String password, String firstname, String name, String nationality, String phone, String birthdate,String experiences, String educations) {
         super();
         this.firstname = firstname;
         this.mail = mail;
@@ -53,6 +51,8 @@ public class User extends Entity {
         this.type = APPLICANT;
         this.birthdate = birthdate;
         this.signUpStatus = ACCEPTED;
+        this.educations = educations;
+        this.experiences = experiences;
     }
 
     public User(String mail, String password, String businessName, String phone, String address, String siret, String manager, UserType type) {
@@ -77,33 +77,20 @@ public class User extends Entity {
         this.birthdate = formatter.format(birthdate.toDate());
     }
 
-    public List<String> getExperiences() {
+    public String getExperiences() {
         return this.experiences;
     }
 
-    public String getExperience() {
-        if(this.experiences == null || this.experiences.isEmpty()) {
-            return null;
-        }
-        return String.join("\n", this.experiences);
-    }
-
-    public void setExperiences(List<String> experiences) {
+    public void setExperiences(String experiences) {
         this.experiences = experiences;
     }
 
-    public List<String> getEducations() {
+    public String getEducations() {
         return this.educations;
     }
 
-    public String getEducation() {
-        if(this.educations == null || this.educations.isEmpty()) {
-            return null;
-        }
-        return String.join("\n", this.educations);
-    }
 
-    public void setEducations(List<String> educations) {
+    public void setEducations(String educations) {
         this.educations = educations;
     }
 

@@ -48,18 +48,18 @@ public class SignUpFragment extends JRFragment {
         ArrayAdapter<String> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, userTypes);
         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
 
-        if(datePicker != null) {
+        if (datePicker != null) {
             datePicker.setOnClickListener(v -> pickDate(datePicker));
         }
 
-        if(dropdownCountriesEditText != null) {
+        if (dropdownCountriesEditText != null) {
             dropdownCountriesEditText.setAdapter(countriesAdapter);
         }
 
-        if(dropdownUserTypesEditText != null) {
+        if (dropdownUserTypesEditText != null) {
             dropdownUserTypesEditText.setAdapter(userTypesAdapter);
             dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
-                if(position == 1 || position == 2) {
+                if (position == 1 || position == 2) {
                     showEmployerInputs();
                 } else {
                     showCandidateInputs();
@@ -76,7 +76,7 @@ public class SignUpFragment extends JRFragment {
         UserViewModel.getInstance().getUser().observe(
                 getViewLifecycleOwner(),
                 user1 -> {
-                    if(user.getType() == EMPLOYER || user.getType() == AGENCY) {
+                    if (user.getType() == EMPLOYER || user.getType() == AGENCY) {
                         goToFragment(EmployerProfileFragment.class, null);
                     } else {
                         goToFragment(CandidateProfileFragment.class, null);
@@ -104,7 +104,7 @@ public class SignUpFragment extends JRFragment {
             calendar.setTimeInMillis(selection);
             Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
             int month = birthdate.getMonth() + 1;
-            showDatePicker.setText(String.format(getString(R.string.birthdate_format),birthdate.getDay(),month,birthdate.getYear()));
+            showDatePicker.setText(String.format(getString(R.string.birthdate_format), birthdate.getDay(), month, birthdate.getYear()));
         });
     }
 
@@ -139,12 +139,14 @@ public class SignUpFragment extends JRFragment {
         TextInputLayout firstNameInput = fragment.findViewById(R.id.signUpFirstname);
         TextInputLayout lastNameInput = fragment.findViewById(R.id.signUpLastname);
         TextInputLayout nationalityInput = fragment.findViewById(R.id.signUpDropdown_nationality);
-        TextInputLayout birthdateInput= fragment.findViewById(R.id.signUpBirthdate_picker);
+        TextInputLayout birthdateInput = fragment.findViewById(R.id.signUpBirthdate_picker);
         TextInputLayout userTypeInput = fragment.findViewById(R.id.dropdown_user_type_menu);
         TextInputLayout businessNameInput = fragment.findViewById(R.id.signUpBusinessName);
         TextInputLayout addressInput = fragment.findViewById(R.id.signUpAddress);
         TextInputLayout siretInput = fragment.findViewById(R.id.signUpSiret);
         TextInputLayout managerInput = fragment.findViewById(R.id.signUpManager);
+        TextInputLayout experiencesInput = fragment.findViewById(R.id.signUpExperiences);
+        TextInputLayout educationsInput = fragment.findViewById(R.id.signUpEducations);
 
         EditText emailEditText = emailInput.getEditText();
         EditText passwordEditText = passwordInput.getEditText();
@@ -158,20 +160,24 @@ public class SignUpFragment extends JRFragment {
         EditText addressEditText = addressInput.getEditText();
         EditText siretEditText = siretInput.getEditText();
         EditText managerEditText = managerInput.getEditText();
+        EditText experiencesEditText = experiencesInput.getEditText();
+        EditText educationsEditText = educationsInput.getEditText();
 
-        if(
-           emailEditText == null ||
-           passwordEditText == null ||
-           phoneNumberEditText == null ||
-           firstNameEditText == null ||
-           lastNameEditText == null ||
-           nationalityEditText == null ||
-           birthdateEditText == null ||
-           userTypeEditText == null ||
-           businessNameEditText == null ||
-           addressEditText == null ||
-           siretEditText == null ||
-           managerEditText == null
+        if (
+                emailEditText == null ||
+                        passwordEditText == null ||
+                        phoneNumberEditText == null ||
+                        firstNameEditText == null ||
+                        lastNameEditText == null ||
+                        nationalityEditText == null ||
+                        birthdateEditText == null ||
+                        userTypeEditText == null ||
+                        businessNameEditText == null ||
+                        addressEditText == null ||
+                        siretEditText == null ||
+                        managerEditText == null ||
+                        educationsEditText == null ||
+                        experiencesEditText == null
         ) {
             showToast(R.string.error_has_occured);
             return;
@@ -184,6 +190,9 @@ public class SignUpFragment extends JRFragment {
         String lastname = lastNameEditText.getText().toString();
         String nationality = nationalityEditText.getText().toString();
         String birthdate = birthdateEditText.getText().toString();
+        String experiences = experiencesEditText.getText().toString();
+        String educations = educationsEditText.getText().toString();
+
         UserType userType = UserType.valueOf(userTypeEditText.getText().toString());
         String businessName = businessNameEditText.getText().toString();
         String address = addressEditText.getText().toString();
@@ -191,13 +200,13 @@ public class SignUpFragment extends JRFragment {
         String manager = managerEditText.getText().toString();
 
         if (userType == EMPLOYER || userType == AGENCY) {
-            if(
-               email.isBlank() ||
-               password.isBlank() ||
-               businessName.isBlank() ||
-               address.isBlank() ||
-               siret.isBlank() ||
-               manager.isBlank()
+            if (
+                    email.isBlank() ||
+                            password.isBlank() ||
+                            businessName.isBlank() ||
+                            address.isBlank() ||
+                            siret.isBlank() ||
+                            manager.isBlank()
             ) {
                 showToast(R.string.required_fields);
                 return;
@@ -205,18 +214,18 @@ public class SignUpFragment extends JRFragment {
             User newUser = new User(email, password, businessName, phoneNumber, address, siret, manager, userType);
             UserViewModel.getInstance().signUp(newUser);
         } else {
-            if(
-               email.isBlank() ||
-               password.isBlank() ||
-               firstname.isBlank() ||
-               lastname.isBlank() ||
-               nationality.isBlank() ||
-               birthdate.isBlank()
+            if (
+                    email.isBlank() ||
+                            password.isBlank() ||
+                            firstname.isBlank() ||
+                            lastname.isBlank() ||
+                            nationality.isBlank() ||
+                            birthdate.isBlank()
             ) {
                 showToast(R.string.required_fields);
                 return;
             }
-            User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, birthdate);
+            User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, birthdate,experiences,educations);
             UserViewModel.getInstance().signUp(newUser);
         }
     }

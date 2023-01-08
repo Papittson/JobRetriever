@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="profile_infos_employer">%1$s | %2$s</string>
+    <string name="birthdate_format">%1$d/%2$d/%3$d</string>
+    <string name="profile_infos_candidate">%1$s | %2$s , %3$d ans</string>
     <string name="app_name">JobRetriever</string>
-    <string name="profile_name">%1$s %2$s</string>
+    <string name="profile_name_candidate">%1$s %2$s</string>
     <string name="action_sign_in">Connexion</string>
     <string name="action_sign_up">Inscription</string>
     <string name="confrim">Confirmer</string>
@@ -17,7 +20,7 @@
     <string name="recent_offers">Dernières offres</string>
     <string name="description">Description</string>
     <string name="view_offer">Voir plus</string>
-    <string name="companyDuration">Entreprise | Duration</string>
+    <string name="companyDuration">Entreprise | Durée</string>
     <string name="remember_me">Se souvenir de moi</string>
     <string name="user_type">Type d\'utilisateur</string>
     <string name="job_thumbnail">job_thumbnail</string>
@@ -28,9 +31,9 @@
     <string name="city">Ville</string>
     <string name="candidate_name">Nom</string>
     <string name="profile">Profil</string>
-    <string name="edit">éditer</string>
-    <string name="cover_letter">Lettre de motivation :</string>
-    <string name="duration">Duration</string>
+    <string name="edit">Editer</string>
+    <string name="cover_letter">"Lettre de motivation "</string>
+    <string name="duration">Durée</string>
     <string name="applied_offers">Offres postulées</string>
     <string name="saved_offers">Offres enregistrées</string>
     <string name="job_title">Titre du poste</string>
@@ -44,7 +47,7 @@
     <string name="nationality">Nationalité</string>
     <string name="choose_plan">Choisissez une formule d\'abonnement</string>
     <string name="search_results_for">Résultats pour</string>
-    <string name="status">Status</string>
+    <string name="status">Statut</string>
     <string name="home">Accueil</string>
     <string name="search_navbar">Recherche</string>
     <string name="alerts">Alertes</string>
@@ -54,8 +57,8 @@
     <string name="error_during_sign_up">Erreur d\'inscription veuillez reessayer</string>
     <string name="error_mail_already_used">Erreur mail déjà utilisé</string>
     <string name="error_checking_mail">Erreur de vérification de mail</string>
-    <string name="error_loading_offers">Erreur de charghement d\'offres</string>
-    <string name="error_loading_location">Erreur de charghement de location</string>
+    <string name="error_loading_offers">Erreur de chargement d\'offres</string>
+    <string name="error_loading_location">Erreur de chargement de localisation</string>
     <string name="error_loading_users">Erreur de chargement d\'utilisateur</string>
     <string name="error_must_be_signed_in">Vous devez être connecté</string>
     <string name="city_country">Ville, Pays</string>
@@ -71,4 +74,34 @@
     <string name="manager_name">Responsable</string>
     <string name="siret">SIRET</string>
     <string name="verified">Vérifié</string>
+    <string name="firstname">Prénom</string>
+    <string name="application_added">La candidature a été enregistrée</string>
+    <string name="add_to_favorites">Ajouter aux favoris</string>
+    <string name="contact_employer">Contacter l\'employeur</string>
+    <string name="pending">En attente</string>
+    <string name="accepted">Acceptée</string>
+    <string name="denied">Refusée</string>
+    <string name="awaiting_attachement">En attente de pièces</string>
+    <string name="awaiting_meeting">En attente d\'entretient</string>
+    <string name="error_creating_application">Erreur lors de la création</string>
+    <string name="offer_creation">Erreur lors de la création</string>
+    <string name="lastname">Nom</string>
+    <string name="birthdate">Date de naissance</string>
+    <string name="date">Date</string>
+    <string name="address">Adresse</string>
+    <string name="informations">Informations</string>
+    <string name="download_cv">Télécharger le CV</string>
+    <string name="error_has_occured">Une erreur est survenue</string>
+    <string name="required_fields">Veuillez remplir tous les champs</string>
+    <string name="unknown_phone_number">N° de téléphone non renseigné</string>
+    <string name="error_adding_offer">Erreur lors de l\'ajout</string>
+    <string name="error_adding_applications">Erreur lors de l\'ajout</string>
+    <string name="no_experiences">Aucune expérience</string>
+    <string name="no_educations">Aucun parcours</string>
+    <string name="disconnected">Vous avez été déconnecté</string>
+    <string name="available_offers">Offres disponibles</string>
+    <string name="CDD">CDD</string>
+    <string name="CDI">CDI</string>
+    <string name="internship">Stage</string>
+    <string name="sandwish_course">Alternance</string>
 </resources>

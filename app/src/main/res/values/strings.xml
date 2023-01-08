@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">JobRetriever</string>
     <string name="birthdate_format">%1$d/%2$d/%3$d</string>
-    <string name="profile_infos">%1$s | %2$s , %3$d ans</string>
-    <string name="profile_name">%1$s %2$s</string>
+    <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
+    <string name="profile_name_candidate">%1$s %2$s</string>
+    <string name="profile_infos_employer">%1$s | %2$s</string>
     <string name="offer_wage">%1$.2f €</string>
     <string name="offer_location">%1$s, %2$s</string>
     <string name="job_title">Job Title</string>
@@ -29,8 +30,8 @@
     <string name="city">City</string>
     <string name="candidate_name">Name</string>
     <string name="profile">Profile</string>
-    <string name="edit">edit</string>
-    <string name="cover_letter">Cover Letter :</string>
+    <string name="edit">Edit</string>
+    <string name="cover_letter">"Cover Letter "</string>
     <string name="applied_offers">Applied offers</string>
     <string name="saved_offers">Saved Offers</string>
     <string name="company">Company</string>
@@ -100,4 +101,8 @@
     <string name="no_educations">No educations</string>
     <string name="disconnected">You have been disconnected</string>
     <string name="available_offers">Available offers</string>
+    <string name="CDD">Temporary contract</string>
+    <string name="CDI">Permanent contract</string>
+    <string name="internship">Internship</string>
+    <string name="sandwish_course">Block release training</string>
 </resources>

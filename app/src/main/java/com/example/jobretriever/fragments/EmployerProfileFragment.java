@@ -38,8 +38,8 @@ public class EmployerProfileFragment extends JRFragment {
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
 
             nameTextView.setText(user.getBusinessName());
-            // TODO Pareil ici
-            informationsTextView.setText(user.getType().stringResId + " | " + getString(user.getSignUpStatus().stringResId));
+
+            informationsTextView.setText(String.format(getString(R.string.profile_infos_employer),getString(user.getType().stringResId),getString(user.getSignUpStatus().stringResId)));
             addressTextView.setText(user.getAddress());
             siretTextView.setText(user.getSiret());
             managerTextView.setText(user.getManager());
@@ -101,7 +101,7 @@ public class EmployerProfileFragment extends JRFragment {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {
-            showToast(0); // TODO Mettre message "Numéro de téléphone non renseigné"
+            showToast(R.string.unknown_phone_number);
         }
     }
 

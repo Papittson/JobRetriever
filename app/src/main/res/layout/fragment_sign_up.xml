@@ -149,6 +149,42 @@
             tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--Experiences-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpExperiences"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/experience"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--Educations-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpEducations"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/experience"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--If User Type : APPLICANT-->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signUpBusinessName"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"

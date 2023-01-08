@@ -56,7 +56,7 @@ public class CreateOfferFragment extends JRFragment {
                 Offer offer = new Offer(title, duration, date, field, description, wage, user.getId(), location);
                 OfferViewModel.getInstance().addOffer(offer);
             } else {
-                showToast(0); // TODO Mettre un message d'erreur "Remplissez tous les champs"
+                showToast(R.string.required_fields);
             }
         });
     }
@@ -98,7 +98,7 @@ public class CreateOfferFragment extends JRFragment {
     public void pickDate(EditText showDatePicker) {
         MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
                 .datePicker()
-                .setTitleText("Birthdate") // TODO Mettre un string resource
+                .setTitleText(getText(R.string.birthdate))
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
         signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
@@ -107,7 +107,7 @@ public class CreateOfferFragment extends JRFragment {
             calendar.setTimeInMillis(selection);
             Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
             int month = birthdate.getMonth() + 1;
-            showDatePicker.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear()); // TODO Mettre string res placeholder
+            showDatePicker.setText(String.format(getString(R.string.birthdate_format),birthdate.getDay(),month,birthdate.getYear()));
         });
     }
 }

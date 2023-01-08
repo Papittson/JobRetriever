@@ -51,7 +51,7 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
             if(UserViewModel.getInstance().isLoggedIn()) {
                 goToFragment(HomeFragment.class);
                 UserViewModel.getInstance().getUser().postValue(null);
-                Toast.makeText(this, "Vous avez été déconnecté", Toast.LENGTH_SHORT).show(); // TODO Mettre message res
+                Toast.makeText(this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
             } else {
                 goToFragment(SignInFragment.class);
             }

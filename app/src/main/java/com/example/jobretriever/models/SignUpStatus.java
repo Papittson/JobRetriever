@@ -5,10 +5,10 @@ import androidx.annotation.StringRes;
 import com.example.jobretriever.R;
 
 public enum SignUpStatus {
-    // TODO Mettre des strings qui ont du sens
+
     PENDING(R.string.pending),
-    ACCEPTED(R.string.pending),
-    DENIED(R.string.pending);
+    ACCEPTED(R.string.accepted),
+    DENIED(R.string.denied);
 
     public final int stringResId;
 

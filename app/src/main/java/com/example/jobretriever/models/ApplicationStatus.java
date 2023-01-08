@@ -5,12 +5,12 @@ import androidx.annotation.StringRes;
 import com.example.jobretriever.R;
 
 public enum ApplicationStatus {
-    // TODO Mettre des strings qui ont du sens
+
     PENDING(R.string.pending),
-    ACCEPTED(R.string.pending),
-    DENIED(R.string.pending),
-    AWAITING_ATTACHEMENT(R.string.pending),
-    AWAITING_MEETING(R.string.pending);
+    ACCEPTED(R.string.accepted),
+    DENIED(R.string.denied),
+    AWAITING_ATTACHEMENT(R.string.awaiting_attachement),
+    AWAITING_MEETING(R.string.awaiting_meeting);
 
     public final int stringResId;
 

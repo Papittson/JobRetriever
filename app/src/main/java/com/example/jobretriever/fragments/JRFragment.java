@@ -77,7 +77,7 @@ public class JRFragment extends Fragment {
         super.onStart();
         if(!isUserAllowed()) {
             goToFragment(SignInFragment.class, null);
-            showToast(0); // TODO Modifier et mettre un msg d'erreur
+            showToast(R.string.error_must_be_signed_in);
         }
         OfferViewModel.getInstance().getError().observe(
                 getViewLifecycleOwner(),

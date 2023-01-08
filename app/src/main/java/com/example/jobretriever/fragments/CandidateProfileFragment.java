@@ -29,7 +29,7 @@ public class CandidateProfileFragment extends JRFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         checkProfileArgs();
-        if(isUserAllowed() && user != null) {
+        if (isUserAllowed() && user != null) {
             TextView nameTextView = fragment.findViewById(R.id.profile_name);
             TextView informationsTextView = fragment.findViewById(R.id.informations);
             TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
@@ -37,11 +37,19 @@ public class CandidateProfileFragment extends JRFragment {
             ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
 
-            nameTextView.setText(user.getFirstname() + " " + user.getName()); // TODO String res placeholder
-            // TODO Pareil ici
-            informationsTextView.setText(user.getType().stringResId + " | " + user.getNationality() + ", " + user.getAge() + " ans");
-            experienceTextView.setText(user.getExperience());
-            educationTextView.setText(user.getEducation());
+            nameTextView.setText(String.format(getString(R.string.profile_name), user.getFirstname(), user.getName()));
+
+            informationsTextView.setText(String.format(getString(R.string.profile_infos), getString(user.getType().stringResId), user.getNationality(), user.getAge()));
+            if(user.getExperience()==null){
+                experienceTextView.setText(getText(R.string.no_experiences));
+            }else{
+                experienceTextView.setText(user.getExperience());
+            }
+            if(user.getEducation()==null){
+                educationTextView.setText(getText(R.string.no_educations));
+            }else{
+                educationTextView.setText(user.getEducation());
+            }
 
             phoneButton.setOnClickListener(v -> contactUserByPhone());
             emailButton.setOnClickListener(v -> contactUserByEmail());
@@ -51,14 +59,14 @@ public class CandidateProfileFragment extends JRFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(!isUserAllowed()) {
+        if (!isUserAllowed()) {
             return;
         }
 
         createRecyclerView(R.id.applied_offers);
         createRecyclerView(R.id.saved_offers);
 
-        if(user != null && user.getId().equals(userId)) {
+        if (user != null && user.getId().equals(userId)) {
             TextView appliedOffersTitle = fragment.findViewById(R.id.applied_offers_title);
             TextView savedOffersTitle = fragment.findViewById(R.id.saved_offers_title);
             RecyclerView appliedOffersRV = fragment.findViewById(R.id.applied_offers);
@@ -70,7 +78,7 @@ public class CandidateProfileFragment extends JRFragment {
             savedOffersRV.setVisibility(View.VISIBLE);
 
             List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
-            if(offersLiveData == null || offersLiveData.size() == 0) {
+            if (offersLiveData == null || offersLiveData.size() == 0) {
                 OfferViewModel.getInstance().getAll(null);
             }
 
@@ -101,7 +109,7 @@ public class CandidateProfileFragment extends JRFragment {
     public void checkProfileArgs() {
         Bundle args = this.getArguments();
         List<User> users = UserViewModel.getInstance().getUsers().getValue();
-        if(args != null && users != null && args.getString("userId") != null) {
+        if (args != null && users != null && args.getString("userId") != null) {
             String userId = args.getString("userId");
             this.user = users.stream()
                     .filter(user -> user.getId().equals(userId))
@@ -112,24 +120,20 @@ public class CandidateProfileFragment extends JRFragment {
 
     public void contactUserByPhone() {
         String phoneNumber = user.getPhone();
-        if(phoneNumber != null) {
+        if (phoneNumber != null) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {
-            showToast(0); // TODO Mettre message "Numéro de téléphone non renseigné"
+            showToast(R.string.unknown_phone_number);
         }
     }
 
     public void contactUserByEmail() {
         String emailAddress = user.getMail();
-        if(emailAddress != null) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:"));
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-            startActivity(intent);
-        } else {
-            showToast(0); // TODO Mettre message "Adresse e-mail non renseignée"
-        }
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        startActivity(intent);
     }
 }

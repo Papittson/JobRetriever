@@ -95,7 +95,7 @@ public class SignUpFragment extends JRFragment {
     public void pickDate(EditText showDatePicker) {
         MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
                 .datePicker()
-                .setTitleText("Birthdate") // TODO Mettre un string resource
+                .setTitleText(R.string.birthdate)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
         signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
@@ -104,7 +104,7 @@ public class SignUpFragment extends JRFragment {
             calendar.setTimeInMillis(selection);
             Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
             int month = birthdate.getMonth() + 1;
-            showDatePicker.setText(birthdate.getDay()+"/"+month+"/"+birthdate.getYear()); // TODO Mettre string res placeholder
+            showDatePicker.setText(String.format(getString(R.string.birthdate_format),birthdate.getDay(),month,birthdate.getYear()));
         });
     }
 
@@ -173,7 +173,7 @@ public class SignUpFragment extends JRFragment {
            siretEditText == null ||
            managerEditText == null
         ) {
-            showToast(0); // TODO Message style "Une erreur est survenue, veuillez réessayer"
+            showToast(R.string.error_has_occured);
             return;
         }
 
@@ -200,7 +200,7 @@ public class SignUpFragment extends JRFragment {
                siret.isBlank() ||
                manager.isBlank()
             ) {
-                showToast(0); // TODO Message d'erreur champs obligatoires
+                showToast(R.string.required_fields);
                 return;
             }
             User newUser = new User(email, password, businessName, phoneNumber, address, siret, manager, userType);
@@ -215,7 +215,7 @@ public class SignUpFragment extends JRFragment {
                nationality.isBlank() ||
                birthdate.isBlank()
             ) {
-                showToast(0); // TODO Message d'erreur champs obligatoires
+                showToast(R.string.required_fields);
                 return;
             }
             User newUser = new User(email, password, firstname, lastname, nationality, phoneNumber, birthdate);

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">JobRetriever</string>
-
-    <string name="profile_name">Name</string>
+    <string name="birthdate_format">%1$d/%2$d/%3$d</string>
+    <string name="profile_infos">%1$s | %2$s , %3$d ans</string>
+    <string name="profile_name">%1$s %2$s</string>
     <string name="offer_wage">%1$.2f €</string>
     <string name="offer_location">%1$s, %2$s</string>
     <string name="job_title">Job Title</string>
@@ -77,6 +78,10 @@
     <string name="add_to_favorites">Add to favorites</string>
     <string name="contact_employer">Contact employer</string>
     <string name="pending">Pending</string>
+    <string name="accepted">Accepted</string>
+    <string name="denied">Denied</string>
+    <string name="awaiting_attachement">Awaiting attachments</string>
+    <string name="awaiting_meeting">Awaiting meeting</string>
     <string name="empty_string" translatable="false" />
     <string name="error_creating_application">Error Creating Application</string>
     <string name="offer_creation">Offer Creation</string>
@@ -86,4 +91,12 @@
     <string name="address">Address</string>
     <string name="informations">Informations</string>
     <string name="download_cv">Download CV</string>
+    <string name="error_has_occured">An error has occured</string>
+    <string name="required_fields">All fields must be filled</string>
+    <string name="unknown_phone_number">Phone number not provided</string>
+    <string name="error_adding_offer">Error adding offer</string>
+    <string name="error_adding_applications">Error adding aplication</string>
+    <string name="no_experiences">No experiences</string>
+    <string name="no_educations">No educations</string>
+    <string name="disconnected">You have been disconnected</string>
 </resources>

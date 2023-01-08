@@ -112,22 +112,18 @@ public class OfferFragment extends JRFragment {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
             startActivity(intent);
         } else {
-            showToast(0); // TODO Mettre message "Numéro de téléphone non renseigné"
+            showToast(R.string.unknown_phone_number);
         }
     }
 
     public void contactEmployerByEmail() {
         User employer = this.offer.getEmployer();
         String emailAddress = employer.getMail();
-        if(emailAddress != null) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:"));
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-            intent.putExtra(Intent.EXTRA_SUBJECT, this.offer.getTitle());
-            startActivity(intent);
-        } else {
-            showToast(0); // TODO Mettre message "Adresse e-mail non renseignée"
-        }
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+        intent.putExtra(Intent.EXTRA_SUBJECT, this.offer.getTitle());
+        startActivity(intent);
     }
 
     public void toggleFavorite() {

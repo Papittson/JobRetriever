@@ -83,7 +83,7 @@ public class User extends Entity {
 
     public String getExperience() {
         if(this.experiences == null || this.experiences.isEmpty()) {
-            return "No experiences"; // TODO Mettre ça dans un string resource
+            return null;
         }
         return String.join("\n", this.experiences);
     }
@@ -98,7 +98,7 @@ public class User extends Entity {
 
     public String getEducation() {
         if(this.educations == null || this.educations.isEmpty()) {
-            return "No educations"; // TODO Mettre ça dans un string resource
+            return null;
         }
         return String.join("\n", this.educations);
     }

@@ -45,7 +45,7 @@ public class OfferViewModel extends ViewModel {
                             if (task1.isSuccessful()) {
                                 obj.setEmployer(task1.getResult().toObject(User.class));
                                 offers.postValue(list);
-                                System.out.println("TEST 2");
+                                System.out.println("TEST 2");   
                             } else {
                                 errorMessage.postValue(R.string.error_loading_users);
                                 if (task1.getException() != null) {
@@ -74,7 +74,7 @@ public class OfferViewModel extends ViewModel {
                 offer.setId(task.getResult().getId());
                 this.offer.postValue(offer);
             } else {
-                errorMessage.postValue(R.string.error_loading_offers); // TODO Changer message
+                errorMessage.postValue(R.string.error_adding_offer);
                 if (task.getException() != null) {
                     task.getException().printStackTrace();
                 }
@@ -92,7 +92,7 @@ public class OfferViewModel extends ViewModel {
                 this.offer.postValue(offer);
             } else {
                 offer.getApplications().remove(userId);
-                errorMessage.postValue(R.string.error_loading_offers); // TODO Changer message
+                errorMessage.postValue(R.string.error_adding_applications);
                 if (task.getException() != null) {
                     task.getException().printStackTrace();
                 }

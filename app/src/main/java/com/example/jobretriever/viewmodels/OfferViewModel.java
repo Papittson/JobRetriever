@@ -31,15 +31,28 @@ public class OfferViewModel extends ViewModel {
         return instance;
     }
 
-    public void getAll(String searchQuery) {
-        System.out.println("TEST 0");
+    public void getAll() {
+        getAll(null, null, null);
+    }
+
+    public void getAll(String searchQuery, String city, String duration) {
         OfferRepository.getInstance().getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Offer> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     Offer obj = doc.toObject(Offer.class);
                     obj.setId(doc.getId());
-                    if (searchQuery == null || obj.getTitle().toLowerCase().contains(searchQuery.toLowerCase())) {
+                    boolean addToList = searchQuery == null || obj.getTitle().toLowerCase().contains(searchQuery.toLowerCase());
+
+                    if(city != null && !obj.getLocation().equalsIgnoreCase(city)) {
+                        addToList = false;
+                    }
+                    /* TODO Changer ça
+                    if(duration != null && !obj.getDuration().equalsIgnoreCase(duration)) {
+                        addToList = false;
+                    }*/
+
+                    if (addToList) {
                         list.add(obj);
                         UserRepository.getInstance().getById(obj.getEmployerId()).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {

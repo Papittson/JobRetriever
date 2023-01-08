@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -32,13 +31,7 @@ public class HomeFragment extends JRFragment {
         cityFilterInput.setAdapter(citiesAdapter);
         cityFilterInput.setThreshold(1);
 
-        confirmSearchButton.setOnClickListener(_view -> {
-            EditText editText = ((TextInputLayout) fragment.findViewById(R.id.search_bar)).getEditText();
-            if(editText != null) {
-                String searchQuery = editText.getText().toString();
-                OfferViewModel.getInstance().getAll(searchQuery);
-            }
-        });
+        confirmSearchButton.setOnClickListener(_view -> search());
     }
 
     @Override
@@ -48,7 +41,7 @@ public class HomeFragment extends JRFragment {
 
         List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
         if(offersLiveData == null || offersLiveData.size() == 0) {
-            OfferViewModel.getInstance().getAll(null);
+            OfferViewModel.getInstance().getAll();
         }
 
         OfferViewModel.getInstance().getOffers().observe(
@@ -61,5 +54,18 @@ public class HomeFragment extends JRFragment {
     public void onStop() {
         super.onStop();
         OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
+    }
+
+    public void search() {
+        EditText searchEditText = fragment.findViewById(R.id.search_bar);
+        EditText cityEditText = fragment.findViewById(R.id.city_filter);
+        EditText durationEditText = fragment.findViewById(R.id.duration_filter);
+
+        if(searchEditText != null && cityEditText != null && durationEditText != null) {
+            String searchQuery = searchEditText.getText().toString();
+            String city = cityEditText.getText().toString();
+            String duration = durationEditText.getText().toString();
+            OfferViewModel.getInstance().getAll(searchQuery, city, duration);
+        }
     }
 }

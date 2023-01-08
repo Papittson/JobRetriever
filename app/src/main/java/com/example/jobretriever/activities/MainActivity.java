@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore.setLoggingEnabled(false);
 
         setContentView(R.layout.activity_main);
-        OfferViewModel.getInstance().getAll(null);
+        OfferViewModel.getInstance().getAll();
         UserViewModel.getInstance().getAll();
 
         new Handler().postDelayed((Runnable) () -> {

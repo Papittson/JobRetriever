@@ -11,7 +11,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class Offer extends Entity {
     String title;
-    String duration;
+    DurationType duration;
     Date date;
     String field;
     String description;
@@ -26,7 +26,7 @@ public class Offer extends Entity {
         this.applications = new HashMap<>();
     }
 
-    public Offer(String title, String duration, Date date, String field, String description, Double wage, String employerId, String location) {
+    public Offer(String title, DurationType duration, Date date, String field, String description, Double wage, String employerId, String location) {
         this.title = title;
         this.duration = duration;
         this.date = date;
@@ -48,6 +48,10 @@ public class Offer extends Entity {
 
     public boolean isAppliedByUser(String userId) {
         return this.applications.containsKey(userId);
+    }
+
+    public boolean isCreatedByUser(String userId) {
+        return this.getEmployerId().equals(userId);
     }
 
     public void setWage(Double wage) {
@@ -99,10 +103,10 @@ public class Offer extends Entity {
         this.title = title;
     }
 
-    public String getDuration() {
+    public DurationType getDuration() {
         return duration;
     }
-    public void setDuration(String duration) {
+    public void setDuration(DurationType duration) {
         this.duration = duration;
     }
 

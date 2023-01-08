@@ -79,7 +79,7 @@ public class CandidateProfileFragment extends JRFragment {
 
             List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
             if (offersLiveData == null || offersLiveData.size() == 0) {
-                OfferViewModel.getInstance().getAll(null);
+                OfferViewModel.getInstance().getAll();
             }
 
             OfferViewModel.getInstance().getOffers().observe(

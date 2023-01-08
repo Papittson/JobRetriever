@@ -194,7 +194,6 @@ public class SignUpFragment extends JRFragment {
             if(
                email.isBlank() ||
                password.isBlank() ||
-               phoneNumber.isBlank() ||
                businessName.isBlank() ||
                address.isBlank() ||
                siret.isBlank() ||
@@ -209,7 +208,6 @@ public class SignUpFragment extends JRFragment {
             if(
                email.isBlank() ||
                password.isBlank() ||
-               phoneNumber.isBlank() ||
                firstname.isBlank() ||
                lastname.isBlank() ||
                nationality.isBlank() ||

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.MainActivity"
     android:orientation="vertical">
 
@@ -15,12 +14,12 @@
         >
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="@string/search_offer_hint">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_bar"
                 android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -48,19 +47,18 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/duration_filter"
                 android:layout_weight="4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:hint="@string/duration"
-                app:suffixText="mois"
                 android:layout_marginStart="5dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:singleLine="true"
-                    android:inputType="number"
+                <AutoCompleteTextView
+                    android:id="@+id/duration_filter"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

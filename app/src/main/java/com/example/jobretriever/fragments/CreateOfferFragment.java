@@ -8,6 +8,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.DurationType;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -48,7 +49,7 @@ public class CreateOfferFragment extends JRFragment {
             if(titleEditText != null && fieldEditText != null && durationEditText != null && descriptionEditText != null && wageEditText != null) {
                 String title = titleEditText.getText().toString();
                 String field = fieldEditText.getText().toString();
-                String duration = durationEditText.getText().toString();
+                DurationType duration = DurationType.CDD; // TODO Faire ça
                 String description = descriptionEditText.getText().toString();
                 double wage = Double.parseDouble(wageEditText.getText().toString());
                 Date date = Calendar.getInstance().getTime(); // TODO Changer ça
@@ -72,7 +73,7 @@ public class CreateOfferFragment extends JRFragment {
                 getViewLifecycleOwner(),
                 offer -> {
                     this.offerId = offer.getId();
-                    OfferViewModel.getInstance().getAll(null);
+                    OfferViewModel.getInstance().getAll();
                 }
         );
 

@@ -99,4 +99,5 @@
     <string name="no_experiences">No experiences</string>
     <string name="no_educations">No educations</string>
     <string name="disconnected">You have been disconnected</string>
+    <string name="available_offers">Available offers</string>
 </resources>

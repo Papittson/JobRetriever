@@ -126,7 +126,7 @@ public class CreateOfferFragment extends JRFragment {
             calendar.setTimeInMillis(selection);
             Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
             int month = birthdate.getMonth() + 1;
-            showDatePicker.setText(String.format(getString(R.string.birthdate_format),birthdate.getDay(),month,birthdate.getYear()));
+            showDatePicker.setText(getString(R.string.birthdate_format,birthdate.getDay(),month,birthdate.getYear()));
         });
     }
 }

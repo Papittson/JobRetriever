@@ -1,7 +1,6 @@
 package com.example.jobretriever.fragments;
 
-import static com.example.jobretriever.models.UserType.AGENCY;
-import static com.example.jobretriever.models.UserType.EMPLOYER;
+import static com.example.jobretriever.models.UserType.APPLICANT;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -40,8 +39,8 @@ public class OfferFragment extends JRFragment {
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
             Button applyButton = fragment.findViewById(R.id.offer_apply);
 
-            if(user != null && (user.getUserType() == EMPLOYER || user.getUserType() == AGENCY)) {
-                applyButton.setVisibility(View.GONE);
+            if(user == null || user.getUserType() == APPLICANT) {
+                applyButton.setVisibility(View.VISIBLE);
             }
 
             favoriteButton.setOnClickListener(v -> toggleFavorite());
@@ -100,7 +99,7 @@ public class OfferFragment extends JRFragment {
         durationTV.setText(offer.getDuration().stringResId);
         descriptionTV.setText(offer.getDescription());
         cityCountry.setText(offer.getLocation());
-        wage.setText(String.format(getString(R.string.offer_wage), offer.getWage()));
+        wage.setText(getString(R.string.offer_wage, offer.getWage()));
         favoriteButton.setImageResource(favoriteImage);
     }
 

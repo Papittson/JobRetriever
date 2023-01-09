@@ -47,7 +47,6 @@
             />
 
         <ImageButton
-            android:id="@+id/download_cv"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"

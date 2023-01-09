@@ -45,7 +45,7 @@ public class EmployerProfileFragment extends JRFragment {
 
             nameTextView.setText(employer.getBusinessName());
 
-            informationsTextView.setText(String.format(getString(R.string.profile_infos_employer),getString(user.getUserType().stringResId),getString(employer.getSignUpStatus().stringResId)));
+            informationsTextView.setText(getString(R.string.profile_infos_employer,getString(user.getUserType().stringResId),getString(employer.getSignUpStatus().stringResId)));
             addressTextView.setText(employer.getAddress());
             siretTextView.setText(employer.getSiret());
             managerTextView.setText(employer.getManager());

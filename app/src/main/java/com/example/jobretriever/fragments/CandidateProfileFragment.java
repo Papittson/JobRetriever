@@ -39,9 +39,9 @@ public class CandidateProfileFragment extends JRFragment {
             ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
             ImageButton emailButton = fragment.findViewById(R.id.contact_email);
 
-            nameTextView.setText(String.format(getString(R.string.profile_name_candidate), applicant.getFirstname(), applicant.getLastname()));
+            nameTextView.setText(getString(R.string.profile_name_candidate, applicant.getFirstname(), applicant.getLastname()));
 
-            informationsTextView.setText(String.format(getString(R.string.profile_infos_candidate), getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
+            informationsTextView.setText(getString(R.string.profile_infos_candidate, getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
             if(applicant.getExperiences() == null || applicant.getExperiences().isBlank()){
                 experienceTextView.setText(getText(R.string.no_experiences));
             }else{

@@ -1,6 +1,7 @@
 package com.example.jobretriever.fragments;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 
@@ -32,9 +33,16 @@ public class ApplicationsFragment extends JRFragment {
             OfferViewModel.getInstance().getOffers().observe(
                     getViewLifecycleOwner(),
                     offers -> {
-                        List<Offer> appliedOffers = offers.stream()
-                                .filter(offer -> offer.isAppliedByUser(user.getId()))
-                                .collect(Collectors.toList());
+                        List<Offer> appliedOffers;
+                        if(user instanceof Employer) {
+                            appliedOffers = offers.stream()
+                                    .filter(offer -> offer.isCreatedByUser(user.getId()))
+                                    .collect(Collectors.toList());
+                        } else {
+                            appliedOffers = offers.stream()
+                                    .filter(offer -> offer.isAppliedByUser(user.getId()))
+                                    .collect(Collectors.toList());
+                        }
 
                         updateRecyclerView(R.id.applied_offers, appliedOffers);
                     }

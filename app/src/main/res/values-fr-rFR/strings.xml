@@ -83,4 +83,7 @@
     <string name="CDI">CDI</string>
     <string name="internship">Stage</string>
     <string name="sandwish_course">Alternance</string>
+    <string name="applied_by_user">Postulé par %1$s %2$s</string>
+    <string name="applications">Applications</string>
+    <string name="required">Requis</string>
 </resources>

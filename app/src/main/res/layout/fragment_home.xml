@@ -71,10 +71,12 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="10dp"
             />
     </LinearLayout>
-
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -83,6 +85,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/recent_offers"
+        android:textColor="@color/black"
+        style="@style/headerTextNoMargin"
+        android:textSize="20dp"
         android:layout_marginBottom="20dp"/>
 
 <androidx.recyclerview.widget.RecyclerView
@@ -92,4 +97,5 @@
 
 </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
+</ScrollView>
 </android.widget.LinearLayout>

@@ -35,7 +35,7 @@ public class UserViewModel extends ViewModel {
     public void removeFavorite(String offerId) {
         User user = this.authUser.getValue();
         if (!(user instanceof Applicant)) {
-            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
+            errorMessage.postValue(R.string.error_has_occured);
             return;
         }
         List<String> offersId = new ArrayList<>(((Applicant) user).getFavoritesId());
@@ -53,7 +53,7 @@ public class UserViewModel extends ViewModel {
     public void addFavorite(String offerId) {
         User user = this.authUser.getValue();
         if (!(user instanceof Applicant)) {
-            errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
+            errorMessage.postValue(R.string.error_has_occured);
             return;
         }
         List<String> offersId = new ArrayList<>(((Applicant) user).getFavoritesId());

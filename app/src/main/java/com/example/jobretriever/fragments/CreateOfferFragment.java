@@ -1,66 +1,128 @@
 package com.example.jobretriever.fragments;
 
+import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.activities.MainActivity;
+import com.example.jobretriever.enums.DurationType;
+import com.example.jobretriever.models.Employer;
+import com.example.jobretriever.models.Offer;
+import com.example.jobretriever.viewmodels.OfferViewModel;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateOfferFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CreateOfferFragment extends Fragment {
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class CreateOfferFragment extends JRFragment {
+    DurationType durationType;
+    LocalDate date;
 
     public CreateOfferFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateOfferFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreateOfferFragment newInstance(String param1, String param2) {
-        CreateOfferFragment fragment = new CreateOfferFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        super(R.string.offer_creation, R.layout.fragment_create_offer, true);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(!isUserAllowed()) {
+            return;
         }
+
+        Button submitButton = fragment.findViewById(R.id.submit_offer);
+        EditText datePicker = fragment.findViewById(R.id.offer_date);
+        AutoCompleteTextView cityEditText = fragment.findViewById(R.id.offer_city);
+        AutoCompleteTextView durationEditText = fragment.findViewById(R.id.offer_duration);
+
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, MainActivity.getCities());
+        cityEditText.setAdapter(citiesAdapter);
+        cityEditText.setThreshold(1);
+
+        ArrayAdapter<DurationType> durationsAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, DurationType.values());
+        durationEditText.setAdapter(durationsAdapter);
+
+        durationEditText.setOnItemClickListener((parent, arg1, position, arg3) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof DurationType) {
+                durationType = (DurationType) item;
+            }
+        });
+
+        if(datePicker != null) {
+            datePicker.setOnClickListener(v -> pickDate(datePicker));
+        }
+
+        submitButton.setOnClickListener(_view -> {
+            if(this.authUser instanceof Employer) {
+                Employer employer = (Employer) this.authUser;
+                EditText titleEditText = fragment.findViewById(R.id.offer_title);
+                EditText fieldEditText = fragment.findViewById(R.id.offer_field);
+                EditText descriptionEditText = fragment.findViewById(R.id.offer_description);
+                EditText wageEditText = fragment.findViewById(R.id.offer_wage);
+
+                if(titleEditText != null && fieldEditText != null && descriptionEditText != null && wageEditText != null && durationType != null) {
+                    String title = titleEditText.getText().toString();
+                    String field = fieldEditText.getText().toString();
+                    DurationType duration = durationType;
+                    String description = descriptionEditText.getText().toString();
+                    double wage = Double.parseDouble(wageEditText.getText().toString());
+                    String location = cityEditText.getText().toString();
+                    Offer offer = new Offer(title, duration, date, field, description, wage, employer.getId(), location);
+                    offer.setEmployer(employer);
+                    OfferViewModel.getInstance().addOffer(offer);
+                } else {
+                    showToast(R.string.required_fields);
+                }
+            } else {
+                goToFragment(HomeFragment.class);
+                showToast(R.string.error_has_occured);
+            }
+        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_offer, container, false);
+    public void onStart() {
+        super.onStart();
+        if(!isUserAllowed()) {
+            return;
+        }
+
+        OfferViewModel.getInstance().getSelectedOffer().observe(
+                this,
+                offer -> {
+                    if(offer != null) {
+                        goToFragment(OfferFragment.class);
+                        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+    }
+
+    public void pickDate(EditText showDatePicker) {
+        MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
+                .datePicker()
+                .setTitleText(R.string.birthdate)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
+        signUpBirthdate.addOnPositiveButtonClickListener(selection -> {
+            this.date = Instant.ofEpochMilli(selection).atZone(ZoneId.systemDefault()).toLocalDate();
+            showDatePicker.setText(this.date.format(DATE_FORMATTER));
+        });
     }
 }

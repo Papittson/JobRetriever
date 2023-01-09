@@ -1,96 +1,108 @@
 package com.example.jobretriever.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
-import com.example.jobretriever.adapters.OffersAdapter;
+import com.example.jobretriever.activities.MainActivity;
+import com.example.jobretriever.enums.DurationType;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
-    View view;
+public class HomeFragment extends JRFragment {
+    DurationType durationType;
 
     public HomeFragment() {
+        super(R.string.welcome_message, R.layout.fragment_home, false);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.welcome_message);
-            }
-        }
-    }
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button confirmSearchButton = fragment.findViewById(R.id.confirmSearch);
+        AutoCompleteTextView cityFilterInput = fragment.findViewById(R.id.city_filter);
+        AutoCompleteTextView durationFilterInput = fragment.findViewById(R.id.duration_filter);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button confirm = view.findViewById(R.id.confirmSearch);
-        confirm.setOnClickListener(_view -> {
-            TextInputLayout searchBar = view.findViewById(R.id.search_bar);
-            EditText editText = searchBar.getEditText();
-            if(editText != null) {
-                String searchQuery = editText.getText().toString();
-                OfferViewModel.getInstance().getAll(searchQuery);
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, MainActivity.getCities());
+        cityFilterInput.setAdapter(citiesAdapter);
+        cityFilterInput.setThreshold(1);
+
+        ArrayAdapter<DurationType> durationsAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, DurationType.values());
+        durationFilterInput.setAdapter(durationsAdapter);
+
+        durationFilterInput.setOnItemClickListener((parent, arg1, position, arg3) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof DurationType) {
+                durationType = (DurationType) item;
             }
         });
 
-        return view;
+        confirmSearchButton.setOnClickListener(_view -> search());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        RecyclerView recyclerView = view.findViewById(R.id.welcomeOfferRV);
-        ArrayList<Offer> offers = new ArrayList<>();
-        OffersAdapter adapter = new OffersAdapter(getContext(), getActivity(), offers);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        createRecyclerView(R.id.welcomeOfferRV);
 
-        List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
-        if(offersLiveData == null || offersLiveData.size() == 0) {
-            OfferViewModel.getInstance().getAll(null);
+        List<Offer> recentOffers = OfferViewModel.getInstance().getRecentOffers().getValue();
+        if(recentOffers == null) {
+            OfferViewModel.getInstance().getAll(25);
         }
 
-        OfferViewModel.getInstance().getOffers().observe(
-                getViewLifecycleOwner(),
-                offerList -> {
-                    offers.clear();
-                    offers.addAll(offerList);
-                    recyclerView.setAdapter(adapter);
+        OfferViewModel.getInstance().getRecentOffers().observe(
+                this,
+                offers -> {
+                    if(offers != null) {
+                        updateRecyclerView(R.id.welcomeOfferRV, offers);
+                        OfferViewModel.getInstance().getRecentOffers().removeObservers(this);
+                        OfferViewModel.getInstance().getRecentOffers().postValue(null);
+                    }
                 }
         );
 
-        OfferViewModel.getInstance().getError().observe(
-                getViewLifecycleOwner(),
-                errorMessage -> Toast.makeText(getContext(),getString(errorMessage) , Toast.LENGTH_LONG).show()
+        OfferViewModel.getInstance().getSearchedOffers().observe(
+                this,
+                offers -> {
+                    if(offers != null) {
+                        updateRecyclerView(R.id.welcomeOfferRV, offers);
+                    }
+                }
         );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
-        OfferViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
+        OfferViewModel.getInstance().getRecentOffers().removeObservers(this);
+        OfferViewModel.getInstance().getSearchedOffers().removeObservers(this);
+        OfferViewModel.getInstance().getSearchedOffers().postValue(null);
+        OfferViewModel.getInstance().getRecentOffers().postValue(null);
+    }
+
+    public void search() {
+        EditText searchEditText = fragment.findViewById(R.id.search_bar);
+        EditText cityEditText = fragment.findViewById(R.id.city_filter);
+
+        if(searchEditText != null && cityEditText != null) {
+            String searchQuery = searchEditText.getText().toString();
+            String city = cityEditText.getText().toString();
+            if(searchQuery.isBlank()) {
+                searchQuery = null;
+            }
+            if(city.isBlank()) {
+                city = null;
+            }
+            OfferViewModel.getInstance().search(searchQuery, city, durationType);
+        }
     }
 }

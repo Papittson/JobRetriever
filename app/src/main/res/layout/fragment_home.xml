@@ -13,26 +13,55 @@
         android:layout_marginTop="10dp"
         >
 
-        <TextView
-            style="@style/headerText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/welcome_message"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="@string/search_offer_hint">
-
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_bar"
                 android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:hint="@string/city"
+                android:layout_marginEnd="5dp">
+                <AutoCompleteTextView
+                    android:id="@+id/city_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_weight="4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:hint="@string/duration"
+                android:layout_marginStart="5dp">
+                <AutoCompleteTextView
+                    android:id="@+id/duration_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/confirmSearch"
@@ -46,8 +75,9 @@
             />
     </LinearLayout>
 <ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="70dp">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -57,8 +87,8 @@
         android:layout_height="wrap_content"
         android:text="@string/recent_offers"
         android:textColor="@color/black"
-        style="@style/headerTextNoMargin"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
 <androidx.recyclerview.widget.RecyclerView

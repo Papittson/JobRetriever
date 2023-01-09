@@ -1,66 +1,92 @@
 package com.example.jobretriever.fragments;
 
-import android.os.Bundle;
+import static com.example.jobretriever.enums.SignUpStatus.ACCEPTED;
 
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Employer;
+import com.example.jobretriever.viewmodels.OfferViewModel;
+import com.example.jobretriever.viewmodels.UserViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EmployerProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class EmployerProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class EmployerProfileFragment extends ProfileFragment {
 
     public EmployerProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EmployerProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EmployerProfileFragment newInstance(String param1, String param2) {
-        EmployerProfileFragment fragment = new EmployerProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        super(R.layout.fragment_employer_profile);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onStart() {
+        super.onStart();
+        if(!isUserAllowed()) {
+            return;
         }
+
+        createRecyclerView(R.id.available_offers);
+
+        UserViewModel.getInstance().getSelectedUser().observe(
+                this,
+                _user -> {
+                    if(_user == null) {
+                        return;
+                    }
+                    this.user = _user;
+                    UserViewModel.getInstance().getSelectedUser().removeObservers(this);
+                    UserViewModel.getInstance().getSelectedUser().postValue(null);
+                    if(this.user instanceof Employer) {
+                        Employer employer = (Employer) this.user;
+                        TextView nameTextView = fragment.findViewById(R.id.profile_name);
+                        TextView informationsTextView = fragment.findViewById(R.id.informations);
+                        TextView addressTextView = fragment.findViewById(R.id.address);
+                        TextView siretTextView = fragment.findViewById(R.id.siret);
+                        TextView managerTextView = fragment.findViewById(R.id.manager);
+                        ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
+                        ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+                        ImageButton websiteButton = fragment.findViewById(R.id.visit_website);
+                        Button createOfferButton = fragment.findViewById(R.id.create_offer);
+
+                        nameTextView.setText(employer.getBusinessName());
+                        informationsTextView.setText(getString(R.string.profile_infos_employer,getString(user.getUserType().stringResId),getString(employer.getSignUpStatus().stringResId)));
+                        addressTextView.setText(employer.getAddress());
+                        siretTextView.setText(employer.getSiret());
+                        managerTextView.setText(employer.getManager());
+
+                        if(this.authUser.getId().equals(this.user.getId()) && employer.getSignUpStatus() == ACCEPTED) {
+                            createOfferButton.setVisibility(View.VISIBLE);
+                        }
+
+                        phoneButton.setOnClickListener(v -> contactUserByPhone());
+                        emailButton.setOnClickListener(v -> contactUserByEmail());
+                        websiteButton.setOnClickListener(v -> visitWebsite());
+                        createOfferButton.setOnClickListener(v -> goToFragment(CreateOfferFragment.class));
+
+                        OfferViewModel.getInstance().getAvailables(user.getId());
+                        OfferViewModel.getInstance().getAvailableOffers().observe(
+                                this,
+                                offers -> {
+                                    if(offers != null) {
+                                        updateRecyclerView(R.id.available_offers, offers);
+                                        OfferViewModel.getInstance().getAvailableOffers().removeObservers(this);
+                                        OfferViewModel.getInstance().getAvailableOffers().postValue(null);
+                                    }
+                                }
+                        );
+                    } else {
+                        goToFragment(HomeFragment.class);
+                        showToast(R.string.error_user_not_found);
+                    }
+                }
+        );
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_employer_profile, container, false);
+    public void onStop() {
+        super.onStop();
+        OfferViewModel.getInstance().getAvailableOffers().removeObservers(this);
+        OfferViewModel.getInstance().getAvailableOffers().postValue(null);
     }
 }

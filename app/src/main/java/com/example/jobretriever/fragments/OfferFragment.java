@@ -1,131 +1,160 @@
 package com.example.jobretriever.fragments;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import static com.example.jobretriever.enums.UserType.APPLICANT;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
+import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
-import java.util.List;
 
-
-public class OfferFragment extends Fragment {
-    View view;
+public class OfferFragment extends JRFragment {
     Offer offer;
 
     public OfferFragment() {
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.details);
-            }
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_offer, container, false);
-        return view;
+        super(R.string.details, R.layout.fragment_offer, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(offerExists()) {
-            fillLayoutData();
+        OfferViewModel.getInstance().getSelectedOffer().observe(
+                this,
+                _offer -> {
+                    if(_offer == null) {
+                        return;
+                    }
+                    this.offer = _offer;
+                    OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+                    OfferViewModel.getInstance().getSelectedOffer().postValue(null);
+                    fillLayoutData();
 
-            ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
-            Button applyButton = view.findViewById(R.id.offer_apply);
+                    ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+                    ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
+                    ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+                    ImageButton profileButton = fragment.findViewById(R.id.view_profile);
+                    Button applyButton = fragment.findViewById(R.id.offer_apply);
 
-            applyButton.setOnClickListener(v -> applyToOffer());
-            favoriteButton.setOnClickListener(v -> toggleFavorite());
-        } else {
-            goToFragment(HomeFragment.class);
-            Toast.makeText(getContext(), R.string.error_offer_not_found, Toast.LENGTH_LONG).show();
-        }
+                    if(!isUserLoggedIn() || authUser.getUserType() == APPLICANT) {
+                        applyButton.setVisibility(View.VISIBLE);
+                    }
+
+                    favoriteButton.setOnClickListener(v -> toggleFavorite());
+                    phoneButton.setOnClickListener(v -> contactEmployerByPhone());
+                    emailButton.setOnClickListener(v -> contactEmployerByEmail());
+                    profileButton.setOnClickListener(v -> viewEmployerProfile());
+                    applyButton.setOnClickListener(v -> applyToOffer());
+                }
+        );
+
+        OfferViewModel.getInstance().getAppliedOffer().observe(
+                this,
+                _offer -> {
+                    if(_offer != null) {
+                        Button applyButton = fragment.findViewById(R.id.offer_apply);
+                        applyButton.setVisibility(View.GONE);
+                        showToast(R.string.application_added);
+                        OfferViewModel.getInstance().getAppliedOffer().removeObservers(this);
+                        OfferViewModel.getInstance().getAppliedOffer().postValue(null);
+                    }
+                }
+        );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    public boolean offerExists() {
-        Bundle args = this.getArguments();
-        List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
-        if(args != null && offers != null && args.getInt("offerIndex", -1) != -1) {
-            int index = args.getInt("offerIndex");
-            offer = offers.get(index);
-            return true;
-        }
-        return false;
+        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+        OfferViewModel.getInstance().getAppliedOffer().removeObservers(this);
     }
 
     public void fillLayoutData() {
-        TextView jobTitleTV = view.findViewById(R.id.offer_job_title);
-        TextView businessNameTV = view.findViewById(R.id.offer_busines_name);
-        TextView durationTV = view.findViewById(R.id.offer_duration);
-        TextView descriptionTV = view.findViewById(R.id.offer_description);
-        TextView cityCountry = view.findViewById(R.id.offer_location);
-        TextView wage = view.findViewById(R.id.offer_wage);
-        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
-        int favoriteImage = UserViewModel.getInstance().hasFavorite(offer.getId()) ?
-                R.drawable.ic_baseline_favorite_24 :
-                R.drawable.ic_baseline_favorite_border_24;
+        TextView jobTitleTV = fragment.findViewById(R.id.offer_job_title);
+        TextView businessNameTV = fragment.findViewById(R.id.offer_busines_name);
+        TextView durationTV = fragment.findViewById(R.id.offer_duration);
+        TextView descriptionTV = fragment.findViewById(R.id.offer_description);
+        TextView cityCountry = fragment.findViewById(R.id.offer_location);
+        TextView wage = fragment.findViewById(R.id.offer_wage);
+        ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+
+        if(this.authUser instanceof Employer) {
+            favoriteButton.setVisibility(View.GONE);
+        } else if(this.authUser instanceof Applicant && ((Applicant) this.authUser).hasFavorite(offer.getId())) {
+            favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        }
 
         jobTitleTV.setText(offer.getTitle());
         businessNameTV.setText(offer.getEmployer().getBusinessName());
-        durationTV.setText(offer.getDuration());
+        durationTV.setText(offer.getDuration().stringResId);
         descriptionTV.setText(offer.getDescription());
-        cityCountry.setText(String.format(getString(R.string.offer_location), offer.getLocation().getName(), offer.getLocation().getCountry()));
-        wage.setText(String.format(getString(R.string.offer_wage), offer.getWage()));
-        favoriteButton.setImageResource(favoriteImage);
+        cityCountry.setText(offer.getLocation());
+        wage.setText(getString(R.string.offer_wage, offer.getWage()));
     }
 
     public void applyToOffer() {
-        if (UserViewModel.getInstance().isLoggedIn()) {
-            goToFragment(ApplyFragment.class);
-        }else {
-            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
+        if (isUserLoggedIn()) {
+            if(authUser instanceof Applicant) {
+                OfferViewModel.getInstance().addApplication((Applicant) authUser, offer);
+            }
+        } else {
+            showToast(R.string.error_must_be_signed_in);
         }
+    }
 
+    public void viewEmployerProfile() {
+        User employer = this.offer.getEmployer();
+        UserViewModel.getInstance().getSelectedUser().postValue(employer);
+        goToFragment(EmployerProfileFragment.class);
+    }
+
+    public void contactEmployerByPhone() {
+        User employer = this.offer.getEmployer();
+        String phoneNumber = employer.getPhone();
+        if(phoneNumber != null && !phoneNumber.isBlank()) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
+            startActivity(intent);
+        } else {
+            showToast(R.string.unknown_phone_number);
+        }
+    }
+
+    public void contactEmployerByEmail() {
+        User employer = this.offer.getEmployer();
+        String emailAddress = employer.getMail();
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+        intent.putExtra(Intent.EXTRA_SUBJECT, this.offer.getTitle());
+        startActivity(intent);
     }
 
     public void toggleFavorite() {
-        ImageButton favoriteButton = view.findViewById(R.id.offer_favorite);
-        if (UserViewModel.getInstance().isLoggedIn()) {
-            if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
-                UserViewModel.getInstance().removeFavorite(offer.getId());
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-            } else {
-                UserViewModel.getInstance().addFavorite(offer.getId());
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+        ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+        if (isUserLoggedIn()) {
+            if(this.authUser instanceof Applicant) {
+                Applicant applicant = (Applicant) this.authUser;
+                if(applicant.hasFavorite(offer.getId())) {
+                    UserViewModel.getInstance().removeFavorite(offer.getId());
+                    favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                } else {
+                    UserViewModel.getInstance().addFavorite(offer.getId());
+                    favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+                }
             }
         } else {
-            Toast.makeText(getContext(), R.string.error_must_be_signed_in , Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void goToFragment(Class<? extends Fragment> fragmentClass) {
-        if(getActivity() != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentClass, null).commit();
+            showToast(R.string.error_must_be_signed_in);
         }
     }
 }

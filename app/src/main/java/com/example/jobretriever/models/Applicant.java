@@ -7,7 +7,6 @@ import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,10 +104,5 @@ public class Applicant extends User {
     @Exclude
     public boolean hasFavorite(String offerId) {
         return favoritesId.contains(offerId);
-    }
-
-    @Exclude
-    public int getAge() {
-        return (int) ChronoUnit.YEARS.between(birthdate, LocalDate.now());
     }
 }

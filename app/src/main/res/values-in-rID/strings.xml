@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JobRetriever</string>
-    <string name="profile_name_candidate">%1$s %2$s</string>
     <string name="action_sign_in">꧋ꦩꦱꦸꦏ꧀</string>
     <string name="action_sign_up">꧋ꦣꦥ꦳꧀ꦠꦂ</string>
-    <string name="confrim">꧋ꦎꦏ꧀</string>
+    <string name="confirm">꧋ꦎꦏ꧀</string>
     <string name="welcome_message">꧋ꦱꦼꦭꦩꦠ꧀ꦝꦠꦁ!</string>
     <string name="applicant">꧋ꦥꦼꦭꦩꦂ</string>
     <string name="employer">꧋ꦥꦼꦔꦸꦱꦲ</string>
@@ -31,9 +29,7 @@
     <string name="education">꧋ꦥꦼꦤ꧀ꦝꦶꦣꦶꦏꦤ꧀</string>
     <string name="nationality">꧋ꦮꦂꦒꦤꦼꦒꦫ</string>
     <string name="home">꧋ꦧꦼꦫꦤ꧀ꦝ</string>
-    <string name="offer_wage">%1$.2f €</string>
     <string name="logo_description">App logo</string>
-    <string name="company_duration">%1$s | %2$s</string>
     <string name="remember_me">꧋ꦆꦔꦠ꧀ꦄꦏꦸ</string>
     <string name="error_loading_users">꧋ꦄꦼꦂꦫꦺꦴꦂꦭꦺꦴꦮꦣꦶꦁꦈꦱꦺꦂꦱ꧀</string>
     <string name="error_loading_offers">꧋ꦄꦼꦂꦫꦺꦴꦂꦭꦺꦴꦮꦣꦶꦁꦎꦥ꦳꧀ꦥ꦳ꦺꦂꦱ꧀</string>
@@ -81,6 +77,4 @@
     <string name="applications">꧋ꦄꦥ꧀ꦭꦶꦏꦱꦶ</string>
     <string name="required">꧋ꦮꦗꦶꦧ꧀</string>
     <string name="firstname">꧋ꦤꦩꦣꦼꦥꦤ꧀</string>
-    <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
-    <string name="profile_infos_employer">%1$s | %2$s</string>
 </resources>

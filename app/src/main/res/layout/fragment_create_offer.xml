@@ -147,7 +147,7 @@
             android:id="@+id/submit_offer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/confrim" />
+            android:text="@string/confirm" />
 
     </LinearLayout>
 

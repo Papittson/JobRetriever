@@ -62,7 +62,7 @@
         android:id="@+id/confirmSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/confrim"
+        android:text="@string/confirm"
         android:layout_gravity="center"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"

@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">JobRetriever</string>
-    <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
+    <string name="app_name" translatable="false">JobRetriever</string>
+    <string name="profile_infos_candidate" translatable="false">%1$s | %2$s, %3$s</string>
     <string name="profile_name_candidate" translatable="false">%1$s %2$s</string>
     <string name="profile_infos_employer" translatable="false">%1$s | %2$s</string>
     <string name="offer_wage" translatable="false">%1$.2f €</string>
     <string name="job_title">Job Title</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_sign_up">Sign Up</string>
-    <string name="confrim">Confirm</string>
+    <string name="confirm">Confirm</string>
     <string name="user_type">User Type</string>
     <string name="welcome_message">Welcome !</string>
     <string name="applicant">Applicant</string>
@@ -15,12 +15,12 @@
     <string name="agency">Agency</string>
     <string name="phone_number">Phone number</string>
     <string name="password">Password</string>
-    <string name="mail">E-mail</string>
+    <string name="mail">E-mail address</string>
     <string name="search_offer_hint">Search for an offer</string>
     <string name="action_search">Search</string>
     <string name="recent_offers">Recent offers</string>
     <string name="description">Description</string>
-    <string name="job_thumbnail">job_thumbnail</string>
+    <string name="job_thumbnail">Job thumbnail</string>
     <string name="city">City</string>
     <string name="profile">Profile</string>
     <string name="applied_offers">Applied offers</string>
@@ -36,9 +36,9 @@
     <string name="error_loading_users">Error loading users</string>
     <string name="error_loading_offers">Error loading offers</string>
     <string name="error_checking_mail">Error checking if mail exists</string>
-    <string name="error_mail_already_used">Error this mail is already used</string>
-    <string name="error_during_sign_up">Error during sign up please try again</string>
-    <string name="error_wrong_credentials">Error wrong mail or password</string>
+    <string name="error_mail_already_used">This mail is already used</string>
+    <string name="error_during_sign_up">Error during sign up, please try again</string>
+    <string name="error_wrong_credentials">Wrong mail or password</string>
     <string name="error_must_be_signed_in">You must be signed in</string>
     <string name="business_name">Business name</string>
     <string name="duration">Duration</string>
@@ -62,7 +62,7 @@
     <string name="awaiting_attachement">Awaiting attachments</string>
     <string name="awaiting_meeting">Awaiting meeting</string>
     <string name="empty_string" translatable="false" />
-    <string name="offer_creation">Offer Creation</string>
+    <string name="offer_creation">Offer creation</string>
     <string name="applied_by_user">Applied by %1$s %2$s</string>
     <string name="lastname">Lastname</string>
     <string name="birthdate">Birthdate</string>
@@ -74,8 +74,8 @@
     <string name="unknown_phone_number">Phone number not provided</string>
     <string name="error_adding_offer">Error adding offer</string>
     <string name="error_adding_applications">Error adding application</string>
-    <string name="no_experiences">No experiences</string>
-    <string name="no_educations">No educations</string>
+    <string name="no_experiences">No experiences mentioned</string>
+    <string name="no_educations">No educations mentioned</string>
     <string name="disconnected">You have been disconnected</string>
     <string name="available_offers">Available offers</string>
     <string name="CDD">Temporary contract</string>

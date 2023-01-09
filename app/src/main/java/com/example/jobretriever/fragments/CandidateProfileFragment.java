@@ -47,7 +47,7 @@ public class CandidateProfileFragment extends ProfileFragment {
                         ImageButton websiteButton = fragment.findViewById(R.id.visit_website);
 
                         nameTextView.setText(getString(R.string.profile_name_candidate, applicant.getFirstname(), applicant.getLastname()));
-                        informationsTextView.setText(getString(R.string.profile_infos_candidate, getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
+                        informationsTextView.setText(getString(R.string.profile_infos_candidate, getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getBirthdate()));
 
                         if(applicant.getExperiences() == null || applicant.getExperiences().isBlank()){
                             experienceTextView.setText(getText(R.string.no_experiences));

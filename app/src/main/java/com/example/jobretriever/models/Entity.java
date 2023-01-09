@@ -1,21 +1,19 @@
 package com.example.jobretriever.models;
 
-import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
-
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
 @IgnoreExtraProperties
 public abstract class Entity {
-    String createdAt;
+    Timestamp createdAt;
     String id;
 
     public Entity() {
         this.id = UUID.randomUUID().toString();
-        this.createdAt = LocalDate.now().format(DATE_FORMATTER);
+        this.createdAt = Timestamp.now();
     }
 
     public String getId() {
@@ -25,11 +23,11 @@ public abstract class Entity {
         this.id = id;
     }
 
-    public String getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 }

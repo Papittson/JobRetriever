@@ -33,7 +33,7 @@ public abstract class JRRepository {
     }
 
     public Task<QuerySnapshot> getAll(long limit) {
-        return collection.orderBy("createdAt").limit(limit).get();
+        return collection.orderBy("createdAt", Query.Direction.DESCENDING).limit(limit).get();
     }
 
     public Task<DocumentSnapshot> getById(String id) {

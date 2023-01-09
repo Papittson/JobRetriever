@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="190dp"
             android:textSize="10dp"
-            android:text="Description"
+            android:text="@string/description"
+            android:textColor="@color/black"
             android:textAlignment="center"/>
         <Button
             android:id="@+id/confirmPlan"
@@ -55,8 +56,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:text="@string/confrim" />
-
-
     </androidx.cardview.widget.CardView>
 
 

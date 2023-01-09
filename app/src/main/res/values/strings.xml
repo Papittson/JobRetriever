@@ -41,7 +41,7 @@
     <string name="error_wrong_credentials">Wrong mail or password</string>
     <string name="error_must_be_signed_in">You must be signed in</string>
     <string name="business_name">Business name</string>
-    <string name="duration">Duration</string>
+    <string name="duration">Contract</string>
     <string name="action_apply">Apply</string>
     <string name="wage">Wage</string>
     <string name="location">Location</string>

@@ -77,4 +77,9 @@
     <string name="applications">꧋ꦄꦥ꧀ꦭꦶꦏꦱꦶ</string>
     <string name="required">꧋ꦮꦗꦶꦧ꧀</string>
     <string name="firstname">꧋ꦤꦩꦣꦼꦥꦤ꧀</string>
+    <string name="error_user_not_found">꧋ꦥꦼꦔꦭꦩꦤ꧀ꦏꦺꦴꦱꦺꦴꦁ</string>
+    <string name="visit_website">꧋ꦥꦼꦤꦮꦫꦤ꧀ꦠꦼꦂꦱꦼꦣꦶꦪ</string>
+    <string name="website">꧋ꦱꦼꦩꦸꦮꦧꦒꦶꦪꦤ꧀ꦲꦫꦸꦱ꧀ꦝꦶꦆꦱꦶ</string>
+    <string name="unknown_website">꧋ꦠꦼꦂꦗꦣꦶꦏꦼꦱꦭꦲꦤ꧀</string>
+    <string name="view_employer_profile">꧋ꦥꦼꦭꦠꦶꦲꦤ꧀</string>
 </resources>

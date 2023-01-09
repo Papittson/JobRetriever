@@ -74,8 +74,13 @@ public class CreateOfferFragment extends JRFragment {
                     String field = fieldEditText.getText().toString();
                     DurationType duration = durationType;
                     String description = descriptionEditText.getText().toString();
-                    double wage = Double.parseDouble(wageEditText.getText().toString());
+                    String wageString = wageEditText.getText().toString();
                     String location = cityEditText.getText().toString();
+                    if(title.isBlank() || field.isBlank() || description.isBlank() || wageString.isBlank() || location.isBlank()) {
+                        showToast(R.string.required_fields);
+                        return;
+                    }
+                    double wage = Double.parseDouble(wageString);
                     Offer offer = new Offer(title, duration, date, field, description, wage, employer.getId(), location);
                     offer.setEmployer(employer);
                     OfferViewModel.getInstance().addOffer(offer);

@@ -1,10 +1,12 @@
 package com.example.jobretriever.models;
 
-import com.google.firebase.Timestamp;
+import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
+import static com.example.jobretriever.enums.UserType.APPLICANT;
+
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,8 @@ public class Applicant extends User {
 
     public Applicant() {}
 
-    public Applicant(String mail, String password, String phone, String firstname, String lastname, String nationality, String educations, String experiences, LocalDate birthdate) {
-        super(mail, password, phone);
+    public Applicant(String mail, String password, String phone, String websiteUrl, String firstname, String lastname, String nationality, String educations, String experiences, LocalDate birthdate) {
+        super(mail, password, phone, websiteUrl);
         this.firstname = firstname;
         this.lastname = lastname;
         this.nationality = nationality;
@@ -33,6 +35,7 @@ public class Applicant extends User {
         this.favoritesId = new ArrayList<>();
         this.applicationsId = new ArrayList<>();
         this.birthdate = birthdate;
+        this.userType = APPLICANT;
     }
 
     public String getFirstname() {
@@ -91,18 +94,20 @@ public class Applicant extends User {
         this.applicationsId = applicationsId;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public String getBirthdate() {
+        return this.birthdate.format(DATE_FORMATTER);
     }
 
-    public void setBirthdate(Timestamp birthdate) {
-        this.birthdate = birthdate.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    public void setBirthdate(String birthdate) {
+        this.birthdate = LocalDate.parse(birthdate, DATE_FORMATTER);
     }
 
+    @Exclude
     public boolean hasFavorite(String offerId) {
         return favoritesId.contains(offerId);
     }
 
+    @Exclude
     public int getAge() {
         return (int) ChronoUnit.YEARS.between(birthdate, LocalDate.now());
     }

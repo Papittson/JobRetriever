@@ -1,4 +1,4 @@
-package com.example.jobretriever.models;
+package com.example.jobretriever.enums;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -6,14 +6,15 @@ import androidx.annotation.StringRes;
 import com.example.jobretriever.R;
 import com.example.jobretriever.activities.MainActivity;
 
-public enum UserType {
-    APPLICANT(R.string.applicant),
-    EMPLOYER(R.string.employer),
-    AGENCY(R.string.agency);
+public enum DurationType {
+    CDD(R.string.CDD),
+    CDI(R.string.CDI),
+    STAGE(R.string.internship),
+    ALTERNANCE(R.string.sandwish_course);
 
     public final int stringResId;
 
-    UserType(@StringRes int stringResId) {
+    DurationType(@StringRes int stringResId) {
         this.stringResId = stringResId;
     }
 

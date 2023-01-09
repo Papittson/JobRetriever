@@ -1,5 +1,6 @@
 package com.example.jobretriever.models;
 
+import com.example.jobretriever.enums.UserType;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 @SuppressWarnings("unused")
@@ -8,14 +9,24 @@ public class User extends Entity {
     String mail;
     String password;
     String phone;
+    String websiteUrl;
     UserType userType;
 
     public User() {}
 
-    public User(String mail, String password, String phone) {
+    public User(String mail, String password, String phone, String websiteUrl) {
         this.mail = mail;
         this.password = password;
         this.phone = phone;
+        this.websiteUrl = websiteUrl;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public String getMail() {

@@ -47,11 +47,12 @@
             />
 
         <ImageButton
+            android:id="@+id/visit_website"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_download_24"
-            android:contentDescription="@string/download_cv"
+            android:src="@drawable/ic_baseline_web_24"
+            android:contentDescription="@string/visit_website"
             />
 
     </LinearLayout>

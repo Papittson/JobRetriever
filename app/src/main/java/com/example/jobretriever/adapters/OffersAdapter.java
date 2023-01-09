@@ -1,7 +1,6 @@
 package com.example.jobretriever.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.example.jobretriever.R;
 import com.example.jobretriever.fragments.OfferFragment;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
+import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull OffersAdapter.ViewHolder holder, int position) {
         Offer offer = offers.get(position);
-        User user = UserViewModel.getInstance().getUser().getValue();
+        User user = UserViewModel.getInstance().getAuthUser().getValue();
         String userId = user != null ? user.getId() : "";
 
         holder.title.setText(offer.getTitle());
@@ -79,11 +79,10 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
         @Override
         public void onClick(View view) {
             Offer offer = offers.get(this.getAdapterPosition());
-            Bundle args = new Bundle();
-            args.putString("offerId", offer.getId());
+            OfferViewModel.getInstance().getSelectedOffer().postValue(offer);
             activity.getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, OfferFragment.class, args)
+                    .replace(R.id.fragment_container, OfferFragment.class, null)
                     .commit();
         }
     }

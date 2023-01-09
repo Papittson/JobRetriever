@@ -1,15 +1,15 @@
 package com.example.jobretriever.viewmodels;
 
-import static com.example.jobretriever.models.UserType.APPLICANT;
+import static com.example.jobretriever.enums.UserType.APPLICANT;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.enums.UserType;
 import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.User;
-import com.example.jobretriever.models.UserType;
 import com.example.jobretriever.repositories.UserRepository;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserViewModel extends ViewModel {
-    private final MutableLiveData<Integer> errorMessage = new MutableLiveData<>();
-    private final MutableLiveData<List<User>> users = new MutableLiveData<>();
-    private final MutableLiveData<User> user = new MutableLiveData<>();
     private static UserViewModel instance;
+    private final MutableLiveData<Integer> errorMessage = new MutableLiveData<>(null);
+    private final MutableLiveData<User> selectedUser = new MutableLiveData<>(null);
+    private final MutableLiveData<User> authUser = new MutableLiveData<>(null);
 
     private UserViewModel() {
     }
@@ -32,79 +32,38 @@ public class UserViewModel extends ViewModel {
         return instance;
     }
 
-    public void getAll() {
-        UserRepository.getInstance().getAll().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<User> users = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    User obj;
-                    if(doc.get("userType", UserType.class) == APPLICANT) {
-                        obj = doc.toObject(Applicant.class);
-                    } else {
-                        obj = doc.toObject(Employer.class);
-                    }
-                    obj.setId(doc.getId());
-                    users.add(obj);
-                }
-                this.users.postValue(users);
-            } else {
-                errorMessage.postValue(R.string.error_loading_users);
-                if (task.getException() != null) {
-                    task.getException().printStackTrace();
-                }
-            }
-        });
-    }
-
-    public MutableLiveData<List<User>> getUsers() {
-        return users;
-    }
-
-    public boolean hasFavorite(String offerId) {
-        if(user.getValue() == null || !(user.getValue() instanceof Applicant)) {
-            return false;
-        }
-        return ((Applicant) user.getValue()).hasFavorite(offerId);
-    }
-
     public void removeFavorite(String offerId) {
-        User user = this.user.getValue();
+        User user = this.authUser.getValue();
         if (!(user instanceof Applicant)) {
             errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
             return;
         }
-        List<String> offers = new ArrayList<>(((Applicant) user).getFavoritesId());
-        offers.remove(offerId);
-        UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
+        List<String> offersId = new ArrayList<>(((Applicant) user).getFavoritesId());
+        offersId.remove(offerId);
+        UserRepository.getInstance().update(user.getId(), "favoritesId", offersId)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        ((Applicant) user).setFavoritesId(offers);
+                        ((Applicant) user).setFavoritesId(offersId);
                     } else {
                         errorMessage.postValue(R.string.error_loading_users);
-                        if (task.getException() != null) {
-                            task.getException().printStackTrace();
-                        }
                     }
                 });
     }
 
     public void addFavorite(String offerId) {
-        User user = this.user.getValue();
+        User user = this.authUser.getValue();
         if (!(user instanceof Applicant)) {
             errorMessage.postValue(R.string.error_loading_users); // TODO Changer message
             return;
         }
-        List<String> offers = new ArrayList<>(((Applicant) user).getFavoritesId());
-        offers.add(offerId);
-        UserRepository.getInstance().update(user.getId(), "favoritesId", offers)
+        List<String> offersId = new ArrayList<>(((Applicant) user).getFavoritesId());
+        offersId.add(offerId);
+        UserRepository.getInstance().update(user.getId(), "favoritesId", offersId)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        ((Applicant) user).setFavoritesId(offers);
+                        ((Applicant) user).setFavoritesId(offersId);
                     } else {
                         errorMessage.postValue(R.string.error_loading_users);
-                        if (task.getException() != null) {
-                            task.getException().printStackTrace();
-                        }
                     }
                 });
     }
@@ -112,27 +71,22 @@ public class UserViewModel extends ViewModel {
     public void signIn(String email, String password) {
         UserRepository.getInstance().getUserByCredentials(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                boolean isUserPosted = false;
+                if(task.getResult().isEmpty()) {
+                    errorMessage.postValue(R.string.error_wrong_credentials);
+                    return;
+                }
+                User user = null;
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    User obj;
                     if(doc.get("userType", UserType.class) == APPLICANT) {
-                        obj = doc.toObject(Applicant.class);
+                        user = doc.toObject(Applicant.class);
                     } else {
-                        obj = doc.toObject(Employer.class);
+                        user = doc.toObject(Employer.class);
                     }
-                    obj.setId(doc.getId());
-                    user.postValue(obj);
-                    isUserPosted = true;
                     break;
                 }
-                if (!isUserPosted) {
-                    errorMessage.postValue(R.string.error_wrong_credentials);
-                }
+                this.authUser.postValue(user);
             } else {
                 errorMessage.postValue(R.string.error_loading_users);
-                if (task.getException() != null) {
-                    task.getException().printStackTrace();
-                }
             }
         });
     }
@@ -141,15 +95,11 @@ public class UserViewModel extends ViewModel {
         UserRepository.getInstance().getUserByMail(user.getMail()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().isEmpty()) {
-                    UserRepository.getInstance().add(user).addOnCompleteListener(task2 -> {
-                        if (task2.isSuccessful()) {
-                            user.setId(task2.getResult().getId());
-                            this.user.postValue(user);
+                    UserRepository.getInstance().add(user).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            this.authUser.postValue(user);
                         } else {
                             errorMessage.postValue(R.string.error_during_sign_up);
-                            if (task2.getException() != null) {
-                                task2.getException().printStackTrace();
-                            }
                         }
                     });
                 } else {
@@ -157,22 +107,27 @@ public class UserViewModel extends ViewModel {
                 }
             } else {
                 errorMessage.postValue(R.string.error_checking_mail);
-                if (task.getException() != null) {
-                    task.getException().printStackTrace();
-                }
             }
         });
     }
 
-    public MutableLiveData<Integer> getError() {
-        return errorMessage;
+    public void disconnectUser() {
+        authUser.postValue(null);
     }
 
     public boolean isLoggedIn() {
-        return user.getValue() != null;
+        return authUser.getValue() != null;
     }
 
-    public MutableLiveData<User> getUser() {
-        return user;
+    public MutableLiveData<User> getAuthUser() {
+        return authUser;
+    }
+
+    public MutableLiveData<User> getSelectedUser() {
+        return selectedUser;
+    }
+
+    public MutableLiveData<Integer> getError() {
+        return errorMessage;
     }
 }

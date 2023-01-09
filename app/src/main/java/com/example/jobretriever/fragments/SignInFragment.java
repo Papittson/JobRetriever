@@ -1,9 +1,6 @@
 package com.example.jobretriever.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.jobretriever.models.UserType.AGENCY;
-import static com.example.jobretriever.models.UserType.APPLICANT;
-import static com.example.jobretriever.models.UserType.EMPLOYER;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +12,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
 
@@ -56,22 +54,22 @@ public class SignInFragment extends JRFragment {
             }
         });
 
-        signUpButton.setOnClickListener(_view -> goToFragment(SignUpFragment.class, null));
+        signUpButton.setOnClickListener(_view -> goToFragment(SignUpFragment.class));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        UserViewModel.getInstance().getUser().observe(
-                getViewLifecycleOwner(),
+        UserViewModel.getInstance().getAuthUser().observe(
+                this,
                 user -> {
                     if (user != null) {
-                        if(user.getUserType() == APPLICANT) {
-                            goToFragment(CandidateProfileFragment.class, null);
-                        } else if(user.getUserType() == EMPLOYER || user.getUserType() == AGENCY) {
-                            goToFragment(EmployerProfileFragment.class, null);
+                        UserViewModel.getInstance().getAuthUser().removeObservers(this);
+                        UserViewModel.getInstance().getSelectedUser().postValue(user);
+                        if(user instanceof Applicant) {
+                            goToFragment(CandidateProfileFragment.class);
                         } else {
-                            goToFragment(HomeFragment.class, null);
+                            goToFragment(EmployerProfileFragment.class);
                         }
                     }
                 }
@@ -81,6 +79,6 @@ public class SignInFragment extends JRFragment {
     @Override
     public void onStop() {
         super.onStop();
-        UserViewModel.getInstance().getUser().removeObservers(getViewLifecycleOwner());
+        UserViewModel.getInstance().getAuthUser().removeObservers(this);
     }
 }

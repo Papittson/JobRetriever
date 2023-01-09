@@ -1,7 +1,6 @@
 package com.example.jobretriever.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobretriever.R;
-import com.example.jobretriever.fragments.ApplicationFragment;
 import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.models.Application;
 import com.example.jobretriever.models.Offer;
@@ -58,7 +56,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         return applications.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView companyDuration;
         private final TextView location;
@@ -67,23 +65,12 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
 
             this.title = itemView.findViewById(R.id.row_title);
             this.location = itemView.findViewById(R.id.offer_location);
             this.companyDuration = itemView.findViewById(R.id.company_duration);
             this.applicationStatus = itemView.findViewById(R.id.application_status);
             this.description = itemView.findViewById(R.id.row_description);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Bundle args = new Bundle();
-            args.putInt("applicationIndex", this.getAdapterPosition());
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, ApplicationFragment.class, args)
-                    .commit();
         }
     }
 }

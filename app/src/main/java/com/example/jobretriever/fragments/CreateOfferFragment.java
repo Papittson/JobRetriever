@@ -1,5 +1,7 @@
 package com.example.jobretriever.fragments;
 
+import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,19 +12,20 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
-import com.example.jobretriever.models.DurationType;
+import com.example.jobretriever.activities.MainActivity;
+import com.example.jobretriever.enums.DurationType;
 import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class CreateOfferFragment extends JRFragment {
-    String offerId;
     DurationType durationType;
+    LocalDate date;
 
     public CreateOfferFragment() {
         super(R.string.offer_creation, R.layout.fragment_create_offer, true);
@@ -40,7 +43,7 @@ public class CreateOfferFragment extends JRFragment {
         AutoCompleteTextView cityEditText = fragment.findViewById(R.id.offer_city);
         AutoCompleteTextView durationEditText = fragment.findViewById(R.id.offer_duration);
 
-        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCities());
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, MainActivity.getCities());
         cityEditText.setAdapter(citiesAdapter);
         cityEditText.setThreshold(1);
 
@@ -59,8 +62,8 @@ public class CreateOfferFragment extends JRFragment {
         }
 
         submitButton.setOnClickListener(_view -> {
-            if(user != null && user instanceof Employer) {
-                Employer employer = (Employer) user;
+            if(this.authUser instanceof Employer) {
+                Employer employer = (Employer) this.authUser;
                 EditText titleEditText = fragment.findViewById(R.id.offer_title);
                 EditText fieldEditText = fragment.findViewById(R.id.offer_field);
                 EditText descriptionEditText = fragment.findViewById(R.id.offer_description);
@@ -72,7 +75,6 @@ public class CreateOfferFragment extends JRFragment {
                     DurationType duration = durationType;
                     String description = descriptionEditText.getText().toString();
                     double wage = Double.parseDouble(wageEditText.getText().toString());
-                    Date date = Calendar.getInstance().getTime(); // TODO Changer ça
                     String location = cityEditText.getText().toString();
                     Offer offer = new Offer(title, duration, date, field, description, wage, employer.getId(), location);
                     offer.setEmployer(employer);
@@ -81,7 +83,7 @@ public class CreateOfferFragment extends JRFragment {
                     showToast(R.string.required_fields);
                 }
             } else {
-                goToFragment(HomeFragment.class, null);
+                goToFragment(HomeFragment.class);
                 showToast(R.string.error_has_occured);
             }
         });
@@ -94,14 +96,13 @@ public class CreateOfferFragment extends JRFragment {
             return;
         }
 
-        OfferViewModel.getInstance().getOffer().observe(
-                getViewLifecycleOwner(),
+        OfferViewModel.getInstance().getSelectedOffer().observe(
+                this,
                 offer -> {
-                    this.offerId = offer.getId();
-                    OfferViewModel.getInstance().getAll();
-                    Bundle args = new Bundle();
-                    args.putString("offerId", offerId);
-                    goToFragment(OfferFragment.class, args);
+                    if(offer != null) {
+                        goToFragment(OfferFragment.class);
+                        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+                    }
                 }
         );
     }
@@ -109,24 +110,19 @@ public class CreateOfferFragment extends JRFragment {
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
-        OfferViewModel.getInstance().getOffer().removeObservers(getViewLifecycleOwner());
+        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
     }
 
-    @SuppressWarnings("deprecation")
     public void pickDate(EditText showDatePicker) {
         MaterialDatePicker<Long> signUpBirthdate = MaterialDatePicker.Builder
                 .datePicker()
-                .setTitleText(getText(R.string.birthdate))
+                .setTitleText(R.string.birthdate)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
         signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
         signUpBirthdate.addOnPositiveButtonClickListener(selection -> {
-            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            calendar.setTimeInMillis(selection);
-            Date birthdate = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
-            int month = birthdate.getMonth() + 1;
-            showDatePicker.setText(getString(R.string.birthdate_format,birthdate.getDay(),month,birthdate.getYear()));
+            this.date = Instant.ofEpochMilli(selection).atZone(ZoneId.systemDefault()).toLocalDate();
+            showDatePicker.setText(this.date.format(DATE_FORMATTER));
         });
     }
 }

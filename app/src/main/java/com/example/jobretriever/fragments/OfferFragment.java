@@ -1,24 +1,21 @@
 package com.example.jobretriever.fragments;
 
-import static com.example.jobretriever.models.UserType.APPLICANT;
+import static com.example.jobretriever.enums.UserType.APPLICANT;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
+import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
-
-import java.util.List;
 
 
 public class OfferFragment extends JRFragment {
@@ -29,57 +26,54 @@ public class OfferFragment extends JRFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if(offerExists()) {
-            fillLayoutData();
-
-            ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
-            ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
-            ImageButton emailButton = fragment.findViewById(R.id.contact_email);
-            Button applyButton = fragment.findViewById(R.id.offer_apply);
-
-            if(user == null || user.getUserType() == APPLICANT) {
-                applyButton.setVisibility(View.VISIBLE);
-            }
-
-            favoriteButton.setOnClickListener(v -> toggleFavorite());
-            phoneButton.setOnClickListener(v -> contactEmployerByPhone());
-            emailButton.setOnClickListener(v -> contactEmployerByEmail());
-            applyButton.setOnClickListener(v -> applyToOffer());
-        } else {
-            goToFragment(HomeFragment.class, null);
-            showToast(R.string.error_offer_not_found);
-        }
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        OfferViewModel.getInstance().getOffer().observe(
-                getViewLifecycleOwner(),
-                _offer -> showToast(R.string.application_added)
+        OfferViewModel.getInstance().getSelectedOffer().observe(
+                this,
+                _offer -> {
+                    if(_offer == null) {
+                        return;
+                    }
+                    this.offer = _offer;
+                    OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+                    OfferViewModel.getInstance().getSelectedOffer().postValue(null);
+                    fillLayoutData();
+
+                    ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
+                    ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
+                    ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+                    Button applyButton = fragment.findViewById(R.id.offer_apply);
+
+                    if(!isUserLoggedIn() || authUser.getUserType() == APPLICANT) {
+                        applyButton.setVisibility(View.VISIBLE);
+                    }
+
+                    favoriteButton.setOnClickListener(v -> toggleFavorite());
+                    phoneButton.setOnClickListener(v -> contactEmployerByPhone());
+                    emailButton.setOnClickListener(v -> contactEmployerByEmail());
+                    applyButton.setOnClickListener(v -> applyToOffer());
+                }
+        );
+
+        OfferViewModel.getInstance().getAppliedOffer().observe(
+                this,
+                _offer -> {
+                    if(_offer != null) {
+                        Button applyButton = fragment.findViewById(R.id.offer_apply);
+                        applyButton.setVisibility(View.GONE);
+                        showToast(R.string.application_added);
+                        OfferViewModel.getInstance().getAppliedOffer().removeObservers(this);
+                        OfferViewModel.getInstance().getAppliedOffer().postValue(null);
+                    }
+                }
         );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffer().removeObservers(getViewLifecycleOwner());
-    }
-
-    public boolean offerExists() {
-        Bundle args = this.getArguments();
-        List<Offer> offers = OfferViewModel.getInstance().getOffers().getValue();
-        if(args != null && offers != null && args.getString("offerId") != null) {
-            String offerId = args.getString("offerId");
-            this.offer = offers.stream()
-                    .filter(offer -> offer.getId().equals(offerId))
-                    .findFirst()
-                    .orElse(null);
-            return this.offer != null;
-        }
-        return false;
+        OfferViewModel.getInstance().getSelectedOffer().removeObservers(this);
+        OfferViewModel.getInstance().getAppliedOffer().removeObservers(this);
     }
 
     public void fillLayoutData() {
@@ -90,9 +84,14 @@ public class OfferFragment extends JRFragment {
         TextView cityCountry = fragment.findViewById(R.id.offer_location);
         TextView wage = fragment.findViewById(R.id.offer_wage);
         ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
-        int favoriteImage = UserViewModel.getInstance().hasFavorite(offer.getId()) ?
-                R.drawable.ic_baseline_favorite_24 :
-                R.drawable.ic_baseline_favorite_border_24;
+
+        if(this.authUser instanceof Employer) {
+            favoriteButton.setVisibility(View.GONE);
+        } else if(this.authUser instanceof Applicant && ((Applicant) this.authUser).hasFavorite(offer.getId())) {
+            favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        }
 
         jobTitleTV.setText(offer.getTitle());
         businessNameTV.setText(offer.getEmployer().getBusinessName());
@@ -100,12 +99,13 @@ public class OfferFragment extends JRFragment {
         descriptionTV.setText(offer.getDescription());
         cityCountry.setText(offer.getLocation());
         wage.setText(getString(R.string.offer_wage, offer.getWage()));
-        favoriteButton.setImageResource(favoriteImage);
     }
 
     public void applyToOffer() {
         if (isUserLoggedIn()) {
-            OfferViewModel.getInstance().addApplication(user.getId(), offer);
+            if(authUser instanceof Applicant) {
+                OfferViewModel.getInstance().addApplication((Applicant) authUser, offer);
+            }
         } else {
             showToast(R.string.error_must_be_signed_in);
         }
@@ -135,12 +135,15 @@ public class OfferFragment extends JRFragment {
     public void toggleFavorite() {
         ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
         if (isUserLoggedIn()) {
-            if(UserViewModel.getInstance().hasFavorite(offer.getId())) {
-                UserViewModel.getInstance().removeFavorite(offer.getId());
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-            } else {
-                UserViewModel.getInstance().addFavorite(offer.getId());
-                favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+            if(this.authUser instanceof Applicant) {
+                Applicant applicant = (Applicant) this.authUser;
+                if(applicant.hasFavorite(offer.getId())) {
+                    UserViewModel.getInstance().removeFavorite(offer.getId());
+                    favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                } else {
+                    UserViewModel.getInstance().addFavorite(offer.getId());
+                    favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24);
+                }
             }
         } else {
             showToast(R.string.error_must_be_signed_in);

@@ -1,5 +1,7 @@
 package com.example.jobretriever.models;
 
+import com.example.jobretriever.enums.SignUpStatus;
+import com.example.jobretriever.enums.UserType;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 @SuppressWarnings("unused")
@@ -13,8 +15,8 @@ public class Employer extends User {
 
     public Employer() {}
 
-    public Employer(String mail, String password, String phone, UserType type, String businessName, String address, String siret, String manager) {
-        super(mail, password, phone);
+    public Employer(String mail, String password, String phone, String websiteUrl, UserType type, String businessName, String address, String siret, String manager) {
+        super(mail, password, phone, websiteUrl);
         this.userType = type;
         this.businessName = businessName;
         this.address = address;

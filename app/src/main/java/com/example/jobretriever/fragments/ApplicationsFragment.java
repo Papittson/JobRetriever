@@ -1,12 +1,9 @@
 package com.example.jobretriever.fragments;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.models.Employer;
-import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class ApplicationsFragment extends JRFragment {
@@ -22,37 +19,33 @@ public class ApplicationsFragment extends JRFragment {
             return;
         }
 
-        createRecyclerView(R.id.applied_offers);
-
-        if (user != null) {
-            List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
-            if (offersLiveData == null || offersLiveData.size() == 0) {
-                OfferViewModel.getInstance().getAll();
-            }
-
-            OfferViewModel.getInstance().getOffers().observe(
-                    getViewLifecycleOwner(),
+        if(this.authUser instanceof Applicant) {
+            createRecyclerView(R.id.applied_offers);
+            Applicant applicant = (Applicant) this.authUser;
+            OfferViewModel.getInstance().getApplieds(applicant.getApplicationsId());
+            OfferViewModel.getInstance().getAppliedOffers().observe(
+                    this,
                     offers -> {
-                        List<Offer> appliedOffers;
-                        if(user instanceof Employer) {
-                            appliedOffers = offers.stream()
-                                    .filter(offer -> offer.isCreatedByUser(user.getId()))
-                                    .collect(Collectors.toList());
-                        } else {
-                            appliedOffers = offers.stream()
-                                    .filter(offer -> offer.isAppliedByUser(user.getId()))
-                                    .collect(Collectors.toList());
+                        if(offers != null) {
+                            updateRecyclerView(R.id.applied_offers, offers);
+                            OfferViewModel.getInstance().getAppliedOffers().removeObservers(this);
+                            OfferViewModel.getInstance().getAppliedOffers().postValue(null);
                         }
-
-                        updateRecyclerView(R.id.applied_offers, appliedOffers);
                     }
             );
+        } else if(this.authUser instanceof Employer) {
+            Employer employer = (Employer) this.authUser;
+            // TODO Continue here
+        } else {
+            goToFragment(HomeFragment.class);
+            showToast(R.string.error_has_occured);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
+        OfferViewModel.getInstance().getAppliedOffers().removeObservers(this);
+        OfferViewModel.getInstance().getAppliedOffers().postValue(null);
     }
 }

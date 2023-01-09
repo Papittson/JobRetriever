@@ -1,4 +1,4 @@
-package com.example.jobretriever.models;
+package com.example.jobretriever.enums;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -7,7 +7,6 @@ import com.example.jobretriever.R;
 import com.example.jobretriever.activities.MainActivity;
 
 public enum ApplicationStatus {
-
     PENDING(R.string.pending),
     ACCEPTED(R.string.accepted),
     DENIED(R.string.denied),

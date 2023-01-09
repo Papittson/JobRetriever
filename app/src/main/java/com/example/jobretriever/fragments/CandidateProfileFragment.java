@@ -1,61 +1,21 @@
 package com.example.jobretriever.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobretriever.R;
 import com.example.jobretriever.models.Applicant;
-import com.example.jobretriever.models.Offer;
-import com.example.jobretriever.models.User;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
-
-public class CandidateProfileFragment extends JRFragment {
+public class CandidateProfileFragment extends ProfileFragment {
 
     public CandidateProfileFragment() {
-        super(R.string.profile, R.layout.fragment_candidate_profile, true);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        checkProfileArgs();
-        if (isUserAllowed() && user != null && user instanceof Applicant) {
-            Applicant applicant = (Applicant) user;
-            TextView nameTextView = fragment.findViewById(R.id.profile_name);
-            TextView informationsTextView = fragment.findViewById(R.id.informations);
-            TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
-            TextView educationTextView = fragment.findViewById(R.id.edu_detailed);
-            ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
-            ImageButton emailButton = fragment.findViewById(R.id.contact_email);
-
-            nameTextView.setText(getString(R.string.profile_name_candidate, applicant.getFirstname(), applicant.getLastname()));
-
-            informationsTextView.setText(getString(R.string.profile_infos_candidate, getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
-            if(applicant.getExperiences() == null || applicant.getExperiences().isBlank()){
-                experienceTextView.setText(getText(R.string.no_experiences));
-            }else{
-                experienceTextView.setText(applicant.getExperiences());
-            }
-            if(applicant.getEducations() == null || applicant.getEducations().isBlank()){
-                educationTextView.setText(getText(R.string.no_educations));
-            }else{
-                educationTextView.setText(applicant.getEducations());
-            }
-
-            phoneButton.setOnClickListener(v -> contactUserByPhone());
-            emailButton.setOnClickListener(v -> contactUserByEmail());
-        }
+        super(R.layout.fragment_candidate_profile);
     }
 
     @Override
@@ -67,66 +27,75 @@ public class CandidateProfileFragment extends JRFragment {
 
         createRecyclerView(R.id.saved_offers);
 
-        if (user != null && user.getId().equals(userId) && user instanceof Applicant) {
-            Applicant applicant = (Applicant) user;
-            TextView savedOffersTitle = fragment.findViewById(R.id.saved_offers_title);
-            RecyclerView savedOffersRV = fragment.findViewById(R.id.saved_offers);
-
-            savedOffersTitle.setVisibility(View.VISIBLE);
-            savedOffersRV.setVisibility(View.VISIBLE);
-
-            List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
-            if (offersLiveData == null || offersLiveData.size() == 0) {
-                OfferViewModel.getInstance().getAll();
-            }
-
-            OfferViewModel.getInstance().getOffers().observe(
-                    getViewLifecycleOwner(),
-                    offers -> {
-                        List<Offer> favoriteOffers = offers.stream()
-                                .filter(offer -> applicant.getFavoritesId().contains(offer.getId()))
-                                .collect(Collectors.toList());
-
-                        updateRecyclerView(R.id.saved_offers, favoriteOffers);
+        UserViewModel.getInstance().getSelectedUser().observe(
+                this,
+                _user -> {
+                    if(_user == null) {
+                        return;
                     }
-            );
-        }
+                    this.user = _user;
+                    System.out.println("TEST 1 " + this.user.getMail());
+                    UserViewModel.getInstance().getSelectedUser().removeObservers(this);
+                    UserViewModel.getInstance().getSelectedUser().postValue(null);
+                    if(this.user instanceof Applicant) {
+                        Applicant applicant = (Applicant) this.user;
+                        TextView nameTextView = fragment.findViewById(R.id.profile_name);
+                        TextView informationsTextView = fragment.findViewById(R.id.informations);
+                        TextView experienceTextView = fragment.findViewById(R.id.exp_detailed);
+                        TextView educationTextView = fragment.findViewById(R.id.edu_detailed);
+                        ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
+                        ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+                        ImageButton websiteButton = fragment.findViewById(R.id.visit_website);
+
+                        nameTextView.setText(getString(R.string.profile_name_candidate, applicant.getFirstname(), applicant.getLastname()));
+                        informationsTextView.setText(getString(R.string.profile_infos_candidate, getString(user.getUserType().stringResId), applicant.getNationality(), applicant.getAge()));
+
+                        if(applicant.getExperiences() == null || applicant.getExperiences().isBlank()){
+                            experienceTextView.setText(getText(R.string.no_experiences));
+                        }else{
+                            experienceTextView.setText(applicant.getExperiences());
+                        }
+                        if(applicant.getEducations() == null || applicant.getEducations().isBlank()){
+                            educationTextView.setText(getText(R.string.no_educations));
+                        }else{
+                            educationTextView.setText(applicant.getEducations());
+                        }
+
+                        phoneButton.setOnClickListener(v -> contactUserByPhone());
+                        emailButton.setOnClickListener(v -> contactUserByEmail());
+                        websiteButton.setOnClickListener(v -> visitWebsite());
+
+                        if(this.authUser.getId().equals(this.user.getId())) {
+                            TextView savedOffersTitle = fragment.findViewById(R.id.saved_offers_title);
+                            RecyclerView savedOffersRV = fragment.findViewById(R.id.saved_offers);
+
+                            savedOffersTitle.setVisibility(View.VISIBLE);
+                            savedOffersRV.setVisibility(View.VISIBLE);
+
+                            OfferViewModel.getInstance().getFavorites(applicant.getFavoritesId());
+                            OfferViewModel.getInstance().getSavedOffers().observe(
+                                    this,
+                                    offers -> {
+                                        if(offers != null) {
+                                            updateRecyclerView(R.id.saved_offers, offers);
+                                            OfferViewModel.getInstance().getSavedOffers().removeObservers(this);
+                                            OfferViewModel.getInstance().getSavedOffers().postValue(null);
+                                        }
+                                    }
+                            );
+                        }
+                    } else {
+                        goToFragment(HomeFragment.class);
+                        showToast(R.string.error_user_not_found);
+                    }
+                }
+        );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
-    }
-
-    public void checkProfileArgs() {
-        Bundle args = this.getArguments();
-        List<User> users = UserViewModel.getInstance().getUsers().getValue();
-        if (args != null && users != null && args.getString("userId") != null) {
-            String userId = args.getString("userId");
-            this.user = users.stream()
-                    .filter(user -> user.getId().equals(userId))
-                    .findFirst()
-                    .orElse(null);
-        }
-    }
-
-    public void contactUserByPhone() {
-        String phoneNumber = user.getPhone();
-        if (phoneNumber != null && !phoneNumber.isBlank()) {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
-            startActivity(intent);
-        } else {
-            showToast(R.string.unknown_phone_number);
-        }
-    }
-
-    public void contactUserByEmail() {
-        String emailAddress = user.getMail();
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        startActivity(intent);
+        OfferViewModel.getInstance().getSavedOffers().removeObservers(this);
+        OfferViewModel.getInstance().getSavedOffers().postValue(null);
     }
 }

@@ -1,11 +1,15 @@
 package com.example.jobretriever.models;
 
 
+import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
+
 import com.example.jobretriever.R;
+import com.example.jobretriever.enums.ApplicationStatus;
+import com.example.jobretriever.enums.DurationType;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +18,7 @@ import java.util.Map;
 public class Offer extends Entity {
     String title;
     DurationType duration;
-    Date date;
+    LocalDate date;
     String field;
     String description;
     Double wage;
@@ -25,10 +29,12 @@ public class Offer extends Entity {
     Employer employer;
 
     public Offer() {
+        super();
         this.applications = new HashMap<>();
     }
 
-    public Offer(String title, DurationType duration, Date date, String field, String description, Double wage, String employerId, String location) {
+    public Offer(String title, DurationType duration, LocalDate date, String field, String description, Double wage, String employerId, String location) {
+        this();
         this.title = title;
         this.duration = duration;
         this.date = date;
@@ -37,9 +43,9 @@ public class Offer extends Entity {
         this.wage = wage;
         this.employerId = employerId;
         this.location = location;
-        this.applications = new HashMap<>();
     }
 
+    @Exclude
     public int getApplicationStatus(String userId) {
         ApplicationStatus status = this.applications.get(userId);
         if(status != null) {
@@ -48,12 +54,9 @@ public class Offer extends Entity {
         return R.string.empty_string;
     }
 
-    public boolean isAppliedByUser(String userId) {
-        return this.applications.containsKey(userId);
-    }
-
-    public boolean isCreatedByUser(String userId) {
-        return this.getEmployerId().equals(userId);
+    @Exclude
+    public boolean isSimilarTo(String title) {
+        return this.title.toLowerCase().contains(title.toLowerCase()) || title.toLowerCase().contains(this.title.toLowerCase());
     }
 
     public void setWage(Double wage) {
@@ -114,11 +117,11 @@ public class Offer extends Entity {
         this.duration = duration;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return this.date.format(DATE_FORMATTER);
     }
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(String date) {
+        this.date = LocalDate.parse(date, DATE_FORMATTER);;
     }
 
     public String getDescription() {

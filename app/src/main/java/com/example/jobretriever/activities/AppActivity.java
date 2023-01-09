@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 @SuppressWarnings("deprecation")
 public class AppActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView navBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,9 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        BottomNavigationView navBar = findViewById(R.id.navBar);
+        navBar = findViewById(R.id.nav_bar);
         navBar.setOnNavigationItemSelectedListener(this);
-        navBar.setSelectedItemId(R.id.navbarHome);
+        navBar.setSelectedItemId(R.id.nav_item_home);
     }
 
     @Override
@@ -53,14 +54,14 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_sign_in) {
             if(UserViewModel.getInstance().isLoggedIn()) {
-                goToFragment(HomeFragment.class);
-                UserViewModel.getInstance().getUser().postValue(null);
+                navBar.setSelectedItemId(R.id.nav_item_home);
+                UserViewModel.getInstance().disconnectUser();
                 Toast.makeText(this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
             } else {
-                goToFragment(SignInFragment.class);
+                navBar.setSelectedItemId(R.id.nav_item_profile);
             }
         } else {
-            goToFragment(HomeFragment.class);
+            navBar.setSelectedItemId(R.id.nav_item_home);
         }
         return true;
     }
@@ -69,20 +70,22 @@ public class AppActivity extends AppCompatActivity implements BottomNavigationVi
     @SuppressLint("NonConstantResourceId")
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.navbarHome:
+            case R.id.nav_item_home:
                 goToFragment(HomeFragment.class);
                 return true;
-            case R.id.navbarApplications:
+            case R.id.nav_item_applications:
                 if(UserViewModel.getInstance().isLoggedIn()) {
                     goToFragment(ApplicationsFragment.class);
+                    return true;
                 } else {
-                    goToFragment(SignInFragment.class);
+                    navBar.setSelectedItemId(R.id.nav_item_profile);
+                    return false;
                 }
-                return true;
-            case R.id.navbarProfile:
-                User user = UserViewModel.getInstance().getUser().getValue();
-                if(user != null) {
-                    if(user instanceof Applicant) {
+            case R.id.nav_item_profile:
+                User authUser = UserViewModel.getInstance().getAuthUser().getValue();
+                if(authUser != null) {
+                    UserViewModel.getInstance().getSelectedUser().postValue(authUser);
+                    if(authUser instanceof Applicant) {
                         goToFragment(CandidateProfileFragment.class);
                     } else {
                         goToFragment(EmployerProfileFragment.class);

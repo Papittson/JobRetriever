@@ -10,7 +10,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
-import com.example.jobretriever.models.DurationType;
+import com.example.jobretriever.activities.MainActivity;
+import com.example.jobretriever.enums.DurationType;
 import com.example.jobretriever.models.Offer;
 import com.example.jobretriever.viewmodels.OfferViewModel;
 
@@ -31,7 +32,7 @@ public class HomeFragment extends JRFragment {
         AutoCompleteTextView cityFilterInput = fragment.findViewById(R.id.city_filter);
         AutoCompleteTextView durationFilterInput = fragment.findViewById(R.id.duration_filter);
 
-        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCities());
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, MainActivity.getCities());
         cityFilterInput.setAdapter(citiesAdapter);
         cityFilterInput.setThreshold(1);
 
@@ -53,21 +54,39 @@ public class HomeFragment extends JRFragment {
         super.onStart();
         createRecyclerView(R.id.welcomeOfferRV);
 
-        List<Offer> offersLiveData = OfferViewModel.getInstance().getOffers().getValue();
-        if(offersLiveData == null || offersLiveData.size() == 0) {
-            OfferViewModel.getInstance().getAll();
+        List<Offer> recentOffers = OfferViewModel.getInstance().getRecentOffers().getValue();
+        if(recentOffers == null) {
+            OfferViewModel.getInstance().getAll(25);
         }
 
-        OfferViewModel.getInstance().getOffers().observe(
-                getViewLifecycleOwner(),
-                offers -> updateRecyclerView(R.id.welcomeOfferRV, offers)
+        OfferViewModel.getInstance().getRecentOffers().observe(
+                this,
+                offers -> {
+                    if(offers != null) {
+                        updateRecyclerView(R.id.welcomeOfferRV, offers);
+                        OfferViewModel.getInstance().getRecentOffers().removeObservers(this);
+                        OfferViewModel.getInstance().getRecentOffers().postValue(null);
+                    }
+                }
+        );
+
+        OfferViewModel.getInstance().getSearchedOffers().observe(
+                this,
+                offers -> {
+                    if(offers != null) {
+                        updateRecyclerView(R.id.welcomeOfferRV, offers);
+                    }
+                }
         );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getOffers().removeObservers(getViewLifecycleOwner());
+        OfferViewModel.getInstance().getRecentOffers().removeObservers(this);
+        OfferViewModel.getInstance().getSearchedOffers().removeObservers(this);
+        OfferViewModel.getInstance().getSearchedOffers().postValue(null);
+        OfferViewModel.getInstance().getRecentOffers().postValue(null);
     }
 
     public void search() {
@@ -83,7 +102,7 @@ public class HomeFragment extends JRFragment {
             if(city.isBlank()) {
                 city = null;
             }
-            OfferViewModel.getInstance().getAll(searchQuery, city, durationType);
+            OfferViewModel.getInstance().search(searchQuery, city, durationType);
         }
     }
 }

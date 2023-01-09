@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navbarHome"
+        android:id="@+id/nav_item_home"
         android:enabled="true"
         android:icon="@drawable/home"
         android:title="@string/home"/>
     <item
-        android:id="@+id/navbarProfile"
+        android:id="@+id/nav_item_profile"
         android:enabled="true"
         android:icon="@drawable/person"
         android:title="@string/profile"/>
     <item
-        android:id="@+id/navbarApplications"
+        android:id="@+id/nav_item_applications"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_list_alt_24"
         android:title="@string/applications"/>

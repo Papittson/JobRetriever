@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">JobRetriever</string>
-    <string name="birthdate_format">%1$d/%2$d/%3$d</string>
+    <string name="birthdate_format" translatable="false">%1$d/%2$d/%3$d</string>
     <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
-    <string name="profile_name_candidate">%1$s %2$s</string>
-    <string name="profile_infos_employer">%1$s | %2$s</string>
-    <string name="offer_wage">%1$.2f €</string>
+    <string name="profile_name_candidate" translatable="false">%1$s %2$s</string>
+    <string name="profile_infos_employer" translatable="false">%1$s | %2$s</string>
+    <string name="offer_wage" translatable="false">%1$.2f €</string>
     <string name="job_title">Job Title</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_sign_up">Sign Up</string>
@@ -32,7 +32,7 @@
     <string name="home">Home</string>
     <string name="companyDuration">Company | Duration</string>
     <string name="logo_description">App logo</string>
-    <string name="company_duration">%1$s | %2$s</string>
+    <string name="company_duration" translatable="false">%1$s | %2$s</string>
     <string name="remember_me">Remember me</string>
     <string name="error_loading_users">Error loading users</string>
     <string name="error_loading_offers">Error loading offers</string>
@@ -72,11 +72,11 @@
     <string name="address">Address</string>
     <string name="informations">Informations</string>
     <string name="download_cv">Download CV</string>
-    <string name="error_has_occured">An error has occured</string>
+    <string name="error_has_occured">An error has occurred</string>
     <string name="required_fields">All fields must be filled</string>
     <string name="unknown_phone_number">Phone number not provided</string>
     <string name="error_adding_offer">Error adding offer</string>
-    <string name="error_adding_applications">Error adding aplication</string>
+    <string name="error_adding_applications">Error adding application</string>
     <string name="no_experiences">No experiences</string>
     <string name="no_educations">No educations</string>
     <string name="disconnected">You have been disconnected</string>
@@ -87,4 +87,8 @@
     <string name="sandwish_course">Block release training</string>
     <string name="applications">Applications</string>
     <string name="required">Required</string>
+    <string name="error_user_not_found">User not found</string>
+    <string name="visit_website">Visit website</string>
+    <string name="website">Website</string>
+    <string name="unknown_website">Website not provided</string>
 </resources>

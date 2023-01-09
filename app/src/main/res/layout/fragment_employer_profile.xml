@@ -48,6 +48,16 @@
             android:contentDescription="@string/contact_employer"
             />
 
+        <ImageButton
+            android:id="@+id/visit_website"
+            android:layout_toEndOf="@+id/contact_email"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_web_24"
+            android:contentDescription="@string/visit_website"
+            />
+
         <Button
             android:layout_alignParentEnd="true"
             android:id="@+id/create_offer"

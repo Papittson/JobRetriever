@@ -23,34 +23,23 @@ import com.example.jobretriever.viewmodels.OfferViewModel;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.common.hash.Hashing;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class JRFragment extends Fragment {
     View fragment;
     Integer actionBarTitle;
     Integer fragmentLayout;
     boolean isProtected;
-    User user;
-    String userId;
+    User authUser;
     List<String> cities;
 
     public JRFragment(@StringRes Integer actionBarTitle, @LayoutRes Integer fragmentLayout, boolean isProtected) {
         this.actionBarTitle = actionBarTitle;
         this.fragmentLayout = fragmentLayout;
         this.isProtected = isProtected;
-        this.user = UserViewModel.getInstance().getUser().getValue();
-        if(user != null) {
-            this.userId = user.getId();
-        }
+        this.authUser = UserViewModel.getInstance().getAuthUser().getValue();
     }
 
     @Override
@@ -67,7 +56,6 @@ public class JRFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cities = retrieveCities();
         fragment = inflater.inflate(fragmentLayout, container, false);
         return fragment;
     }
@@ -76,21 +64,39 @@ public class JRFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if(!isUserAllowed()) {
-            goToFragment(SignInFragment.class, null);
+            goToFragment(SignInFragment.class);
             showToast(R.string.error_must_be_signed_in);
         }
-        OfferViewModel.getInstance().getError().observe(getViewLifecycleOwner(), this::showToast);
-        UserViewModel.getInstance().getError().observe(getViewLifecycleOwner(), this::showToast);
+        OfferViewModel.getInstance().getError().observe(
+                this,
+                error -> {
+                    if(error != null) {
+                        showToast(error);
+                        OfferViewModel.getInstance().getError().postValue(null);
+                    }
+                }
+        );
+        UserViewModel.getInstance().getError().observe(
+                this,
+                error -> {
+                    if(error != null) {
+                        showToast(error);
+                        UserViewModel.getInstance().getError().postValue(null);
+                    }
+                }
+        );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        OfferViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
-        UserViewModel.getInstance().getError().removeObservers(getViewLifecycleOwner());
+        OfferViewModel.getInstance().getError().removeObservers(this);
+        UserViewModel.getInstance().getError().removeObservers(this);
+        OfferViewModel.getInstance().getError().postValue(null);
+        UserViewModel.getInstance().getError().postValue(null);
     }
 
-    public void showToast(@StringRes int stringResId) {
+    public void showToast(@StringRes Integer stringResId) {
         Toast.makeText(getContext(), stringResId, Toast.LENGTH_LONG).show();
     }
 
@@ -114,71 +120,22 @@ public class JRFragment extends Fragment {
     }
 
     public boolean isUserAllowed() {
-        return !isProtected || user != null;
+        return !isProtected || authUser != null;
     }
 
     public boolean isUserLoggedIn() {
-        return user != null;
+        return authUser != null;
     }
 
     public String encrypt(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
-    public String loadJSONFromAssets() {
-        String json = null;
-        if(getActivity() != null) {
-            try {
-                InputStream is = getActivity().getAssets().open("cities.json");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                @SuppressWarnings("unused")
-                int i = is.read(buffer);
-                is.close();
-                json = new String(buffer, StandardCharsets.UTF_8);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return json;
-    }
-
-    private List<String> retrieveCities() {
-        List<String> cities = new ArrayList<>();
-        String json = loadJSONFromAssets();
-        try {
-            JSONArray array = new JSONArray(json);
-            for (int i = 0; i < array.length(); i++) {
-                cities.add(array.getString(i));
-            }
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        return cities;
-    }
-
-    public List<String> getCities() {
-        return cities;
-    }
-
-    public List<String> getCountries() {
-        Locale[] locales = Locale.getAvailableLocales();
-        ArrayList<String> countries = new ArrayList<>();
-        for (Locale locale : locales) {
-            String country = locale.getDisplayCountry();
-            if (country.trim().length() > 0 && !countries.contains(country)) {
-                countries.add(country);
-            }
-        }
-        Collections.sort(countries);
-        return countries;
-    }
-
-    public void goToFragment(Class<? extends Fragment> fragmentClass, Bundle args) {
+    public void goToFragment(Class<? extends Fragment> fragmentClass) {
         if(getActivity() != null) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, fragmentClass, args)
+                    .replace(R.id.fragment_container, fragmentClass, null)
                     .commit();
         }
     }

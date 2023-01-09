@@ -1,7 +1,8 @@
 package com.example.jobretriever.fragments;
 
-import static com.example.jobretriever.models.UserType.AGENCY;
-import static com.example.jobretriever.models.UserType.EMPLOYER;
+import static com.example.jobretriever.activities.MainActivity.DATE_FORMATTER;
+import static com.example.jobretriever.enums.UserType.AGENCY;
+import static com.example.jobretriever.enums.UserType.EMPLOYER;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,17 +14,17 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.example.jobretriever.R;
+import com.example.jobretriever.activities.MainActivity;
+import com.example.jobretriever.enums.UserType;
 import com.example.jobretriever.models.Applicant;
 import com.example.jobretriever.models.Employer;
 import com.example.jobretriever.models.User;
-import com.example.jobretriever.models.UserType;
 import com.example.jobretriever.viewmodels.UserViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 public class SignUpFragment extends JRFragment {
     UserType userType;
@@ -41,7 +42,7 @@ public class SignUpFragment extends JRFragment {
         AutoCompleteTextView dropdownCountriesEditText = fragment.findViewById(R.id.signUpDropdown_nationality);
 
         ArrayAdapter<UserType> userTypesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, UserType.values());
-        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, getCountries());
+        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(getContext(), R.layout.user_type_item, MainActivity.getCountries());
 
         datePicker.setOnClickListener(v -> pickDate(datePicker));
         dropdownCountriesEditText.setAdapter(countriesAdapter);
@@ -49,16 +50,12 @@ public class SignUpFragment extends JRFragment {
         dropdownUserTypesEditText.setAdapter(userTypesAdapter);
         dropdownUserTypesEditText.setOnItemClickListener((parent, _view, position, id) -> {
             Object item = parent.getItemAtPosition(position);
-            System.out.println("POPI 1");
             if (item instanceof UserType) {
                 userType = (UserType) item;
-                System.out.println("POPI 2");
                 if (userType == EMPLOYER || userType == AGENCY) {
                     showEmployerInputs();
-                    System.out.println("POPI 3");
                 } else {
                     showCandidateInputs();
-                    System.out.println("POPI 4");
                 }
             }
         });
@@ -69,16 +66,17 @@ public class SignUpFragment extends JRFragment {
     @Override
     public void onStart() {
         super.onStart();
-        UserViewModel.getInstance().getUser().observe(
-                getViewLifecycleOwner(),
-                user1 -> {
-                    if(user1 == null) {
-                        return;
-                    }
-                    if(user1.getUserType() == EMPLOYER || user1.getUserType() == AGENCY) {
-                        goToFragment(EmployerProfileFragment.class, null);
-                    } else {
-                        goToFragment(CandidateProfileFragment.class, null);
+        UserViewModel.getInstance().getAuthUser().observe(
+                this,
+                user -> {
+                    if (user != null) {
+                        UserViewModel.getInstance().getAuthUser().removeObservers(this);
+                        UserViewModel.getInstance().getSelectedUser().postValue(user);
+                        if(user instanceof Applicant) {
+                            goToFragment(CandidateProfileFragment.class);
+                        } else {
+                            goToFragment(EmployerProfileFragment.class);
+                        }
                     }
                 }
         );
@@ -87,7 +85,7 @@ public class SignUpFragment extends JRFragment {
     @Override
     public void onStop() {
         super.onStop();
-        UserViewModel.getInstance().getUser().removeObservers(getViewLifecycleOwner());
+        UserViewModel.getInstance().getAuthUser().removeObservers(this);
     }
 
     public void pickDate(EditText showDatePicker) {
@@ -99,8 +97,7 @@ public class SignUpFragment extends JRFragment {
         signUpBirthdate.show(getChildFragmentManager(), "MATERIAL_DATE_PICKER");
         signUpBirthdate.addOnPositiveButtonClickListener(selection -> {
             this.birthdate = Instant.ofEpochMilli(selection).atZone(ZoneId.systemDefault()).toLocalDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            showDatePicker.setText(this.birthdate.format(formatter));
+            showDatePicker.setText(this.birthdate.format(DATE_FORMATTER));
         });
     }
 
@@ -160,6 +157,7 @@ public class SignUpFragment extends JRFragment {
         EditText emailEditText = fragment.findViewById(R.id.signUpMail);
         EditText passwordEditText = fragment.findViewById(R.id.signUpPassword);
         EditText phoneNumberEditText = fragment.findViewById(R.id.signUpPhoneNumber);
+        EditText websiteUrlEditText = fragment.findViewById(R.id.signUpWebsiteUrl);
         EditText firstNameEditText = fragment.findViewById(R.id.signUpFirstname);
         EditText lastNameEditText = fragment.findViewById(R.id.signUpLastname);
         EditText nationalityEditText = fragment.findViewById(R.id.signUpDropdown_nationality);
@@ -174,6 +172,7 @@ public class SignUpFragment extends JRFragment {
                 emailEditText == null ||
                         passwordEditText == null ||
                         phoneNumberEditText == null ||
+                        websiteUrlEditText == null ||
                         firstNameEditText == null ||
                         lastNameEditText == null ||
                         nationalityEditText == null ||
@@ -192,6 +191,7 @@ public class SignUpFragment extends JRFragment {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String phoneNumber = phoneNumberEditText.getText().toString();
+        String websiteUrl = websiteUrlEditText.getText().toString();
         String firstname = firstNameEditText.getText().toString();
         String lastname = lastNameEditText.getText().toString();
         String nationality = nationalityEditText.getText().toString();
@@ -214,7 +214,7 @@ public class SignUpFragment extends JRFragment {
                 showToast(R.string.required_fields);
                 return;
             }
-            User newUser = new Employer(email, encrypt(password), phoneNumber, userType, businessName, address, siret, manager);
+            User newUser = new Employer(email, encrypt(password), phoneNumber, websiteUrl, userType, businessName, address, siret, manager);
             UserViewModel.getInstance().signUp(newUser);
         } else {
             if (
@@ -228,7 +228,7 @@ public class SignUpFragment extends JRFragment {
                 showToast(R.string.required_fields);
                 return;
             }
-            User newUser = new Applicant(email, encrypt(password), phoneNumber, firstname, lastname, nationality, educations, experiences, birthdate);
+            User newUser = new Applicant(email, encrypt(password), phoneNumber, websiteUrl, firstname, lastname, nationality, educations, experiences, birthdate);
             UserViewModel.getInstance().signUp(newUser);
         }
     }

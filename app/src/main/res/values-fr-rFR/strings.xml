@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile_infos_employer">%1$s | %2$s</string>
-    <string name="birthdate_format">%1$d/%2$d/%3$d</string>
     <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
     <string name="app_name">JobRetriever</string>
     <string name="profile_name_candidate">%1$s %2$s</string>
@@ -37,7 +36,6 @@
     <string name="nationality">Nationalité</string>
     <string name="home">Accueil</string>
     <string name="business_name">Nom de l\'entreprise</string>
-    <string name="error_offer_not_found">Erreur offre introuvable</string>
     <string name="error_wrong_credentials">Erreur mail/mot de passe incorrect</string>
     <string name="error_during_sign_up">Erreur d\'inscription veuillez reessayer</string>
     <string name="error_mail_already_used">Erreur mail déjà utilisé</string>
@@ -69,7 +67,6 @@
     <string name="date">Date</string>
     <string name="address">Adresse</string>
     <string name="informations">Informations</string>
-    <string name="download_cv">Télécharger le CV</string>
     <string name="error_has_occured">Une erreur est survenue</string>
     <string name="required_fields">Veuillez remplir tous les champs</string>
     <string name="unknown_phone_number">N° de téléphone non renseigné</string>

@@ -81,6 +81,16 @@
             android:contentDescription="@string/contact_employer"
             />
 
+        <ImageButton
+            android:layout_toEndOf="@id/contact_email"
+            android:id="@+id/view_profile"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/person"
+            android:contentDescription="@string/view_employer_profile"
+            />
+
         <Button
             android:layout_alignParentEnd="true"
             android:id="@+id/offer_apply"

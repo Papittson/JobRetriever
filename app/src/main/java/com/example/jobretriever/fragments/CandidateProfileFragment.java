@@ -34,7 +34,6 @@ public class CandidateProfileFragment extends ProfileFragment {
                         return;
                     }
                     this.user = _user;
-                    System.out.println("TEST 1 " + this.user.getMail());
                     UserViewModel.getInstance().getSelectedUser().removeObservers(this);
                     UserViewModel.getInstance().getSelectedUser().postValue(null);
                     if(this.user instanceof Applicant) {

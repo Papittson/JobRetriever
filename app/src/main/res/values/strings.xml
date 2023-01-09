@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">JobRetriever</string>
-    <string name="birthdate_format" translatable="false">%1$d/%2$d/%3$d</string>
     <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
     <string name="profile_name_candidate" translatable="false">%1$s %2$s</string>
     <string name="profile_infos_employer" translatable="false">%1$s | %2$s</string>
@@ -41,7 +40,6 @@
     <string name="error_during_sign_up">Error during sign up please try again</string>
     <string name="error_wrong_credentials">Error wrong mail or password</string>
     <string name="error_must_be_signed_in">You must be signed in</string>
-    <string name="error_offer_not_found">Error offer not found</string>
     <string name="business_name">Business name</string>
     <string name="duration">Duration</string>
     <string name="action_apply">Apply</string>
@@ -71,7 +69,6 @@
     <string name="date">Date</string>
     <string name="address">Address</string>
     <string name="informations">Informations</string>
-    <string name="download_cv">Download CV</string>
     <string name="error_has_occured">An error has occurred</string>
     <string name="required_fields">All fields must be filled</string>
     <string name="unknown_phone_number">Phone number not provided</string>
@@ -91,4 +88,5 @@
     <string name="visit_website">Visit website</string>
     <string name="website">Website</string>
     <string name="unknown_website">Website not provided</string>
+    <string name="view_employer_profile">View employer profile</string>
 </resources>

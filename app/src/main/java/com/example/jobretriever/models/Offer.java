@@ -121,7 +121,7 @@ public class Offer extends Entity {
         return this.date.format(DATE_FORMATTER);
     }
     public void setDate(String date) {
-        this.date = LocalDate.parse(date, DATE_FORMATTER);;
+        this.date = LocalDate.parse(date, DATE_FORMATTER);
     }
 
     public String getDescription() {

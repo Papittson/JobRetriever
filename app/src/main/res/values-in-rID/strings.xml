@@ -42,7 +42,6 @@
     <string name="error_during_sign_up">꧋ꦄꦼꦂꦫꦺꦴꦂꦣꦸꦫꦶꦁꦱꦶꦒ꧀ꦤ꧀ꦈꦥ꧀ꦥ꧀ꦭꦼꦄꦱꦺꦠ꧀ꦫ꧀ꦪ꧀ꦄꦒꦻꦤ꧀</string>
     <string name="error_wrong_credentials">꧋ꦈꦱꦺꦂꦤꦩꦺ/ꦥꦱ꧀ꦱ꧀ꦮꦺꦴꦂꦣ꧀ꦱꦭꦃ</string>
     <string name="error_must_be_signed_in">꧋ꦪꦺꦴꦈꦩꦸꦱ꧀ꦠ꧀ꦧꦼꦱꦶꦒ꧀ꦤꦺꦣ꧀ꦆꦤ꧀</string>
-    <string name="error_offer_not_found">꧋ꦲꦱꦶꦭ꧀ꦠꦶꦣꦏ꧀ꦠꦼꦂꦠꦼꦩꦸ</string>
     <string name="business_name">꧋ꦤꦩꦥꦼꦫꦸꦱꦲꦄꦤ꧀</string>
     <string name="details">꧋ꦣꦼꦠꦻꦭ꧀ꦱ꧀</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut malesuada pharetra justo eu efficitur. Donec et leo arcu. Integer vitae tristique velit. Nunc mattis eget magna quis aliquam. Aenean aliquet vehicula ligula nec condimentum. Nullam eu erat et lectus semper sagittis. Donec sit amet turpis faucibus elit molestie auctor. Donec in scelerisque orci, eget egestas lorem. Proin malesuada interdum nisl, a vestibulum lectus congue eu. Donec ac lacus diam. Phasellus gravida ultrices enim rhoncus pharetra. Ut elementum nisl et nisl dictum consequat. Vestibulum laoreet, est eget volutpat fermentum, odio eros iaculis felis, in mattis lorem nibh in turpis. Proin ut gravida diam, id fringilla neque. Nullam elementum lorem quis fermentum aliquam. In vestibulum nibh in sapien tincidunt, sed finibus erat ullamcorper.</string>
@@ -66,7 +65,6 @@
     <string name="date">꧋ꦠꦁꦒꦭ꧀</string>
     <string name="address">꧋ꦄꦭꦩꦠ꧀</string>
     <string name="informations">꧋ꦆꦤ꧀ꦥ꦳ꦺꦴꦂꦩꦱꦶ</string>
-    <string name="download_cv">꧋ꦈꦤ꧀ꦝꦸꦃꦕ꧀ꦮ꦳꧀</string>
     <string name="error_has_occured">꧋ꦠꦼꦂꦗꦣꦶꦏꦼꦱꦭꦲꦤ꧀</string>
     <string name="required_fields">꧋ꦱꦼꦩꦸꦮꦧꦒꦶꦪꦤ꧀ꦲꦫꦸꦱ꧀ꦝꦶꦆꦱꦶ</string>
     <string name="unknown_phone_number">꧋ꦤꦺꦴꦩꦺꦴꦂꦠꦺꦭꦺꦥꦺꦴꦤ꧀ꦠꦶꦣꦏ꧀ꦠꦼꦫꦶꦱꦶ</string>
@@ -83,7 +81,6 @@
     <string name="applications">꧋ꦄꦥ꧀ꦭꦶꦏꦱꦶ</string>
     <string name="required">꧋ꦮꦗꦶꦧ꧀</string>
     <string name="firstname">꧋ꦤꦩꦣꦼꦥꦤ꧀</string>
-    <string name="birthdate_format">%1$d/%2$d/%3$d</string>
     <string name="profile_infos_candidate">%1$s | %2$s, %3$d ans</string>
     <string name="profile_infos_employer">%1$s | %2$s</string>
 </resources>

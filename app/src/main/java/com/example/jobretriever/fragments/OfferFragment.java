@@ -42,6 +42,7 @@ public class OfferFragment extends JRFragment {
                     ImageButton favoriteButton = fragment.findViewById(R.id.offer_favorite);
                     ImageButton phoneButton = fragment.findViewById(R.id.contact_phone);
                     ImageButton emailButton = fragment.findViewById(R.id.contact_email);
+                    ImageButton profileButton = fragment.findViewById(R.id.view_profile);
                     Button applyButton = fragment.findViewById(R.id.offer_apply);
 
                     if(!isUserLoggedIn() || authUser.getUserType() == APPLICANT) {
@@ -51,6 +52,7 @@ public class OfferFragment extends JRFragment {
                     favoriteButton.setOnClickListener(v -> toggleFavorite());
                     phoneButton.setOnClickListener(v -> contactEmployerByPhone());
                     emailButton.setOnClickListener(v -> contactEmployerByEmail());
+                    profileButton.setOnClickListener(v -> viewEmployerProfile());
                     applyButton.setOnClickListener(v -> applyToOffer());
                 }
         );
@@ -109,6 +111,12 @@ public class OfferFragment extends JRFragment {
         } else {
             showToast(R.string.error_must_be_signed_in);
         }
+    }
+
+    public void viewEmployerProfile() {
+        User employer = this.offer.getEmployer();
+        UserViewModel.getInstance().getSelectedUser().postValue(employer);
+        goToFragment(EmployerProfileFragment.class);
     }
 
     public void contactEmployerByPhone() {

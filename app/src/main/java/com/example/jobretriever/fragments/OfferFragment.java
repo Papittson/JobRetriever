@@ -97,7 +97,7 @@ public class OfferFragment extends JRFragment {
 
         jobTitleTV.setText(offer.getTitle());
         businessNameTV.setText(offer.getEmployer().getBusinessName());
-        durationTV.setText(offer.getDuration().stringResId);
+        durationTV.setText(getString(R.string.profile_infos_employer, getString(offer.getDuration().stringResId), offer.getDate()));
         descriptionTV.setText(offer.getDescription());
         cityCountry.setText(offer.getLocation());
         wage.setText(getString(R.string.offer_wage, offer.getWage()));

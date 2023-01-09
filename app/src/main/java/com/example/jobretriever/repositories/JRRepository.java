@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -21,10 +22,14 @@ public abstract class JRRepository {
     }
 
     public Task<QuerySnapshot> search(String city, DurationType durationType) {
-        return collection
-                .whereEqualTo("location", city)
-                .whereEqualTo("duration", durationType)
-                .get();
+        Query query = collection;
+        if(city != null) {
+            query = query.whereEqualTo("location", city);
+        }
+        if(durationType != null) {
+            query = query.whereEqualTo("duration", durationType);
+        }
+        return query.get();
     }
 
     public Task<QuerySnapshot> getAll(long limit) {

@@ -33,7 +33,7 @@
             android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
@@ -42,12 +42,15 @@
                 <AutoCompleteTextView
                     android:id="@+id/city_filter"
                     android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="4"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
@@ -56,6 +59,9 @@
                 <AutoCompleteTextView
                     android:id="@+id/duration_filter"
                     android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
